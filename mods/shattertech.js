@@ -10,7 +10,7 @@ elements.h_plasma = {
         "CL%5 AND M1|XX|CL%5 AND M1",
         "M2|M1|M2",
     ],
-    temp:12000,
+    temp:15000,
     tempLow:5000,
     stateLow: "fire",
     category: "energy",
@@ -27,7 +27,7 @@ elements.h_explosion = {
         "XX|EX:5>h_plasma|XX",
         "XX|XX|XX",
     ],
-    temp: 12000,
+    temp: 15000,
     category: "energy",
     state: "gas",
     density: 1000,
@@ -56,7 +56,7 @@ elements.barrage_spawner = {
         doHeat(pixel);
     },
     hardness: 1,
-    temp: 12000,
+    temp: 15000,
     category: "energy",
     state: "gas",
     //density: 1000,
@@ -80,7 +80,7 @@ elements.bombling = {
         }
         else { doDefaults(pixel); }
     },
-    temp: 12000,
+    temp: 15000,
     category: "energy",
     state: "gas",
     //density: 1000,
@@ -147,7 +147,7 @@ elements.charged_blaster = {
     glow: true,
     state: "solid",
     density: 100000000,
-    temp: 12000,
+    temp: 15000,
     hardness: 1,
     maxSize: 1,
     cooldown: defaultCooldown,
@@ -1247,7 +1247,7 @@ elements.disintegrate = {
       if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "h_plasma");}
       doDefaults(pixel);
     },
-    temp:12000,
+    temp:15000,
     category: "energy",
     state: "solid",
     density: 1,
@@ -1276,7 +1276,7 @@ elements.sized_disintegrate = {
     pixel.stage = ((pixelTicks+1) % 3)+1;
     changePixel(pixel,"disintegrate");
 	},
-	temp:12000,
+	temp:15000,
   category: "energy",
   state: "solid",
   density: 1,
