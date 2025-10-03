@@ -1573,7 +1573,6 @@ elements.pipe.hardness = 0;
 elements.portal_out.hardness = 0.75;
 elements.ewall.insulate = true;
 elements.fuse.movable = false;
-elements.flash.insulate = true;
 
 runEveryTick(function () {
     if (storageList && !storageList.tickcheck) {storageList.tickcheck = pixelTicks;}
