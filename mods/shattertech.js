@@ -1029,7 +1029,7 @@ elements.shield_gen = {
             pixel.fTrig = false;
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
-            var s = findFoci(pixel.x,pixel.y,pixel.rStage[0],pixel.rStage[1],pixel.gap);
+            var s = findFoci(pixel.x,pixel.y,pixel.rStage[1],pixel.rStage[2],pixel.gap);
             var x = pixel.x;
             var y = pixel.y;
             if (s[4] == 1) {
@@ -1589,41 +1589,41 @@ runEveryTick(function () {
             for (let z in placehold) {
                 storageList.shield_gen[z] = placehold[z];
             }
-	}
-	if (storageList.barrages) {
-	    if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
-	    var placehold = [];
-        for (let z in storageList.barrages){
-			if (storageList.barrages[z].time < 31) {
-		    	var coords = storageList.barrages[z].locList;
-		    	var hitlocs = [];
-		    	for (i=0; i<3; i++){
-		    		while (hitlocs.length != i+1) {
-			    		var tempstor = Math.floor(Math.random() * coords.length);
-			    		var addbool = true;
-			    		for (let p in hitlocs) {
-			        		if (tempstor == hitlocs[p]) {addbool = false;}
-			    		}
-			    		if (addbool == true) {hitlocs.push(tempstor);}
-		    		}
-		    	}
-		    	for (let q in hitlocs) {
-		    		var x = coords[hitlocs[q]].x;
-		    		var y = coords[hitlocs[q]].y;
-		    		var r = storageList.barrages[z].r2;
-		    		var f = storageList.barrages[z].fire;
-		    		if (!outOfBounds(x,y)) {
-		    	    	explodeAt(x,y,r,f);
-	    	    	}
-		    	}
-			}
-			if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
-			if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
-	    }
-	    storageList.barrages = {};
-	    for (let z in placehold) {
-			storageList.barrages[z] = placehold[z];
-	    }
+  }
+  if (storageList.barrages) {
+    if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
+    var placehold = [];
+    for (let z in storageList.barrages){
+      if (storageList.barrages[z].time < 31) {
+        var coords = storageList.barrages[z].locList;
+        var hitlocs = [];
+        for (i=0; i<3; i++){
+          while (hitlocs.length != i+1) {
+            var tempstor = Math.floor(Math.random() * coords.length);
+            var addbool = true;
+            for (let p in hitlocs) {
+              if (tempstor == hitlocs[p]) {addbool = false;}
+            }
+            if (addbool == true) {hitlocs.push(tempstor);}
+          }
+        }
+        for (let q in hitlocs) {
+          var x = coords[hitlocs[q]].x;
+          var y = coords[hitlocs[q]].y;
+          var r = storageList.barrages[z].r2;
+          var f = storageList.barrages[z].fire;
+          if (!outOfBounds(x,y)) {
+            explodeAt(x,y,r,f);
+          }
+        }
+      }
+      if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
+      if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
+    }
+    storageList.barrages = {};
+    for (let z in placehold) {
+        storageList.barrages[z] = placehold[z];
+    }
 	}
 	return;
     } else {return;}
