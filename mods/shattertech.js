@@ -926,7 +926,7 @@ elements.shield_gen = {
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
-            pixel.rStage = [];
+            pixel.rStage = [15,15];
             pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
