@@ -926,9 +926,7 @@ elements.shield_gen = {
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
-            pixel.gap = 3;
-            pixel.xStage = 15;
-            pixel.yStage = 15;
+            pixel.rStage = [];
             pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
@@ -939,11 +937,11 @@ elements.shield_gen = {
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
         }
-        if ((pixel.xStage < 0) || (pixel.xStage > 40)){
-            pixel.xStage = 15;
+        if ((pixel.rStage[0] < 0) || (pixel.rStage[] > 40)){
+            pixel.rStage[0] = 15;
         }
-        if ((pixel.yStage < 0) || (pixel.yStage > 40)){
-            pixel.yStage = 15;
+        if ((pixel.rStage[1] < 0) || (pixel.rStage[1] > 40)){
+            pixel.rStage[1] = 15;
         }
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
@@ -963,29 +961,21 @@ elements.shield_gen = {
             pixel.timer = 60;
             pixel.offline = false;
         }
-        if (pixel.storageRX != pixel.xStage) {
+        if (pixel.storeR != pixel.rStage) {
             pixel.syncCheck = 0;
-            pixel.storageRX = pixel.xStage;
+            pixel.storeR = pixel.rStage;
         }
-        if (pixel.yStage != pixel.storageRY) {
+        if (pixel.storeC != [pixel.x,pixel.y]) {
             pixel.syncCheck = 0;
-            pixel.storageRY = pixel.yStage;
-        }
-        if (pixel.x != pixel.storageX) {
-            pixel.syncCheck = 0;
-            pixel.storageX = pixel.x;
-        }
-        if (pixel.y != pixel.storageY) {
-            pixel.syncCheck = 0;
-            pixel.storageY = pixel.y;
+            pixel.storeC = [pixel.x,pixel.y];
         }
         
         //the part that manages the shield
         var coords = [];
         if (pixel.syncCheck != 9) {
-            coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
+            coords = ovalRingCoords(pixel.x,pixel.y,pixel.rStage[1],pixel.rStage[2],pixel.gap);
         } else {
-            coords = ovalCoords(pixel.x,pixel.y,(pixel.xStage + pixel.gap),(pixel.yStage + pixel.gap));
+            coords = ovalCoords(pixel.x,pixel.y,(pixel.rStage[1] + pixel.gap),(pixel.rStage[2] + pixel.gap));
         }
         coords.forEach(function(coord){
             var x = coord.x;
@@ -1039,7 +1029,7 @@ elements.shield_gen = {
             pixel.fTrig = false;
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
-            var s = findFoci(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
+            var s = findFoci(pixel.x,pixel.y,pixel.rStage[1],pixel.rStage[2],pixel.gap);
             var x = pixel.x;
             var y = pixel.y;
             if (s[4] == 1) {
@@ -1431,11 +1421,11 @@ explodeAt = function(x,y,radius,fire="fire") {
                         var smallRad;
                         var largeRad;
                         if (dFOut[5] === "y") {
-                            smallRad = dPixel.xStage;
-                            largeRad = dPixel.yStage;
+                            smallRad = dPixel.rStage[0];
+                            largeRad = dPixel.rStage[1];
                         } else {
-                            smallRad = dPixel.yStage;
-                            largeRad = dPixel.xStage;
+                            smallRad = dPixel.rStage[1];
+                            largeRad = dPixel.rStage[0];
                         }
                         for (i = 0; i <= (2*radius); i+= (2*radius)) {
                             var j = i - radius;
