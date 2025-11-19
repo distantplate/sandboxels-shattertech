@@ -937,7 +937,7 @@ elements.shield_gen = {
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
         }
-        if ((pixel.rStage[0] < 0) || (pixel.rStage[] > 40)){
+        if ((pixel.rStage[0] < 0) || (pixel.rStage[0] > 40)){
             pixel.rStage[0] = 15;
         }
         if ((pixel.rStage[1] < 0) || (pixel.rStage[1] > 40)){
@@ -973,9 +973,9 @@ elements.shield_gen = {
         //the part that manages the shield
         var coords = [];
         if (pixel.syncCheck != 9) {
-            coords = ovalRingCoords(pixel.x,pixel.y,pixel.rStage[1],pixel.rStage[2],pixel.gap);
+            coords = ovalRingCoords(pixel.x,pixel.y,pixel.rStage[0],pixel.rStage[1],pixel.gap);
         } else {
-            coords = ovalCoords(pixel.x,pixel.y,(pixel.rStage[1] + pixel.gap),(pixel.rStage[2] + pixel.gap));
+            coords = ovalCoords(pixel.x,pixel.y,(pixel.rStage[0] + pixel.gap),(pixel.rStage[1] + pixel.gap));
         }
         coords.forEach(function(coord){
             var x = coord.x;
@@ -1029,7 +1029,7 @@ elements.shield_gen = {
             pixel.fTrig = false;
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
-            var s = findFoci(pixel.x,pixel.y,pixel.rStage[1],pixel.rStage[2],pixel.gap);
+            var s = findFoci(pixel.x,pixel.y,pixel.rStage[0],pixel.rStage[1],pixel.gap);
             var x = pixel.x;
             var y = pixel.y;
             if (s[4] == 1) {
