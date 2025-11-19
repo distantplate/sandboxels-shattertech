@@ -943,6 +943,7 @@ elements.shield_gen = {
         if ((pixel.rStage[1] < 0) || (pixel.rStage[1] > 40)){
             pixel.rStage[1] = 15;
         }
+        logMessage("first stage done");
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
                 pixel.health = 100;
@@ -969,7 +970,7 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.storeC = [pixel.x,pixel.y];
         }
-        
+        logMessage("second stage done");
         //the part that manages the shield
         var coords = [];
         if (pixel.syncCheck != 9) {
@@ -977,6 +978,7 @@ elements.shield_gen = {
         } else {
             coords = ovalCoords(pixel.x,pixel.y,(pixel.rStage[0] + pixel.gap),(pixel.rStage[1] + pixel.gap));
         }
+        logMessage("shield creation begun");
         coords.forEach(function(coord){
             var x = coord.x;
             var y = coord.y;
