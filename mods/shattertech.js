@@ -1029,7 +1029,7 @@ elements.shield_gen = {
             pixel.fTrig = false;
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
-            var s = findFoci(pixel.x,pixel.y,pixel.rStage[1],pixel.rStage[2],pixel.gap);
+            var s = findFoci(pixel.x,pixel.y,pixel.rStage[0],pixel.rStage[1],pixel.gap);
             var x = pixel.x;
             var y = pixel.y;
             if (s[4] == 1) {
