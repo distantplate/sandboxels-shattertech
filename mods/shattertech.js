@@ -1025,7 +1025,7 @@ elements.shield_gen = {
             pixel.timer = 60;
             pixel.offline = false;
         }
-        if (pixel.storageRX != pixel.xStage) {
+        if (pixel.xStage != pixel.storageRX) {
             pixel.syncCheck = 0;
             pixel.storageRX = pixel.xStage;
         }
@@ -1033,13 +1033,9 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.storageRY = pixel.yStage;
         }
-        if (pixel.x != pixel.storageX) {
+        if (pixel.storageC != [pixel.x,pixel.y]) {
             pixel.syncCheck = 0;
-            pixel.storageX = pixel.x;
-        }
-        if (pixel.y != pixel.storageY) {
-            pixel.syncCheck = 0;
-            pixel.storageY = pixel.y;
+            pixel.storageX = [pixel.x,pixel.y];
         }
         
         //the part that manages the shield
