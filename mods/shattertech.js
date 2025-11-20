@@ -926,7 +926,8 @@ elements.shield_gen = {
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
-            pixel.rStage = [15,15];
+            pixel.xStage = 15;
+			pixel.yStage = 15;
             pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
@@ -937,11 +938,11 @@ elements.shield_gen = {
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
         }
-        if ((pixel.rStage[0] < 0) || (pixel.rStage[0] > 40)){
-            pixel.rStage[0] = 15;
+        if ((pixel.xStage < 0) || (pixel.xStage > 40)){
+            pixel.xStage = 15;
         }
-        if ((pixel.rStage[1] < 0) || (pixel.rStage[1] > 40)){
-            pixel.rStage[1] = 15;
+        if ((pixel.yStage < 0) || (pixel.yStage > 40)){
+            pixel.yStage = 15;
         }
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
@@ -969,13 +970,13 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.storeC = [pixel.x,pixel.y];
         }
-        logMessage(pixel.rStage[0] + ", " + pixel.rStage[1]);
+        logMessage(pixel.xStage + ", " + pixel.yStage);
         //the part that manages the shield
         var coords = [];
         if (pixel.syncCheck != 9) {
-            coords = ovalRingCoords(pixel.x,pixel.y,pixel.rStage[0],pixel.rStage[1],pixel.gap);
+            coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
         } else {
-            coords = ovalCoords(pixel.x,pixel.y,(pixel.rStage[0] + pixel.gap),(pixel.rStage[1] + pixel.gap));
+            coords = ovalCoords(pixel.x,pixel.y,(pixel.xStage + pixel.gap),(pixel.yStage + pixel.gap));
         }
         coords.forEach(function(coord){
             var x = coord.x;
@@ -1029,7 +1030,7 @@ elements.shield_gen = {
             pixel.fTrig = false;
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
-            var s = findFoci(pixel.x,pixel.y,pixel.rStage[0],pixel.rStage[1],pixel.gap);
+            var s = findFoci(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
             var x = pixel.x;
             var y = pixel.y;
             if (s[4] == 1) {
@@ -1421,11 +1422,11 @@ explodeAt = function(x,y,radius,fire="fire") {
                         var smallRad;
                         var largeRad;
                         if (dFOut[5] === "y") {
-                            smallRad = dPixel.rStage[0];
-                            largeRad = dPixel.rStage[1];
+                            smallRad = dPixel.xStage;
+                            largeRad = dPixel.yStage;
                         } else {
-                            smallRad = dPixel.rStage[1];
-                            largeRad = dPixel.rStage[0];
+                            smallRad = dPixel.yStage;
+                            largeRad = dPixel.xStage;
                         }
                         for (i = 0; i <= (2*radius); i+= (2*radius)) {
                             var j = i - radius;
