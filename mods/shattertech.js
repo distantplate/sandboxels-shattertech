@@ -1035,7 +1035,7 @@ elements.shield_gen = {
         }
         if (pixel.storageC != [pixel.x,pixel.y]) {
             pixel.syncCheck = 0;
-            pixel.storageX = [pixel.x,pixel.y];
+            pixel.storageC = [pixel.x,pixel.y];
         }
         
         //the part that manages the shield
