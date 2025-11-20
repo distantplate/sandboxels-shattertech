@@ -991,8 +991,6 @@ elements.shield_gen = {
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
-            pixel.xStage = 15;
-            pixel.yStage = 15;
             pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
@@ -1003,10 +1001,10 @@ elements.shield_gen = {
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
         }
-        if ((pixel.xStage < 0) || (pixel.xStage > 40)){
+        if ((!pixel.xStage) || (pixel.xStage < 0) || (pixel.xStage > 40)){
             pixel.xStage = 15;
         }
-        if ((pixel.yStage < 0) || (pixel.yStage > 40)){
+        if ((!pixel.yStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
             pixel.yStage = 15;
         }
         if (pixel.heat == 0 && pixel.health < 100) {
