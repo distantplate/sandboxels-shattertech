@@ -1033,7 +1033,7 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.storageRY = pixel.yStage;
         }
-        if (pixel.storageC != [pixel.x,pixel.y]) {
+        if (pixel.storageC[0] != pixel.x || pixel.storageC[1] != pixel.y) {
             pixel.syncCheck = 0;
             pixel.storageC = [pixel.x,pixel.y];
         }
