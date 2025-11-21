@@ -970,7 +970,7 @@ elements.shield_gen = {
         }
         
         //the part that manages the shield
-        var coords = [];
+        /*var coords = [];
         if (pixel.syncCheck != 9) {
             coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
         } else {
@@ -1016,7 +1016,7 @@ elements.shield_gen = {
                     }
                 }
             }
-        })
+        })*/
         
         //find the foci for the shield, to be used by other stuff
         if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
