@@ -960,15 +960,22 @@ elements.shield_gen = {
             pixel.timer = 60;
             pixel.offline = false;
         }
-        if ((pixel.storageR[0] != pixel.xStage) || (pixel.storageR[1] != pixel.yStage)) {
+        if (pixel.storageRX != pixel.xStage) {
             pixel.syncCheck = 0;
-            pixel.storageR = [pixel.xStage,pixel.yStage];
+            pixel.storageRX = pixel.xStage;
         }
-        if ((pixel.storageC[0] != pixel.x) || (pixel.storageC[1] != pixel.y)) {
+        if (pixel.storageRY != pixel.yStage) {
             pixel.syncCheck = 0;
-            pixel.storageC = [pixel.x,pixel.y];
+            pixel.storageRY = pixel.yStage;
         }
-        
+        if (pixel.storageCX != pixel.x) {
+            pixel.syncCheck = 0;
+            pixel.storageCX = pixel.x;
+        }
+        if (pixel.storageCY != pixel.y) {
+            pixel.syncCheck = 0;
+            pixel.storageCY = pixel.y;
+        }
         //the part that manages the shield
         /*var coords = [];
         if (pixel.syncCheck != 9) {
