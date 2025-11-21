@@ -939,7 +939,7 @@ elements.shield_gen = {
         if ((!pixel.xStage) || (pixel.xStage < 0) || (pixel.xStage > 40)){
             pixel.xStage = 15;
         }
-        if ((!pixel.xStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
+        if ((!pixel.yStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
             pixel.yStage = 15;
         }
         if (pixel.heat == 0 && pixel.health < 100) {
