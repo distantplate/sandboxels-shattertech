@@ -960,10 +960,10 @@ elements.shield_gen = {
             pixel.timer = 60;
             pixel.offline = false;
         }
-        if (pixel.store1 != pixel.x) {syncCheck = 0; pixel.store1 = pixel.x;}
-        if (pixel.store2 != pixel.y) {syncCheck = 0; pixel.store2 = pixel.y;}
-        if (pixel.store3 != pixel.xStage) {syncCheck = 0; pixel.store3 = pixel.xStage;}
-        if (pixel.store4 != pixel.yStage) {syncCheck = 0; pixel.store4 = pixel.yStage;}
+        if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
+        if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
+        if (pixel.store3 != pixel.xStage) {pixel.syncCheck = 0; pixel.store3 = pixel.xStage;}
+        if (pixel.store4 != pixel.yStage) {pixel.syncCheck = 0; pixel.store4 = pixel.yStage;}
 		
         //the part that manages the shield
         var coords = [];
