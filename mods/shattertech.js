@@ -926,6 +926,9 @@ elements.shield_gen = {
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
+            pixel.gap = 3;
+            pixel.xStage = 15;
+            pixel.yStage = 15;
             pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
@@ -936,10 +939,10 @@ elements.shield_gen = {
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
         }
-        if ((!pixel.xStage) || (pixel.xStage < 0) || (pixel.xStage > 40)){
+        if ((pixel.xStage < 0) || (pixel.xStage > 40)){
             pixel.xStage = 15;
         }
-        if ((!pixel.yStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
+        if ((pixel.yStage < 0) || (pixel.yStage > 40)){
             pixel.yStage = 15;
         }
         if (pixel.heat == 0 && pixel.health < 100) {
@@ -960,11 +963,23 @@ elements.shield_gen = {
             pixel.timer = 60;
             pixel.offline = false;
         }
-        if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
-        if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
-        if (pixel.store3 != pixel.xStage) {pixel.syncCheck = 0; pixel.store3 = pixel.xStage;}
-        if (pixel.store4 != pixel.yStage) {pixel.syncCheck = 0; pixel.store4 = pixel.yStage;}
-		
+        if (pixel.storageRX != pixel.xStage) {
+            pixel.syncCheck = 0;
+            pixel.storageRX = pixel.xStage;
+        }
+        if (pixel.yStage != pixel.storageRY) {
+            pixel.syncCheck = 0;
+            pixel.storageRY = pixel.yStage;
+        }
+        if (pixel.x != pixel.storageX) {
+            pixel.syncCheck = 0;
+            pixel.storageX = pixel.x;
+        }
+        if (pixel.y != pixel.storageY) {
+            pixel.syncCheck = 0;
+            pixel.storageY = pixel.y;
+        }
+        
         //the part that manages the shield
         var coords = [];
         if (pixel.syncCheck != 9) {
@@ -1562,65 +1577,65 @@ elements.fuse.movable = false;
 runEveryTick(function () {
     if (storageList && !storageList.tickcheck) {storageList.tickcheck = pixelTicks;}
     if (storageList.shield_gen || storageList.barrages) {
-      if (storageList.shield_gen) {
-        var placehold = [];
-        var exclude = false;
-        for (let z in storageList.shield_gen) {
-          exclude = false;
-          for (let h in storageList.shield_gen[z]) {if (h != "x" && h != "y") {exclude = true;}}
-          var x1;
-          var y1;
-          if ((!storageList.shield_gen[z].x) || (!storageList.shield_gen[z].y)) {exclude = true;} else {
-            x1 = storageList.shield_gen[z].x;
-            y1 = storageList.shield_gen[z].y;
-            if (isEmpty(x1,y1)) {exclude = true;}
-            else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
-          }
-          if (exclude == false) {
-            placehold.push({x: storageList.shield_gen[z].x,y: storageList.shield_gen[z].y});
-          }
-        }
-        storageList.shield_gen = {};
-        for (let z in placehold) {
-          storageList.shield_gen[z] = placehold[z];
-        }
-      }
-      if (storageList.barrages) {
-        if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
-          var placehold = [];
-          for (let z in storageList.barrages){
-            if (storageList.barrages[z].time < 31) {
-              var coords = storageList.barrages[z].locList;
-              var hitlocs = [];
-              for (i=0; i<3; i++){
-                while (hitlocs.length != i+1) {
-                  var tempstor = Math.floor(Math.random() * coords.length);
-                  var addbool = true;
-                  for (let p in hitlocs) {
-                    if (tempstor == hitlocs[p]) {addbool = false;}
-                  }
-                  if (addbool == true) {hitlocs.push(tempstor);}
+        if (storageList.shield_gen) {
+            var placehold = [];
+            var exclude = false;
+            for (let z in storageList.shield_gen) {
+                exclude = false;
+                for (let h in storageList.shield_gen[z]) {if (h != "x" && h != "y") {exclude = true;}}
+                var x1;
+                var y1;
+                if ((!storageList.shield_gen[z].x) || (!storageList.shield_gen[z].y)) {exclude = true;} else {
+                    x1 = storageList.shield_gen[z].x;
+                    y1 = storageList.shield_gen[z].y;
+                    if (isEmpty(x1,y1)) {exclude = true;}
+                    else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
                 }
-              }
-              for (let q in hitlocs) {
-                var x = coords[hitlocs[q]].x;
-                var y = coords[hitlocs[q]].y;
-                var r = storageList.barrages[z].r2;
-                var f = storageList.barrages[z].fire;
-                if (!outOfBounds(x,y)) {
-                  explodeAt(x,y,r,f);
+                if (exclude == false) {
+                    placehold.push({x: storageList.shield_gen[z].x,y: storageList.shield_gen[z].y});
                 }
-              }
             }
-            if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
-            if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
-          }
-          storageList.barrages = {};
-          for (let z in placehold) {
-            storageList.barrages[z] = placehold[z];
-          }
-      }
-      return;
+            storageList.shield_gen = {};
+            for (let z in placehold) {
+                storageList.shield_gen[z] = placehold[z];
+            }
+	}
+	if (storageList.barrages) {
+	    if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
+	    var placehold = [];
+        for (let z in storageList.barrages){
+			if (storageList.barrages[z].time < 31) {
+		    	var coords = storageList.barrages[z].locList;
+		    	var hitlocs = [];
+		    	for (i=0; i<3; i++){
+		    		while (hitlocs.length != i+1) {
+			    		var tempstor = Math.floor(Math.random() * coords.length);
+			    		var addbool = true;
+			    		for (let p in hitlocs) {
+			        		if (tempstor == hitlocs[p]) {addbool = false;}
+			    		}
+			    		if (addbool == true) {hitlocs.push(tempstor);}
+		    		}
+		    	}
+		    	for (let q in hitlocs) {
+		    		var x = coords[hitlocs[q]].x;
+		    		var y = coords[hitlocs[q]].y;
+		    		var r = storageList.barrages[z].r2;
+		    		var f = storageList.barrages[z].fire;
+		    		if (!outOfBounds(x,y)) {
+		    	    	explodeAt(x,y,r,f);
+	    	    	}
+		    	}
+			}
+			if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
+			if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
+	    }
+	    storageList.barrages = {};
+	    for (let z in placehold) {
+			storageList.barrages[z] = placehold[z];
+	    }
+	}
+	return;
     } else {return;}
 });
 
