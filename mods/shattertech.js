@@ -10,7 +10,7 @@ elements.h_plasma = {
         "CL%5 AND M1|XX|CL%5 AND M1",
         "M2|M1|M2",
     ],
-    temp:20000,
+    temp:15000,
     tempLow:5000,
     stateLow: "fire",
     category: "energy",
@@ -27,7 +27,7 @@ elements.h_explosion = {
         "XX|EX:5>h_plasma|XX",
         "XX|XX|XX",
     ],
-    temp: 20000,
+    temp: 15000,
     category: "energy",
     state: "gas",
     density: 1000,
@@ -47,7 +47,7 @@ elements.barrage_spawner = {
             }
         }
         if ((Math.random() < 0.75 && done) || pixel.alpha >= 1) {
-            barrage(pixel.x,pixel.y,30,10,"h_plasma","h_plasma");
+            barrage(pixel.x,pixel.y,20,10,"h_plasma","h_plasma");
             deletePixel(pixel.x,pixel.y);
         }
         if (pixel.delay) {
@@ -56,7 +56,7 @@ elements.barrage_spawner = {
         doHeat(pixel);
     },
     hardness: 1,
-    temp: 20000,
+    temp: 15000,
     category: "energy",
     state: "gas",
     //density: 1000,
@@ -80,7 +80,7 @@ elements.bombling = {
         }
         else { doDefaults(pixel); }
     },
-    temp: 20000,
+    temp: 15000,
     category: "energy",
     state: "gas",
     //density: 1000,
@@ -122,6 +122,7 @@ elements.charged_blaster = {
                 if (elements[p.element].hardness !== 1) {
                     deletePixel(p.x,p.y);
                     if (!elements[p.element].movable && !det1) {det1 = 1;}
+                    if (!elements[p.element].movable && det2) {det2 = 0;}
                 } else if (p.element === "barrier") {
                     if (p.emitted == 1) {
                         var s = pixelMap[p.emitX][p.emitY];
@@ -135,7 +136,7 @@ elements.charged_blaster = {
             if (!outOfBounds(pixel.x,pixel.y+1) && det1 == 2) {
                 det2++;
             }
-            if ((!tryMove(pixel,pixel.x,pixel.y+1,"h_explosion") && !skip) || det2 >= 2) {
+            if ((!tryMove(pixel,pixel.x,pixel.y+1,"disintegrate") && !skip) || det2 >= 4) {
                 changePixel(pixel,"barrage_spawner");
                 pixel.delay = 30;
                 return;
@@ -146,7 +147,7 @@ elements.charged_blaster = {
     glow: true,
     state: "solid",
     density: 100000000,
-    temp: 20000,
+    temp: 15000,
     hardness: 1,
     maxSize: 1,
     cooldown: defaultCooldown,
@@ -586,40 +587,8 @@ elements.conduit = {
     hardness: 0,
 };
 
-
-elements.resonant_pulse = {
-    color: ["#ff009b","#ff5e9b"],
-    tick: function(pixel) {
-      if (pixel.charge){
-        pixel.det = 1;
-      }
-      if (pixel.det === 1){
-        var coords = circleCoords(pixel.x,pixel.y,3);
-        coords.forEach(function(coord){
-          var x = coord.x;
-          var y = coord.y;
-          if (!isEmpty(x,y,true)) {
-            if (pixelMap[x][y].element === "c_utility"){
-              pixelMap[x][y].stage = 8;
-            }
-          }
-        })
-        explodeAt (pixel.x,pixel.y,5,"purplectric");
-        deletePixel(pixel.x,pixel.y);
-      }
-    },
-    category: "weapons",
-    state: "gas",
-    glow: true,
-    conduct: 1,
-    temp: 3500,
-    excludeRandom: true,
-    noMix: true,
-    movable: false
-};
-
 elements.pulse = {
-    color: ["#6f00ff","#7f48ff","#6f00ff"],
+    color: ["#ff009b","#ff5e9b"],
     behavior: [
         "XX|XX|XX",
         "XX|EX:5>purplectric|XX",
@@ -820,44 +789,10 @@ elements.c_utility = {
             }
             shuffleArray(squareCoordsShuffle);
             if (pixel.burnt = 1){
-              changePixel(pixel, "burnt_conduit");
-              pixel.charge = 0;
-            }
-            else {
-              pixel.burnt = 1;
-            }
-        }
-        else if (pixel.stage > 7 && pixelTicks % 3 === pixel.stage-8) { //resonating
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "c_utility"){
-                    var newPixel = pixelMap[x][y];
-                    if (newPixel.stage > 1 && newPixel.stage < 5) {
-                        var newColor;
-                        switch (pixel.stage) {
-                            case 8: newPixel.stage = 9; newColor = "#ff009b"; break; //green
-                            case 9: newPixel.stage = 10; newColor = "#ff009b"; break; //red
-                            case 10: newPixel.stage = 8; newColor = "#ff009b"; break; //blue
-                        }
-                        newPixel.color = pixelColorPick(newPixel,newColor);
-                    }
-                  }
-                }
-                else if (!outOfBounds(x,y)){
-                  createPixel("purplectric",x,y);
-                }
-            }
-            shuffleArray(squareCoordsShuffle);
-            if (pixel.burnt = 1){
-              if ((Math.random() * 8) < 7){
+              if ((Math.random() * 8) < 7) {
                 changePixel(pixel, "burnt_conduit");
-              }
-              else {
-                changePixel(pixel, "resonant_pulse");
-                pixel.det = 1;
+              } else {
+                changePixel(pixel, "pulse");
               }
               pixel.charge = 0;
             }
@@ -991,6 +926,9 @@ elements.shield_gen = {
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
+            pixel.gap = 3;
+            pixel.xStage = 15;
+            pixel.yStage = 15;
             pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
@@ -1001,10 +939,10 @@ elements.shield_gen = {
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
         }
-        if ((!pixel.xStage) || (pixel.xStage < 0) || (pixel.xStage > 40)){
+        if ((pixel.xStage < 0) || (pixel.xStage > 40)){
             pixel.xStage = 15;
         }
-        if ((!pixel.yStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
+        if ((pixel.yStage < 0) || (pixel.yStage > 40)){
             pixel.yStage = 15;
         }
         if (pixel.heat == 0 && pixel.health < 100) {
@@ -1025,7 +963,7 @@ elements.shield_gen = {
             pixel.timer = 60;
             pixel.offline = false;
         }
-        if (pixel.xStage != pixel.storageRX) {
+        if (pixel.storageRX != pixel.xStage) {
             pixel.syncCheck = 0;
             pixel.storageRX = pixel.xStage;
         }
@@ -1033,9 +971,13 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.storageRY = pixel.yStage;
         }
-        if (pixel.storageC[0] != pixel.x || pixel.storageC[1] != pixel.y) {
+        if (pixel.x != pixel.storageX) {
             pixel.syncCheck = 0;
-            pixel.storageC = [pixel.x,pixel.y];
+            pixel.storageX = pixel.x;
+        }
+        if (pixel.y != pixel.storageY) {
+            pixel.syncCheck = 0;
+            pixel.storageY = pixel.y;
         }
         
         //the part that manages the shield
@@ -1239,6 +1181,109 @@ elements.portal_in = {
 	hardness:0.75,
 	conduct:1,
 	emit:true
+};
+
+//Could this be more efficient: absolutely. Will I make this more efficient: absolutely not.
+elements.disintegrate = {
+    color: ["#6f00ff","#996bd9","#6f00ff"],
+    tick: function(pixel) {
+      if (!pixel.trigger && !pixel.stage) {pixel.trigger = 1; pixel.decay = 10; pixel.stage = ((pixelTicks+1) % 3)+1;}
+      if (!(pixel.stage && pixel.stage > 0 && pixel.stage < 4)) {pixel.stage = 1;}
+      if (pixelTicks % 3 === pixel.stage-1 && pixel.trigger < 3) {
+        if (pixel.decay > 0) {
+          for (var i = 0; i < adjacentCoords.length; i++) {
+            var coords = adjacentCoords[i];
+            var x = pixel.x + coords[0];
+            var y = pixel.y + coords[1];
+            if (!isEmpty(x,y,true)) {
+              var newPixel = pixelMap[x][y];
+              var es = newPixel.element;
+              if (Math.random() > 0.5+(pixel.decay/10)) {continue;}
+              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "h_plasma" && es !== "plasma" && es !== "fire" && es !== "c_utility" && elements[es].hardness !== 1) {
+                var cstore = newPixel.color;
+                var hstore = 0;
+                if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*20);}
+                changePixel(newPixel,"disintegrate");
+                newPixel.trigger = 2;
+                newPixel.baseColor = newPixel.color;
+                newPixel.color = cstore;
+                newPixel.timerMax = 10+hstore;
+                newPixel.decay = pixel.decay-1;
+                switch (pixel.stage) {
+                  case 1: newPixel.stage = 2; break; //green
+                  case 2: newPixel.stage = 3; break; //red
+                  case 3: newPixel.stage = 1; break; //blue
+                }
+              }
+            } 
+          }
+        }
+        if (pixel.trigger == 2 && pixel.baseColor && pixel.timerMax) {
+          pixel.trigger = 3;
+          pixel.oldColor = pixel.color;
+          pixel.timer = pixel.timerMax;
+        } else if (pixelTicks-pixel.start>=3) {
+          changePixel(pixel, "h_plasma");
+        }
+      }
+      if (pixel.trigger == 3) {
+        if (pixel.timer > 0) {
+          var s1 = pixel.timer/pixel.timerMax;
+          var s2 = 1-s1;
+          var oL = [pixel.oldColor.indexOf(","),pixel.oldColor.lastIndexOf(","),pixel.oldColor.indexOf(")")];
+          var bL = [pixel.baseColor.indexOf(","),pixel.baseColor.lastIndexOf(","),pixel.baseColor.indexOf(")")];
+          var oV = [pixel.oldColor.slice(4,oL[0]),pixel.oldColor.slice(oL[0]+1,oL[1]),pixel.oldColor.slice(oL[1]+1,oL[2])];
+          var bV = [pixel.baseColor.slice(4,bL[0]),pixel.baseColor.slice(bL[0]+1,bL[1]),pixel.baseColor.slice(bL[1]+1,bL[2])];
+          var fC = [((s1*oV[0])+(s2*bV[0])),((s1*oV[1])+(s2*bV[1])),((s1*oV[2])+(s2*bV[2])),];
+          /*fC[0] = Math.round(fC[0]);
+          fC[1] = Math.round(fC[1]);
+          fC[2] = Math.round(fC[2]);*/
+          pixel.color = "rgb("+fC[0]+","+fC[1]+","+fC[2]+")";
+          pixel.timer--;
+        } else {
+          changePixel(pixel, "h_plasma");
+        }
+      }
+      if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "h_plasma");}
+      doDefaults(pixel);
+    },
+    temp:15000,
+    category: "energy",
+    state: "solid",
+    density: 1,
+    movable: false,
+    insulate: true,
+    //charge: 0.5,
+    conduct: 1
+};
+
+elements.sized_disintegrate = {
+  color: ["#6f00ff","#996bd9","#6f00ff"],
+  onSelect: function(){
+    sizeVal = prompt("How wide an area do you want to disintegrate?");
+	},
+  tick: function(pixel) {
+    var store = parseInt(sizeVal);
+    var updatedVal;
+    if (!isNaN(store)) {
+      if (store > 0) {
+        updatedVal = store;
+      } else {updatedVal = 20;}
+    } else {updatedVal = 20;}
+    if (!updatedVal || typeof updatedVal !== "number") {updatedVal = 20;}
+    pixel.trigger = 1;
+    pixel.decay = updatedVal;
+    pixel.stage = ((pixelTicks+1) % 3)+1;
+    changePixel(pixel,"disintegrate");
+	},
+	temp:15000,
+  category: "energy",
+  state: "solid",
+  density: 1,
+  movable: false,
+  insulate: true,
+  //charge: 0.5,
+  conduct: 1
 };
 
 function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
@@ -1554,43 +1599,43 @@ runEveryTick(function () {
             for (let z in placehold) {
                 storageList.shield_gen[z] = placehold[z];
             }
-  }
-  if (storageList.barrages) {
-    if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
-      var placehold = [];
-      for (let z in storageList.barrages){
-        if (storageList.barrages[z].time < 31) {
-          var coords = storageList.barrages[z].locList;
-          var hitlocs = [];
-          for (i=0; i<3; i++){
-            while (hitlocs.length != i+1) {
-              var tempstor = Math.floor(Math.random() * coords.length);
-              var addbool = true;
-              for (let p in hitlocs) {
-                if (tempstor == hitlocs[p]) {addbool = false;}
-              }
-              if (addbool == true) {hitlocs.push(tempstor);}
-            }
-          }
-          for (let q in hitlocs) {
-            var x = coords[hitlocs[q]].x;
-            var y = coords[hitlocs[q]].y;
-            var r = storageList.barrages[z].r2;
-            var f = storageList.barrages[z].fire;
-            if (!outOfBounds(x,y)) {
-              explodeAt(x,y,r,f);
-            }
-          }
-        }
-        if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
-        if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
-      }
-      storageList.barrages = {};
-      for (let z in placehold) {
+	}
+	if (storageList.barrages) {
+	    if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
+	    var placehold = [];
+        for (let z in storageList.barrages){
+			if (storageList.barrages[z].time < 31) {
+		    	var coords = storageList.barrages[z].locList;
+		    	var hitlocs = [];
+		    	for (i=0; i<3; i++){
+		    		while (hitlocs.length != i+1) {
+			    		var tempstor = Math.floor(Math.random() * coords.length);
+			    		var addbool = true;
+			    		for (let p in hitlocs) {
+			        		if (tempstor == hitlocs[p]) {addbool = false;}
+			    		}
+			    		if (addbool == true) {hitlocs.push(tempstor);}
+		    		}
+		    	}
+		    	for (let q in hitlocs) {
+		    		var x = coords[hitlocs[q]].x;
+		    		var y = coords[hitlocs[q]].y;
+		    		var r = storageList.barrages[z].r2;
+		    		var f = storageList.barrages[z].fire;
+		    		if (!outOfBounds(x,y)) {
+		    	    	explodeAt(x,y,r,f);
+	    	    	}
+		    	}
+			}
+			if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
+			if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
+	    }
+	    storageList.barrages = {};
+	    for (let z in placehold) {
 			storageList.barrages[z] = placehold[z];
-    }
-  }
-  return;
+	    }
+	}
+	return;
     } else {return;}
 });
 
