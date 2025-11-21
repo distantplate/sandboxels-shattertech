@@ -1423,9 +1423,9 @@ explodeAt = function(x,y,radius,fire="fire") {
                             largeRad = dPixel.xStage;
                         }
                         for (i = 0; i <= (2*radius); i+= (2*radius)) {
-                            var j = i - radius;
-                            var k = i/(2*radius);
-                            rdIn[k] = (Math.pow((Math.pow((largeRad + dPixel.gap + j),2) - Math.pow((smallRad + dPixel.gap + j),2)), (1/2)));
+                            var j = i/(2*radius);
+                            var k = (j*dPixel.gap)+(i-radius)
+                            rdIn[j] = (Math.pow((Math.pow((largeRad + k),2) - Math.pow((smallRad + k),2)), (1/2)));
                         }
                         if (dFOut[5] == "y") {
                             rILoc = [dPixel.x,(dPixel.y+rdIn[0]),dPixel.x,(dPixel.y-rdIn[0])];
