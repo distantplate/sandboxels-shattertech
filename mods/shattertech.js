@@ -969,13 +969,13 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.storageRY = pixel.yStage;
         }
-        if (pixel.storageC[0] != pixel.x) {
+        if (pixel.store1[0] != pixel.x) {
             pixel.syncCheck = 0;
-            pixel.storageC[0] = pixel.x;
+            pixel.store1[0] = pixel.x;
         }
-        if (pixel.storageC[1] != pixel.y) {
+        if (pixel.store1[1] != pixel.y) {
             pixel.syncCheck = 0;
-            pixel.storageC[1] = pixel.y;
+            pixel.store1[1] = pixel.y;
         }
         //the part that manages the shield
         /*var coords = [];
