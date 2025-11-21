@@ -926,6 +926,7 @@ elements.shield_gen = {
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
+            pixel.store1 = [];
             pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
@@ -968,13 +969,13 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.storageRY = pixel.yStage;
         }
-        if (pixel.storageCX != pixel.x) {
+        if (pixel.storageC[0] != pixel.x) {
             pixel.syncCheck = 0;
-            pixel.storageCX = pixel.x;
+            pixel.storageC[0] = pixel.x;
         }
-        if (pixel.storageCY != pixel.y) {
+        if (pixel.storageC[1] != pixel.y) {
             pixel.syncCheck = 0;
-            pixel.storageCY = pixel.y;
+            pixel.storageC[1] = pixel.y;
         }
         //the part that manages the shield
         /*var coords = [];
