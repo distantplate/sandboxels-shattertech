@@ -1469,8 +1469,8 @@ explodeAt = function(x,y,radius,fire="fire") {
     var bypass = false;
     //for (var p = 0; p < Math.round(radius/10+1); p++) {
     for (var i = 0; i < coords.length; i++) {
-        bypass = false;
-        if (radius <= 30 && bypass == false) {
+        /*bypass = false;
+        if (radius <= 30 && bypass == false && checks !== false) {
             if (checks.sCVal == true) {
                 for (let z in checks.sCC){
                     var tempsCC = [];
@@ -1493,7 +1493,7 @@ explodeAt = function(x,y,radius,fire="fire") {
                 }
             }
         }
-        if (bypass == true) { continue }
+        if (bypass == true) { continue }*/
         // damage value is based on distance from x and y
         var damage = Math.random() + (Math.floor(Math.sqrt(Math.pow(coords[i].x-x,2) + Math.pow(coords[i].y-y,2)))) / radius;
         // invert
