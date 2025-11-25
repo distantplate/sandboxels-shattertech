@@ -1472,18 +1472,18 @@ explodeAt = function(x,y,radius,fire="fire") {
         bypass = false;
         if (radius <= 30 && bypass == false) {
             if (checks.sCVal == true) {
-                for (var c = 0; c < sCC.length; c++){
-                    if (findFociDistance(coords[i].x,sCC[c][2],sCC[c][4],coords[i].y,sCC[c][3],sCC[c][5]) > sCC[c][6]){
+                for (let z in checks.sCC){
+                    if (findFociDistance(coords[i].x,checks.sCC[z][2],checks.sCC[z][4],coords[i].y,checks.sCC[z][3],checks.sCC[z][5]) > checks.sCC[z][6]){
                         bypass = true;
                     }
-                    if (coords[i].x == sCC[c][0] && coords[i].y == sCC[c][1]) {
+                    if (coords[i].x == checks.sCC[z][0] && coords[i].y == checks.sCC[z][1]) {
                         bypass = true;
                     }
                 }
             }
             if (checks.sFVal == true) {
-                for (var r = 0; r < sFC.length; r++){
-                    if (findFociDistance(coords[i].x,sFC[r][2],sFC[r][4],coords[i].y,sFC[r][3],sFC[r][5]) <= sFC[r][6]){
+                for (let z in checks.sFC){
+                    if (findFociDistance(coords[i].x,checks.sFC[z][2],checks.sFC[z][4],coords[i].y,checks.sFC[z][3],checks.sFC[z][5]) <= checks.sFC[z][6]){
                         bypass = true;
                     }
                 }
