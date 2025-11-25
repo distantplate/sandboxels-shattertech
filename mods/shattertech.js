@@ -1393,7 +1393,7 @@ explodeAt = function(x,y,radius,fire="fire") {
     var coords = circleCoords(x,y,radius);
     var power = radius/10;
     var shieldCloseCheck = false;
-    var shieldFarCheck
+    var shieldFarCheck = false;
     var bypass = false;
     var sCC = [];
     var sFC = [];
