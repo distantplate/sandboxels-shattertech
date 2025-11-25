@@ -1450,12 +1450,12 @@ function shieldcheck(x,y,radius) {
       }
     }
   }
-  tempstore = [];
-  tempstore.sCC = scc;
-  tempstore.sCVal = shieldCloseCheck;
-  tempstore.sFC = sfc;
-  tempstore.sFVal = shieldFarCheck;
-  return tempstore;
+  var tempobj = [];
+  tempobj.sCC = scc;
+  tempobj.sCVal = shieldCloseCheck;
+  tempobj.sFC = sfc;
+  tempobj.sFVal = shieldFarCheck;
+  return tempobj;
 };
 
 explodeAt = function(x,y,radius,fire="fire") {
@@ -1473,17 +1473,21 @@ explodeAt = function(x,y,radius,fire="fire") {
         if (radius <= 30 && bypass == false) {
             if (checks.sCVal == true) {
                 for (let z in checks.sCC){
-                    if (findFociDistance(coords[i].x,checks.sCC[z][2],checks.sCC[z][4],coords[i].y,checks.sCC[z][3],checks.sCC[z][5]) > checks.sCC[z][6]){
+                    var tempsCC = [];
+                    for (let Z in checks.sCC[z]) {tempsCC.push(checks.sCC[z][Z]);}
+                    if (findFociDistance(coords[i].x,tempsCC[2],tempsCC[4],coords[i].y,tempsCC[3],tempsCC[5]) > tempsCC[6]){
                         bypass = true;
                     }
-                    if (coords[i].x == checks.sCC[z][0] && coords[i].y == checks.sCC[z][1]) {
+                    if (coords[i].x == tempsCC[0] && coords[i].y == tempsCC[1]) {
                         bypass = true;
                     }
                 }
             }
             if (checks.sFVal == true) {
                 for (let z in checks.sFC){
-                    if (findFociDistance(coords[i].x,checks.sFC[z][2],checks.sFC[z][4],coords[i].y,checks.sFC[z][3],checks.sFC[z][5]) <= checks.sFC[z][6]){
+                    var tempsFC = [];
+                    for (let Z in checks.sFC[z]) {tempsFC.push(checks.sFC[z][Z]);}
+                    if (findFociDistance(coords[i].x,tempsFC[2],tempsFC[4],coords[i].y,tempsFC[3],tempsFC[5]) <= tempsFC[6]){
                         bypass = true;
                     }
                 }
