@@ -1,4 +1,3 @@
-
 //Read not these accursed lines of code, for only madness awaits you here
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
@@ -1390,6 +1389,8 @@ function shieldcheck(x,y,radius) {
   if (!storageList.shield_gen) {return false;}
   scc = [];
   sfc = [];
+  var shieldCloseCheck = false;
+  var shieldFarCheck = false;
   for (let d in storageList.shield_gen) {
     var dx = storageList.shield_gen[d].x;
     var dy = storageList.shield_gen[d].y;
