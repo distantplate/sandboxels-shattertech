@@ -1,3 +1,4 @@
+
 //Read not these accursed lines of code, for only madness awaits you here
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
@@ -1279,11 +1280,11 @@ function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
         templength++;
     }
     if (templength < 1) {
-		var coords = circleCoords(x,y,r1);
-		var tempVal = {x: x,y: y,r1: r1,r2: r2,fire: fire2,locList: coords,time: 31};
-        if (isObjValDupe(storageList.barrages,tempVal) == false) {
-            storageList.barrages[templength] = tempVal;
-        }
+      var coords = circleCoords(x,y,r1);
+      var tempVal = {x: x,y: y,r1: r1,r2: r2,fire: fire2,locList: coords,time: 31};
+      if (isObjValDupe(storageList.barrages,tempVal) == false) {
+        storageList.barrages[templength] = tempVal;
+      }
     }
 }
 
@@ -1385,6 +1386,77 @@ function isObjValDupe(obj,vals) {
     return con;
 };
 
+function shieldcheck(x,y,radius) {
+  if (!storageList.shield_gen) {return false;}
+  scc = [];
+  sfc = [];
+  for (let d in storageList.shield_gen) {
+    var dx = storageList.shield_gen[d].x;
+    var dy = storageList.shield_gen[d].y;
+    if (isEmpty(dx,dy)) {continue;}
+    var dPixel = pixelMap[dx][dy];
+    var dFIn = [];
+    var dFOut = [];
+    if (dPixel.element === "shield_gen" && dPixel.syncCheck == 10){
+      if (dPixel.timer == 0) {
+        dFIn = dPixel.fociLocIn;
+        dFOut = dPixel.fociLocOut;
+        if (radius >= 10) {
+          var rdIn = [0,0];
+          var rILoc = [];
+          var rOLoc = [];
+          var smallRad;
+          var largeRad;
+          if (dFOut[5] === "y") {
+            smallRad = dPixel.xStage;
+            largeRad = dPixel.yStage;
+          } else {
+            smallRad = dPixel.yStage;
+            largeRad = dPixel.xStage;
+          }
+          for (i = 0; i <= (2*radius); i+= (2*radius)) {
+            var j = i/(2*radius);
+            var k = (j*dPixel.gap)+(i-radius)
+            rdIn[j] = (Math.pow((Math.pow((largeRad + k),2) - Math.pow((smallRad + k),2)), (1/2)));
+          }
+          if (dFOut[5] == "y") {
+            rILoc = [dPixel.x,(dPixel.y+rdIn[0]),dPixel.x,(dPixel.y-rdIn[0])];
+            rOLoc = [dPixel.x,(dPixel.y+rdIn[1]),dPixel.x,(dPixel.y-rdIn[1])];
+          } else {
+            rILoc = [(dPixel.x+rdIn[0]),dPixel.y,(dPixel.x-rdIn[0]),dPixel.y];
+            rOLoc = [(dPixel.x+rdIn[1]),dPixel.y,(dPixel.x-rdIn[1]),dPixel.y];
+          }
+          var fODistance = findFociDistance(x,rOLoc[0],rOLoc[2],y,rOLoc[1],rOLoc[3]);
+          var fIDistance = findFociDistance(x,rILoc[0],rILoc[2],y,rILoc[1],rILoc[3]);
+          if (fODistance < (dFOut[4]+(2*radius))) {
+            if (fIDistance > (dFIn[4]-(2*radius)) || (radius > smallRad)) {
+              if (dPixel.health > 0) {
+                dPixel.health -= (Math.pow(10,(power-1)));
+              }
+              dPixel.heat = 60;
+            }
+          }
+        }
+        if (radius <= 30) {
+          if (findFociDistance(x,dFIn[0],dFIn[2],y,dFIn[1],dFIn[3]) <= dFIn[4]) {
+            scc.push([dPixel.x,dPixel.y,dFIn[0],dFIn[1],dFIn[2],dFIn[3],dFIn[4]]);
+            shieldCloseCheck = true;
+          } else {
+            sfc.push([dPixel.x,dPixel.y,dFOut[0],dFOut[1],dFOut[2],dFOut[3],dFOut[4]]);
+            shieldFarCheck = true;
+          }
+        }
+      }
+    }
+  }
+  tempstore = [];
+  tempstore.sCC = scc;
+  tempstore.sCVal = shieldCloseCheck;
+  tempstore.sFC = sfc;
+  tempstore.sFVal = shieldFarCheck;
+  return tempstore;
+};
+
 explodeAt = function(x,y,radius,fire="fire") {
     // if fire contains , split it into an array
     if (fire.indexOf(",") !== -1) {
@@ -1392,89 +1464,25 @@ explodeAt = function(x,y,radius,fire="fire") {
     }
     var coords = circleCoords(x,y,radius);
     var power = radius/10;
-    var shieldCloseCheck = false;
-    var shieldFarCheck = false;
+    var checks = shieldcheck(x,y,radius);
     var bypass = false;
-    var sCC = [];
-    var sFC = [];
-    if (storageList.shield_gen) {
-        for (let d in storageList.shield_gen) {
-            var dx = storageList.shield_gen[d].x;
-            var dy = storageList.shield_gen[d].y;
-            if (isEmpty(dx,dy)) {continue;}
-            var dPixel = pixelMap[dx][dy];
-            var dFIn = [];
-            var dFOut = [];
-            if (dPixel.element === "shield_gen" && dPixel.syncCheck == 10){
-                if (dPixel.timer == 0) {
-                    dFIn = dPixel.fociLocIn;
-                    dFOut = dPixel.fociLocOut;
-                    if (radius >= 10) {
-                        var rdIn = [0,0];
-                        var rILoc = [];
-                        var rOLoc = [];
-                        var smallRad;
-                        var largeRad;
-                        if (dFOut[5] === "y") {
-                            smallRad = dPixel.xStage;
-                            largeRad = dPixel.yStage;
-                        } else {
-                            smallRad = dPixel.yStage;
-                            largeRad = dPixel.xStage;
-                        }
-                        for (i = 0; i <= (2*radius); i+= (2*radius)) {
-                            var j = i/(2*radius);
-                            var k = (j*dPixel.gap)+(i-radius)
-                            rdIn[j] = (Math.pow((Math.pow((largeRad + k),2) - Math.pow((smallRad + k),2)), (1/2)));
-                        }
-                        if (dFOut[5] == "y") {
-                            rILoc = [dPixel.x,(dPixel.y+rdIn[0]),dPixel.x,(dPixel.y-rdIn[0])];
-                            rOLoc = [dPixel.x,(dPixel.y+rdIn[1]),dPixel.x,(dPixel.y-rdIn[1])];
-                        } else {
-                            rILoc = [(dPixel.x+rdIn[0]),dPixel.y,(dPixel.x-rdIn[0]),dPixel.y];
-                            rOLoc = [(dPixel.x+rdIn[1]),dPixel.y,(dPixel.x-rdIn[1]),dPixel.y];
-                        }
-                        var fODistance = findFociDistance(x,rOLoc[0],rOLoc[2],y,rOLoc[1],rOLoc[3]);
-                        var fIDistance = findFociDistance(x,rILoc[0],rILoc[2],y,rILoc[1],rILoc[3]);
-                        if (fODistance < (dFOut[4]+(2*radius))) {
-                            if (fIDistance > (dFIn[4]-(2*radius)) || (radius > smallRad)) {
-                                if (dPixel.health > 0) {
-                                    dPixel.health -= (Math.pow(10,(power-1)));
-                                }
-                                dPixel.heat = 60;
-                            }
-                        }
-                    }
-                    if (radius <= 30) {
-                        if (findFociDistance(x,dFIn[0],dFIn[2],y,dFIn[1],dFIn[3]) <= dFIn[4]) {
-                            sCC.push({x: dPixel.x,y: dPixel.y,fx1: dFIn[0],fy1: dFIn[1],fx2: dFIn[2],fy2: dFIn[3],d: dFIn[4]});
-                            shieldCloseCheck = true;
-                        } else {
-                            sFC.push({x: dPixel.x,y: dPixel.y,fx1: dFOut[0],fy1: dFOut[1],fx2: dFOut[2],fy2: dFOut[3],d: dFOut[4]});
-                            shieldFarCheck = true;
-                        }
-                    }
-                }
-            }
-        }
-    }
     //for (var p = 0; p < Math.round(radius/10+1); p++) {
     for (var i = 0; i < coords.length; i++) {
         bypass = false;
         if (radius <= 30 && bypass == false) {
-            if (shieldCloseCheck == true) {
+            if (checks.sCVal == true) {
                 for (var c = 0; c < sCC.length; c++){
-                    if (findFociDistance(coords[i].x,sCC[c].fx1,sCC[c].fx2,coords[i].y,sCC[c].fy1,sCC[c].fy2) > sCC[c].d){
+                    if (findFociDistance(coords[i].x,sCC[c][2],sCC[c][4],coords[i].y,sCC[c][3],sCC[c][5]) > sCC[c][6]){
                         bypass = true;
                     }
-                    if (coords[i].x == sCC[c].x && coords[i].y == sCC[c].y) {
+                    if (coords[i].x == sCC[c][0] && coords[i].y == sCC[c][1]) {
                         bypass = true;
                     }
                 }
             }
-            if (shieldFarCheck == true) {
+            if (checks.sFVal == true) {
                 for (var r = 0; r < sFC.length; r++){
-                    if (findFociDistance(coords[i].x,sFC[r].fx1,sFC[r].fx2,coords[i].y,sFC[r].fy1,sFC[r].fy2) <= sFC[r].d){
+                    if (findFociDistance(coords[i].x,sFC[r][2],sFC[r][4],coords[i].y,sFC[r][3],sFC[r][5]) <= sFC[r][6]){
                         bypass = true;
                     }
                 }
