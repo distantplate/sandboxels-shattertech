@@ -1387,8 +1387,8 @@ function isObjValDupe(obj,vals) {
 
 function shieldcheck(x,y,radius) {
   if (!storageList.shield_gen) {return false;}
-  scc = {};
-  sfc = {};
+  var scc = {};
+  var sfc = {};
   var shieldCloseCheck = false;
   var shieldFarCheck = false;
   for (let d in storageList.shield_gen) {
