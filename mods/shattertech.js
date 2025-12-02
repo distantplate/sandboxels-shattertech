@@ -1417,7 +1417,7 @@ function shieldcheck(x,y,radius) {
           }
           for (i = 0; i <= (2*radius); i+= (2*radius)) {
             var j = i/(2*radius);
-            var k = (j*dPixel.gap)+(i-radius)
+            var k = (j*dPixel.gap)+(i-radius);
             rdIn[j] = (Math.pow((Math.pow((largeRad + k),2) - Math.pow((smallRad + k),2)), (1/2)));
           }
           if (dFOut[5] == "y") {
