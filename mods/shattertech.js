@@ -1432,7 +1432,7 @@ function shieldcheck(x,y,radius) {
           if (fODistance < (dFOut[4]+(2*radius))) {
             if (fIDistance > (dFIn[4]-(2*radius)) || (radius > smallRad)) {
               if (dPixel.health > 0) {
-                dPixel.health -= (Math.pow(10,(power-1)));
+                dPixel.health -= (Math.pow(10,((radius/10)-1)));
               }
               dPixel.heat = 60;
             }
@@ -1465,7 +1465,7 @@ explodeAt = function(x,y,radius,fire="fire") {
     }
     var coords = circleCoords(x,y,radius);
     var power = radius/10;
-    //var checks = shieldcheck(x,y,radius);
+    var checks = shieldcheck(x,y,radius);
     var bypass = false;
     //for (var p = 0; p < Math.round(radius/10+1); p++) {
     for (var i = 0; i < coords.length; i++) {
