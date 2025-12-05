@@ -1455,6 +1455,7 @@ function shieldcheck(x,y,radius) {
   tempobj.sCVal = shieldCloseCheck;
   tempobj.sFC = sfc;
   tempobj.sFVal = shieldFarCheck;
+  logMessage("success");
   return tempobj;
 };
 
