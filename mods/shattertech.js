@@ -1455,7 +1455,7 @@ function shieldcheck(x,y,radius) {
   tempobj.sCVal = shieldCloseCheck;
   tempobj.sFC = sfc;
   tempobj.sFVal = shieldFarCheck;
-  return false;
+  return tempobj;
 };
 
 explodeAt = function(x,y,radius,fire="fire") {
