@@ -1465,7 +1465,7 @@ explodeAt = function(x,y,radius,fire="fire") {
     }
     var coords = circleCoords(x,y,radius);
     var power = radius/10;
-    var checks = shieldcheck(x,y,radius);
+    //var checks = shieldcheck(x,y,radius);
     var bypass = false;
     //for (var p = 0; p < Math.round(radius/10+1); p++) {
     for (var i = 0; i < coords.length; i++) {
