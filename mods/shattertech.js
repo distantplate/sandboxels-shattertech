@@ -1440,10 +1440,10 @@ function shieldcheck(x,y,radius) {
         }
         if (radius <= 30) {
           if (findFociDistance(x,dFIn[0],dFIn[2],y,dFIn[1],dFIn[3]) <= dFIn[4]) {
-            //scc.push({x: dPixel.x,y: dPixel.y,fx1: dFIn[0],fy1: dFIn[1],fx2: dFIn[2],fy2: dFIn[3],d: dFIn[4]});
+            scc.push({x: dPixel.x,y: dPixel.y,fx1: dFIn[0],fy1: dFIn[1],fx2: dFIn[2],fy2: dFIn[3],d: dFIn[4]});
             shieldCloseCheck = true;
           } else {
-            //sfc.push({x: dPixel.x,y: dPixel.y,fx1: dFIn[0],fy1: dFIn[1],fx2: dFIn[2],fy2: dFIn[3],d: dFIn[4]});
+            sfc.push({x: dPixel.x,y: dPixel.y,fx1: dFIn[0],fy1: dFIn[1],fx2: dFIn[2],fy2: dFIn[3],d: dFIn[4]});
             shieldFarCheck = true;
           }
         }
