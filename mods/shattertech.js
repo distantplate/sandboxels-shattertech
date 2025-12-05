@@ -1450,12 +1450,12 @@ function shieldcheck(x,y,radius) {
       }
     }
   }
-  var tempobj = {};
+  /*var tempobj = {};
   tempobj.sCC = scc;
   tempobj.sCVal = shieldCloseCheck;
   tempobj.sFC = sfc;
-  tempobj.sFVal = shieldFarCheck;
-  return tempobj;
+  tempobj.sFVal = shieldFarCheck;*/
+  return false;
 };
 
 explodeAt = function(x,y,radius,fire="fire") {
