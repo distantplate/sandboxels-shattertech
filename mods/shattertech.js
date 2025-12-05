@@ -1450,11 +1450,11 @@ function shieldcheck(x,y,radius) {
       }
     }
   }
-  /*var tempobj = {};
+  var tempobj = {};
   tempobj.sCC = scc;
   tempobj.sCVal = shieldCloseCheck;
   tempobj.sFC = sfc;
-  tempobj.sFVal = shieldFarCheck;*/
+  tempobj.sFVal = shieldFarCheck;
   return false;
 };
 
