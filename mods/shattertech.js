@@ -1093,11 +1093,11 @@ elements.portal_in = {
 	color: "#ff9a00",
 	tick: function(pixel) {
 		// if (Math.random() > 0.1) return;
-		if (!ticktemp.portal_out) ticktemp.portal_out = {};
-		if (!ticktemp.portal_out_s) ticktemp.portal_out_s = {};
+		if (!ticktemp.portal_out_elem) ticktemp.portal_out_elem = {};
+		if (!ticktemp.portal_out_charge) ticktemp.portal_out_charge = {};
 		let channel = parseInt(pixel.channel) || 0;
-		if (!ticktemp.portal_out[channel]) {
-			ticktemp.portal_out[channel] = currentPixels.filter((p) => {
+		if (!ticktemp.portal_out_elem[channel]) {
+			ticktemp.portal_out_elem[channel] = currentPixels.filter((p) => {
 				return elements[p.element].id === elements.portal_out.id && (
 					isEmpty(p.x,p.y+1) || isEmpty(p.x,p.y-1) ||
 					isEmpty(p.x+1,p.y) || isEmpty(p.x-1,p.y)
@@ -1105,22 +1105,22 @@ elements.portal_in = {
 					(parseInt(p.channel) || 0) === parseInt(channel)
 			});
 		}
-		if (!ticktemp.portal_out_s[channel]) {
-			ticktemp.portal_out_s[channel] = currentPixels.filter((p) => {
+		if (!ticktemp.portal_out_charge[channel]) {
+			ticktemp.portal_out_charge[channel] = currentPixels.filter((p) => {
 				return elements[p.element].id === elements.portal_out.id && 
 				(parseInt(p.channel) || 0) === parseInt(channel)
 			});
 		}
-		if (ticktemp.portal_out_s[channel].length) {
+		if (ticktemp.portal_out_charge[channel].length) {
 			if (pixel.charge) {
-				let portal_out = choose(ticktemp.portal_out_s[channel]);
+				let portal_out = choose(ticktemp.portal_out_charge[channel]);
 				if (portal_out.del) return;
 				if (pixel.charge && !portal_out.charge && !portal_out.chargeCD) {
 					portal_out.charge = pixel.charge;
 				}
 			}
 		};
-		if (ticktemp.portal_out[channel].length) {
+		if (ticktemp.portal_out_elem[channel].length) {
 			shuffleArray(squareCoordsShuffle);
 			let r;
 			for (var i = 0; i < squareCoordsShuffle.length; i++) {
@@ -1133,7 +1133,7 @@ elements.portal_in = {
 				}
 			}
 			if (r !== undefined) {
-				let portal_out = choose(ticktemp.portal_out[channel]);
+				let portal_out = choose(ticktemp.portal_out_elem[channel]);
 				if (portal_out.del) return;
 				if (r !== undefined) {
 					shuffleArray(squareCoordsShuffle);
