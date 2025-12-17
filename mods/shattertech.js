@@ -1385,7 +1385,7 @@ function isObjValDupe(obj,vals) {
     return con;
 };
 
-function shieldcheck(x,y,radius) {
+function shieldcheck(x,y,radius,doDamage) {
   if (!storageList.shield_gen) {return false;}
   var scc = [];
   var sfc = [];
@@ -1402,7 +1402,7 @@ function shieldcheck(x,y,radius) {
       if (dPixel.timer == 0) {
         dFIn = dPixel.fociLocIn;
         dFOut = dPixel.fociLocOut;
-        if (radius >= 10) {
+        if (radius >= 10 && doDamage === true) {
           var rdIn = [0,0];
           var rILoc = [];
           var rOLoc = [];
@@ -1465,7 +1465,7 @@ explodeAt = function(x,y,radius,fire="fire") {
     }
     var coords = circleCoords(x,y,radius);
     var power = radius/10;
-    var checks = shieldcheck(x,y,radius);
+    var checks = shieldcheck(x,y,radius,true);
     var bypass = false;
     //for (var p = 0; p < Math.round(radius/10+1); p++) {
     for (var i = 0; i < coords.length; i++) {
@@ -1574,67 +1574,65 @@ elements.fuse.movable = false;
 
 runEveryTick(function () {
     if (storageList && !storageList.tickcheck) {storageList.tickcheck = pixelTicks;}
-    if (storageList.shield_gen || storageList.barrages) {
-      if (storageList.shield_gen) {
-        var placehold = [];
-        var exclude = false;
-        for (let z in storageList.shield_gen) {
-          exclude = false;
-          for (let h in storageList.shield_gen[z]) {if (h != "x" && h != "y") {exclude = true;}}
-          var x1;
-          var y1;
-          if ((!storageList.shield_gen[z].x) || (!storageList.shield_gen[z].y)) {exclude = true;} else {
-            x1 = storageList.shield_gen[z].x;
-            y1 = storageList.shield_gen[z].y;
-            if (isEmpty(x1,y1)) {exclude = true;}
-            else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
-          }
-          if (exclude == false) {
-            placehold.push({x: storageList.shield_gen[z].x,y: storageList.shield_gen[z].y});
-          }
+    if (storageList.shield_gen) {
+      var placehold = [];
+      var exclude = false;
+      for (let z in storageList.shield_gen) {
+        exclude = false;
+        for (let h in storageList.shield_gen[z]) {if (h != "x" && h != "y") {exclude = true;}}
+        var x1;
+        var y1;
+        if ((!storageList.shield_gen[z].x) || (!storageList.shield_gen[z].y)) {exclude = true;} else {
+          x1 = storageList.shield_gen[z].x;
+          y1 = storageList.shield_gen[z].y;
+          if (isEmpty(x1,y1)) {exclude = true;}
+          else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
         }
-        storageList.shield_gen = {};
-        for (let z in placehold) {
-          storageList.shield_gen[z] = placehold[z];
+        if (exclude == false) {
+          placehold.push({x: storageList.shield_gen[z].x,y: storageList.shield_gen[z].y});
         }
       }
-      if (storageList.barrages) {
-        if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
-          var placehold = [];
-          for (let z in storageList.barrages){
-            if (storageList.barrages[z].time < 31) {
-              var coords = storageList.barrages[z].locList;
-              var hitlocs = [];
-              for (i=0; i<3; i++){
-                while (hitlocs.length != i+1) {
-                  var tempstor = Math.floor(Math.random() * coords.length);
-                  var addbool = true;
-                  for (let p in hitlocs) {
-                    if (tempstor == hitlocs[p]) {addbool = false;}
-                  }
-                  if (addbool == true) {hitlocs.push(tempstor);}
+      storageList.shield_gen = {};
+      for (let z in placehold) {
+        storageList.shield_gen[z] = placehold[z];
+      }
+    }
+    if (storageList.barrages) {
+      if (storageList.tickcheck != pixelTicks) {storageList.tickcheck = pixelTicks;} else {return;}
+        var placehold = [];
+        for (let z in storageList.barrages){
+          if (storageList.barrages[z].time < 31) {
+            var coords = storageList.barrages[z].locList;
+            var hitlocs = [];
+            for (i=0; i<3; i++){
+              while (hitlocs.length != i+1) {
+                var tempstor = Math.floor(Math.random() * coords.length);
+                var addbool = true;
+                for (let p in hitlocs) {
+                  if (tempstor == hitlocs[p]) {addbool = false;}
                 }
-              }
-              for (let q in hitlocs) {
-                var x = coords[hitlocs[q]].x;
-                var y = coords[hitlocs[q]].y;
-                var r = storageList.barrages[z].r2;
-                var f = storageList.barrages[z].fire;
-                if (!outOfBounds(x,y)) {
-                  explodeAt(x,y,r,f);
-                }
+                if (addbool == true) {hitlocs.push(tempstor);}
               }
             }
-            if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
-            if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
+            for (let q in hitlocs) {
+              var x = coords[hitlocs[q]].x;
+              var y = coords[hitlocs[q]].y;
+              var r = storageList.barrages[z].r2;
+              var f = storageList.barrages[z].fire;
+              if (!outOfBounds(x,y)) {
+                explodeAt(x,y,r,f);
+              }
+            }
           }
-          storageList.barrages = {};
-          for (let z in placehold) {
-            storageList.barrages[z] = placehold[z];
-          }
-      }
-      return;
-    } else {return;}
+          if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
+          if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
+        }
+        storageList.barrages = {};
+        for (let z in placehold) {
+          storageList.barrages[z] = placehold[z];
+        }
+    }
+    return;
 });
 
 runAfterReset(function() {
