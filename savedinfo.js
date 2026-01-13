@@ -127,7 +127,7 @@ elements.charged_blaster = {
                     if (p.emitted == 1) {
                         var s = pixelMap[p.emitX][p.emitY];
                         if (s.element === "shield_gen") {
-                            s.offline = true;
+                            s.health = 0;
                         }
                     }
                     deletePixel(p.x,p.y);
@@ -922,11 +922,9 @@ elements.imploder = {
 elements.shield_gen = {
     color: "#a8a897",
     tick: function(pixel) {
-      
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
-            pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
             pixel.heat = 0;
@@ -951,15 +949,13 @@ elements.shield_gen = {
         } else if (pixel.heat > 0) {
             pixel.heat -= 1;
         }
+        if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
         if (pixel.health <= 0) {
-            pixel.offline = true;
-        }
-        if (pixel.offline === true && pixel.timer == 0) {
             pixel.health = 100;
             pixel.heat = 0;
-            pixel.timer = 60;
-            pixel.offline = false;
+            pixel.timer = 60
         }
+        if (pixel.timer == 10) {pixel.syncCheck = 0;}
         if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
         if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
         if (pixel.store3 != pixel.xStage) {pixel.syncCheck = 0; pixel.store3 = pixel.xStage;}
@@ -977,8 +973,8 @@ elements.shield_gen = {
             var y = coord.y;
             if (!outOfBounds(x,y)) {
                 var p = pixelMap[x][y];
-                if (pixel.syncCheck == 10) {
-                    if (isEmpty(x,y) && pixel.timer == 0) {
+                if (pixel.syncCheck == 10 && pixel.timer == 0) {
+                    if (isEmpty(x,y)) {
                         createPixel("barrier",x,y);
                     } else if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
                         if (pixel.timer == 0) {
@@ -1070,7 +1066,7 @@ elements.barrier = {
         if (pixel.emitted == 1) {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
-                    if (pixelMap[pixel.emitX][pixel.emitY].timer > 0 || pixelMap[pixel.emitX][pixel.emitY].offline == true) {
+                    if (pixelMap[pixel.emitX][pixel.emitY].timer == 0) {
                         changePixel(pixel,"purplectric");
                     }
                 }
@@ -1385,37 +1381,6 @@ function isObjValDupe(obj,vals) {
     return con;
 };
 
-function shieldNestRemove(obj) {
-  var placehold = {};
-  for (let a in obj) {
-    if (!obj[a].x || !obj[a].y) {continue;}
-    if (isEmpty(obj[a].x,obj[a].y)) {continue;}
-    if (pixelMap[obj[a].x][obj[a].y].element !== "shield_gen") {continue;}
-    placehold.push({x: obj[a].x,y: obj[a].y});
-  }
-  return placehold;
-};
-
-function shieldNestAdd(x,y,foci) {
-  if (!storageList.shield_gen) {return false;}
-  var placehold = {};
-  for (let a in storageList.shield_gen) {
-    var X = storageList.shield_gen[a].x;
-    var Y = storageList.shield_gen[a].y;
-    var c = pixelMap[X][Y];
-    if (findFociDistance(X,foci[0],foci[2],Y,foci[1],foci[3]) <= foci[5]) {
-      placehold.push({x: X,y: X});
-    }
-    if (findFociDistance(x,c.fociLocIn[0],c.fociLocIn[2],y,c.fociLocIn[1],c.fociLocIn[3]) <= c.fociLocIn[5]) {
-      if (storageList.shield_gen[a].contains === false) {storageList.shield_gen[a].contains = {x: x,y: y};}
-      else {storageList.shield_gen[a].contains.push({x: x,y: y});
-    }
-  }
-  var templength = 0;
-  for (let b in placehold) {templength++;}
-  if (templength > 0) {return placehold;} else {return false;}
-};
-
 function shieldcheck(x,y,radius,doDamage) {
   if (!storageList.shield_gen) {return false;}
   var scc = [];
@@ -1610,7 +1575,7 @@ runEveryTick(function () {
       var exclude = false;
       for (let z in storageList.shield_gen) {
         exclude = false;
-        for (let h in storageList.shield_gen[z]) {if (h != "x" && h != "y" && h != "contains") {exclude = true;}}
+        for (let h in storageList.shield_gen[z]) {if (h != "x" && h != "y") {exclude = true;}}
         var x1;
         var y1;
         if ((!storageList.shield_gen[z].x) || (!storageList.shield_gen[z].y)) {exclude = true;} else {
