@@ -954,7 +954,7 @@ elements.shield_gen = {
         if (pixel.health <= 0) {
             pixel.health = 100;
             pixel.heat = 0;
-            pixel.timer = 60
+            pixel.timer = 60;
         }
         if (pixel.timer == 10) {pixel.syncCheck = 0;}
         if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
