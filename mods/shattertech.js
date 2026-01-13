@@ -127,7 +127,7 @@ elements.charged_blaster = {
                     if (p.emitted == 1) {
                         var s = pixelMap[p.emitX][p.emitY];
                         if (s.element === "shield_gen") {
-                            s.offline = true;
+                            s.health = 0;
                         }
                     }
                     deletePixel(p.x,p.y);
@@ -922,16 +922,15 @@ elements.imploder = {
 elements.shield_gen = {
     color: "#a8a897",
     tick: function(pixel) {
-      
         //mostly setup code here
         if (!pixel.trigger){
             pixel.trigger = 1;
-            pixel.offline = false;
             pixel.health = 100;
             pixel.timer = 0;
             pixel.heat = 0;
             pixel.syncCheck = 0;
             pixel.fTrig = true;
+            pixel.nestObj = [];
         }
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
@@ -951,34 +950,27 @@ elements.shield_gen = {
         } else if (pixel.heat > 0) {
             pixel.heat -= 1;
         }
+        if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
         if (pixel.health <= 0) {
-            pixel.offline = true;
-        }
-        if (pixel.offline === true && pixel.timer == 0) {
             pixel.health = 100;
             pixel.heat = 0;
-            pixel.timer = 60;
-            pixel.offline = false;
+            pixel.timer = 60
         }
+        if (pixel.timer == 10) {pixel.syncCheck = 0;}
         if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
         if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
         if (pixel.store3 != pixel.xStage) {pixel.syncCheck = 0; pixel.store3 = pixel.xStage;}
         if (pixel.store4 != pixel.yStage) {pixel.syncCheck = 0; pixel.store4 = pixel.yStage;}
 		
         //the part that manages the shield
-        var coords = [];
-        if (pixel.syncCheck != 9) {
-            coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
-        } else {
-            coords = ovalCoords(pixel.x,pixel.y,(pixel.xStage + pixel.gap),(pixel.yStage + pixel.gap));
-        }
+        var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
         coords.forEach(function(coord){
             var x = coord.x;
             var y = coord.y;
             if (!outOfBounds(x,y)) {
                 var p = pixelMap[x][y];
-                if (pixel.syncCheck == 10) {
-                    if (isEmpty(x,y) && pixel.timer == 0) {
+                if (pixel.syncCheck == 10 && pixel.timer == 0) {
+                    if (isEmpty(x,y)) {
                         createPixel("barrier",x,y);
                     } else if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
                         if (pixel.timer == 0) {
@@ -1004,10 +996,6 @@ elements.shield_gen = {
                                     }
                                 }
                             }
-                        }
-                    } else if ((!isEmpty(x,y)) && p.element === "shield_gen") {
-                        if (p.x != pixel.x || p.y != pixel.y) {
-                            changePixel(pixel,"plasma");
                         }
                     }
                 }
@@ -1043,8 +1031,51 @@ elements.shield_gen = {
                 }
                 storageList.shield_gen[templength] = tempVal;
             }
+            var outList = [];
+            var inList = [];
+            for (let A in storageList.shield_gen) {
+                if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {continue;}
+                if (isEmpty(storageList.shield_gen[A].x,storageList.shield_gen[A].y)) {continue;}
+                var targetloc = pixelMap[storageList.shield_gen[A].x][storageList.shield_gen[A].y];
+                if (targetloc.element !== "shield_gen") {continue;}
+                if ((pixel.xStage + pixel.gap) <= targetloc.xStage) {
+                    if ((pixel.yStage + pixel.gap) <= targetloc.yStage) {
+                        outList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
+                    }
+                }
+                if ((targetloc.xStage + targetloc.gap) <= pixel.xStage) {
+                    if ((targetloc.yStage + targetloc.gap) <= pixel.yStage) {
+                        inList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y}):
+                    }
+                }
+            }
+            pixel.nestObj = inList;
+            for (let B in outList) {
+                var targetloc = pixelMap[outList[B].x][outList[B].y];
+                if (!targetloc.fociLocIn) {continue;}
+                if (!targetloc.nestObj) {targetloc.nestObj = [];}
+                var C = targetloc.fociLocIn;
+                if (findFociDistance(pixel.x,C[0],C[2],pixel.y,C[1],C[3]) <= C[4]) {
+                    targetloc.nestObj.push({x: pixel.x,y: pixel.y});
+                }
+            }
             logMessage(templength);
         }
+        if (pixel.devcheck == 1) {
+          pixel.devcheck = 0;
+          for (let A in pixel.nestObj) {
+            var B = pixel.nestObj[A].x + ", " + pixel.nestObj[A].y;
+            logMessage(B);
+          }
+        }
+        var tempObj = [];
+        for (let A in pixel.nestObj) {
+            if (!pixel.nestObj[A].x || !pixel.nestObj[A].y) {continue;}
+            if (isEmpty(pixel.nestObj[A].x,pixel.nestObj[A].y)) {continue;}
+            if (pixelMap[pixel.nestObj[A].x][pixel.nestObj[A].y].element !== "shield_gen") {continue;}
+            tempObj.push({x: pixel.nestObj[A],y: pixel.nestObj[A].y});
+        }
+        pixel.nestObj = tempObj;
         if (pixel.timer > 0) {
             pixel.timer--;
         }
@@ -1070,7 +1101,7 @@ elements.barrier = {
         if (pixel.emitted == 1) {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
-                    if (pixelMap[pixel.emitX][pixel.emitY].timer == 0 && pixelMap[pixel.emitX][pixel.emitY].offline == true) {
+                    if (pixelMap[pixel.emitX][pixel.emitY].timer == 0) {
                         changePixel(pixel,"purplectric");
                     }
                 }
