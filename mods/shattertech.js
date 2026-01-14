@@ -1033,7 +1033,7 @@ elements.shield_gen = {
                 }
                 storageList.shield_gen[templength] = tempVal;
             }
-            var outList = [];
+            /*var outList = [];
             var inList = [];
             for (let A in storageList.shield_gen) {
                 if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {continue;}
@@ -1080,7 +1080,7 @@ elements.shield_gen = {
         pixel.nestObj = tempObj;
         if (pixel.timer > 0) {
             pixel.timer--;
-        }
+        }*/
     },
     category: "machines",
     state: "solid",
