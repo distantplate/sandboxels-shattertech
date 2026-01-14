@@ -965,8 +965,8 @@ elements.shield_gen = {
         if (pixel.store4 != pixel.yStage) {pixel.syncCheck = 0; pixel.store4 = pixel.yStage;}
 		
         //the part that manages the shield
-        /*var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
-        coords.forEach(function(coord){
+        var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
+        /*coords.forEach(function(coord){
             var x = coord.x;
             var y = coord.y;
             if (!outOfBounds(x,y)) {
