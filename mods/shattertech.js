@@ -2,8 +2,6 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
-//Test - Did the change work?
-
 elements.h_plasma = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     behavior: behaviors.DGAS,
