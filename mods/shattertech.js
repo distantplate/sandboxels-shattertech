@@ -964,7 +964,7 @@ elements.shield_gen = {
 		
         //the part that manages the shield
         var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
-        /*coords.forEach(function(coord){
+        coords.forEach(function(coord){
             var x = coord.x;
             var y = coord.y;
             if (!outOfBounds(x,y)) {
@@ -1003,7 +1003,7 @@ elements.shield_gen = {
         })
         
         //find the foci for the shield, to be used by other stuff
-        if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
+        /*if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
             pixel.syncCheck++;
         } else if (pixel.syncCheck > 10) {
             pixel.syncCheck = 10;
