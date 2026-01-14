@@ -1101,7 +1101,7 @@ elements.barrier = {
         if (pixel.emitted == 1) {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
-                    if (pixelMap[pixel.emitX][pixel.emitY].timer >= 0) {
+                    if (pixelMap[pixel.emitX][pixel.emitY].timer > 0) {
                         changePixel(pixel,"purplectric");
                     }
                 }
