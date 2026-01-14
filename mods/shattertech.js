@@ -921,7 +921,7 @@ elements.imploder = {
     excludeRandom: true,
 };
 
-/*elements.shield_gen = {
+elements.shield_gen = {
     color: "#a8a897",
     tick: function(pixel) {
         //mostly setup code here
@@ -965,7 +965,7 @@ elements.imploder = {
         if (pixel.store4 != pixel.yStage) {pixel.syncCheck = 0; pixel.store4 = pixel.yStage;}
 		
         //the part that manages the shield
-        var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
+        /*var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
         coords.forEach(function(coord){
             var x = coord.x;
             var y = coord.y;
@@ -1077,7 +1077,7 @@ elements.imploder = {
             if (pixelMap[pixel.nestObj[A].x][pixel.nestObj[A].y].element !== "shield_gen") {continue;}
             tempObj.push({x: pixel.nestObj[A],y: pixel.nestObj[A].y});
         }
-        pixel.nestObj = tempObj;
+        pixel.nestObj = tempObj;*/
         if (pixel.timer > 0) {
             pixel.timer--;
         }
@@ -1088,7 +1088,7 @@ elements.imploder = {
     excludeRandom: true,
     insulate: true,
     movable: false,
-};*/
+};
 
 elements.barrier = {
     color: ["#ff00ff","#000000","#ff00ff","#000000","#ff00ff"],
