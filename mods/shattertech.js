@@ -1003,12 +1003,12 @@ elements.shield_gen = {
         })
         
         //find the foci for the shield, to be used by other stuff
-        /*if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
+        if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
             pixel.syncCheck++;
         } else if (pixel.syncCheck > 10) {
             pixel.syncCheck = 10;
         }
-        if (pixel.syncCheck == 9 || pixel.fTrig == true) {
+        /*if (pixel.syncCheck == 9 || pixel.fTrig == true) {
             pixel.fTrig = false;
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
