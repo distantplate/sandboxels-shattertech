@@ -1008,7 +1008,7 @@ elements.shield_gen = {
         } else if (pixel.syncCheck > 10) {
             pixel.syncCheck = 10;
         }
-        /*if (pixel.syncCheck == 9 || pixel.fTrig == true) {
+        if (pixel.syncCheck == 9 || pixel.fTrig == true) {
             pixel.fTrig = false;
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
@@ -1031,7 +1031,7 @@ elements.shield_gen = {
                 }
                 storageList.shield_gen[templength] = tempVal;
             }
-            var outList = [];
+            /*var outList = [];
             var inList = [];
             for (let A in storageList.shield_gen) {
                 if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {continue;}
@@ -1058,10 +1058,10 @@ elements.shield_gen = {
                 if (findFociDistance(pixel.x,C[0],C[2],pixel.y,C[1],C[3]) <= C[4]) {
                     targetloc.nestObj.push({x: pixel.x,y: pixel.y});
                 }
-            }
+            }*/
             logMessage(templength);
         }
-        if (pixel.devcheck == 1) {
+        /*if (pixel.devcheck == 1) {
           pixel.devcheck = 0;
           for (let A in pixel.nestObj) {
             var B = pixel.nestObj[A].x + ", " + pixel.nestObj[A].y;
