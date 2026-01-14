@@ -921,7 +921,7 @@ elements.imploder = {
     excludeRandom: true,
 };
 
-elements.shield_gen = {
+/*elements.shield_gen = {
     color: "#a8a897",
     tick: function(pixel) {
         //mostly setup code here
@@ -1033,7 +1033,7 @@ elements.shield_gen = {
                 }
                 storageList.shield_gen[templength] = tempVal;
             }
-            /*var outList = [];
+            var outList = [];
             var inList = [];
             for (let A in storageList.shield_gen) {
                 if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {continue;}
@@ -1080,7 +1080,7 @@ elements.shield_gen = {
         pixel.nestObj = tempObj;
         if (pixel.timer > 0) {
             pixel.timer--;
-        }*/
+        }
     },
     category: "machines",
     state: "solid",
@@ -1088,7 +1088,7 @@ elements.shield_gen = {
     excludeRandom: true,
     insulate: true,
     movable: false,
-};
+};*/
 
 elements.barrier = {
     color: ["#ff00ff","#000000","#ff00ff","#000000","#ff00ff"],
