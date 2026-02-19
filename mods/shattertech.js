@@ -1054,6 +1054,7 @@ elements.shield_gen = {
                 }
             }
             pixel.nestObj = inList;
+            var tempcounter = 0;
             for (let B in outList) {
                 var targetloc = pixelMap[outList[B].x][outList[B].y];
                 if (!targetloc.fociLocIn) {continue;}
@@ -1062,7 +1063,9 @@ elements.shield_gen = {
                 if (findFociDistance(pixel.x,C[0],C[2],pixel.y,C[1],C[3]) <= C[4]) {
                     targetloc.nestObj.push({x: pixel.x,y: pixel.y});
                 }
+                tempcounter++;
             }
+            logMessage(tempcounter);
             //logMessage(templength);
         }
         var tempobj = [];
