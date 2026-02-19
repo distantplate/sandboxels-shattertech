@@ -1,3 +1,4 @@
+
 //Read not these accursed lines of code, for only madness awaits you here
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
@@ -941,11 +942,6 @@ elements.shield_gen = {
         if ((!pixel.yStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
             pixel.yStage = 15;
         }
-		if (pixel.health <= 0) {
-            pixel.health = 100;
-            pixel.heat = 0;
-            pixel.timer = 60;
-        }
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
                 pixel.health = 100;
@@ -956,6 +952,11 @@ elements.shield_gen = {
             pixel.heat -= 1;
         }
         if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
+        if (pixel.health <= 0) {
+            pixel.health = 100;
+            pixel.heat = 0;
+            pixel.timer = 60;
+        }
         if (pixel.timer == 10) {pixel.syncCheck = 0;}
         if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
         if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
@@ -1045,7 +1046,10 @@ elements.shield_gen = {
                 }
                 if ((targetloc.xStage + targetloc.gap) <= pixel.xStage) {
                     if ((targetloc.yStage + targetloc.gap) <= pixel.yStage) {
-                        inList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y}):
+                        var C = pixel.fociLocIn;
+                        if (findFociDistance(storageList.shield_gen[A].x,C[0],C[2],storageList.shield_gen[A].y,C[1],C[3]) <= C[4]) {
+                          inList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
+                        }
                     }
                 }
             }
@@ -1059,7 +1063,7 @@ elements.shield_gen = {
                     targetloc.nestObj.push({x: pixel.x,y: pixel.y});
                 }
             }*/
-            logMessage(templength);
+            //logMessage(templength);
         }
         /*if (pixel.devcheck == 1) {
           pixel.devcheck = 0;
@@ -1067,15 +1071,7 @@ elements.shield_gen = {
             var B = pixel.nestObj[A].x + ", " + pixel.nestObj[A].y;
             logMessage(B);
           }
-        }
-        var tempObj = [];
-        for (let A in pixel.nestObj) {
-            if (!pixel.nestObj[A].x || !pixel.nestObj[A].y) {continue;}
-            if (isEmpty(pixel.nestObj[A].x,pixel.nestObj[A].y)) {continue;}
-            if (pixelMap[pixel.nestObj[A].x][pixel.nestObj[A].y].element !== "shield_gen") {continue;}
-            tempObj.push({x: pixel.nestObj[A],y: pixel.nestObj[A].y});
-        }
-        pixel.nestObj = tempObj;*/
+        }*/
         if (pixel.timer > 0) {
             pixel.timer--;
         }
@@ -1101,7 +1097,7 @@ elements.barrier = {
         if (pixel.emitted == 1) {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
-                    if (pixelMap[pixel.emitX][pixel.emitY].timer > 0) {
+                    if (pixelMap[pixel.emitX][pixel.emitY].timer == 0) {
                         changePixel(pixel,"purplectric");
                     }
                 }
