@@ -1065,13 +1065,13 @@ elements.shield_gen = {
             }
             //logMessage(templength);
         }
-        /*if (pixel.devcheck == 1) {
+        if (pixel.devcheck == 1) {
           pixel.devcheck = 0;
           for (let A in pixel.nestObj) {
             var B = pixel.nestObj[A].x + ", " + pixel.nestObj[A].y;
             logMessage(B);
           }
-        }*/
+        }
         if (pixel.timer > 0) {
             pixel.timer--;
         }
