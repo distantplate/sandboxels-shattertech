@@ -1074,10 +1074,13 @@ elements.shield_gen = {
         pixel.nestObj = tempobj;
         if (pixel.devcheck == 1) {
           pixel.devcheck = 0;
+          var tempVal = 0;
           for (let A in pixel.nestObj) {
             var B = pixel.nestObj[A].x + ", " + pixel.nestObj[A].y;
+            tempVal++;
             logMessage(B);
           }
+          logMessage(tempVal);
         }
         if (pixel.timer > 0) {
             pixel.timer--;
