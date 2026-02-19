@@ -1065,6 +1065,13 @@ elements.shield_gen = {
             }
             //logMessage(templength);
         }
+        var tempobj = [];
+        for (let a in pixel.nestObj) {
+            if (isEmpty(pixel.nestObj[a].x,pixel.nestObj[a].y)) {continue;}
+            if (pixelMap[pixel.nestObj[a].x][pixel.nestObj[a].y].element !== "shield_gen") {continue;}
+            tempobj.push({x: pixel.nestObj[a].x,y: pixel.nestObj[a].y});
+        }
+        pixel.nestObj = tempobj;
         if (pixel.devcheck == 1) {
           pixel.devcheck = 0;
           for (let A in pixel.nestObj) {
