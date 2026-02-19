@@ -1,4 +1,3 @@
-
 //Read not these accursed lines of code, for only madness awaits you here
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
@@ -930,7 +929,6 @@ elements.shield_gen = {
             pixel.timer = 0;
             pixel.heat = 0;
             pixel.syncCheck = 0;
-            pixel.fTrig = true;
             pixel.nestObj = [];
         }
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
@@ -957,60 +955,7 @@ elements.shield_gen = {
         } else if (pixel.heat > 0) {
             pixel.heat -= 1;
         }
-        if (pixel.timer == 10) {pixel.syncCheck = 0;}
-        if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
-        if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
-        if (pixel.store3 != pixel.xStage) {pixel.syncCheck = 0; pixel.store3 = pixel.xStage;}
-        if (pixel.store4 != pixel.yStage) {pixel.syncCheck = 0; pixel.store4 = pixel.yStage;}
-		
-        //the part that manages the shield
-        var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
-        coords.forEach(function(coord){
-            var x = coord.x;
-            var y = coord.y;
-            if (!outOfBounds(x,y)) {
-                var p = pixelMap[x][y];
-                if (pixel.syncCheck == 10 && pixel.timer == 0) {
-                    if (isEmpty(x,y)) {
-                        createPixel("barrier",x,y);
-                    } else if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
-                        if (pixel.timer == 0) {
-                            p.emitted = 1;
-                            p.emitX = pixel.x;
-                            p.emitY = pixel.y;
-                            p.timer = 5;
-                        }
-                    }
-                } else if (pixel.syncCheck == 9) {
-                    if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
-                        if (p.emitted == 1) {
-                            var p2 = pixelMap[p.emitX][p.emitY];
-                            if (!outOfBounds(p2.x,p2.y) && !isEmpty(p2.x,p2.y)) {
-                                if (p2.element === "shield_gen" && p2.syncCheck == 10) {
-                                    var f = p2.fociLocOut;
-                                    var resonate = false;
-                                    if (findFociDistance(p.x,f[0],f[2],p.y,f[1],f[3]) <= f[4]) {
-                                        resonate = true;
-                                    }
-                                    if (resonate == true) {
-                                        changePixel(pixel,"plasma");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        })
-        
-        //find the foci for the shield, to be used by other stuff
-        if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
-            pixel.syncCheck++;
-        } else if (pixel.syncCheck > 10) {
-            pixel.syncCheck = 10;
-        }
-        if (pixel.syncCheck == 9 || pixel.fTrig == true) {
-            pixel.fTrig = false;
+        if (pixel.syncCheck == 9) {
             pixel.fociLocIn = [0,0,0,0,0];
             pixel.fociLocOut = [0,0,0,0,0];
             var s = findFoci(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
@@ -1084,6 +1029,58 @@ elements.shield_gen = {
             logMessage(B);
           }
           logMessage(tempVal);
+        }
+        if (pixel.timer == 10) {pixel.syncCheck = 0;}
+        if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
+        if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
+        if (pixel.store3 != pixel.xStage) {pixel.syncCheck = 0; pixel.store3 = pixel.xStage;}
+        if (pixel.store4 != pixel.yStage) {pixel.syncCheck = 0; pixel.store4 = pixel.yStage;}
+		
+        //the part that manages the shield
+        var coords = ovalRingCoords(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
+        coords.forEach(function(coord){
+            var x = coord.x;
+            var y = coord.y;
+            if (!outOfBounds(x,y)) {
+                var p = pixelMap[x][y];
+                if (pixel.syncCheck == 10 && pixel.timer == 0) {
+                    if (isEmpty(x,y)) {
+                        createPixel("barrier",x,y);
+                    } else if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
+                        if (pixel.timer == 0) {
+                            p.emitted = 1;
+                            p.emitX = pixel.x;
+                            p.emitY = pixel.y;
+                            p.timer = 5;
+                        }
+                    }
+                } else if (pixel.syncCheck == 9) {
+                    if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
+                        if (p.emitted == 1) {
+                            var p2 = pixelMap[p.emitX][p.emitY];
+                            if (!outOfBounds(p2.x,p2.y) && !isEmpty(p2.x,p2.y)) {
+                                if (p2.element === "shield_gen" && p2.syncCheck == 10) {
+                                    var f = p2.fociLocOut;
+                                    var resonate = false;
+                                    if (findFociDistance(p.x,f[0],f[2],p.y,f[1],f[3]) <= f[4]) {
+                                        resonate = true;
+                                    }
+                                    if (resonate == true) {
+                                        changePixel(pixel,"plasma");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        
+        //find the foci for the shield, to be used by other stuff
+        if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
+            pixel.syncCheck++;
+        } else if (pixel.syncCheck > 10) {
+            pixel.syncCheck = 10;
         }
         if (pixel.timer > 0) {
             pixel.timer--;
