@@ -942,6 +942,12 @@ elements.shield_gen = {
         if ((!pixel.yStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
             pixel.yStage = 15;
         }
+        if (pixel.health <= 0) {
+            pixel.health = 100;
+            pixel.heat = 0;
+            pixel.timer = 60;
+        }
+        if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
                 pixel.health = 100;
@@ -950,12 +956,6 @@ elements.shield_gen = {
             }
         } else if (pixel.heat > 0) {
             pixel.heat -= 1;
-        }
-        if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
-        if (pixel.health <= 0) {
-            pixel.health = 100;
-            pixel.heat = 0;
-            pixel.timer = 60;
         }
         if (pixel.timer == 10) {pixel.syncCheck = 0;}
         if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
@@ -1097,7 +1097,9 @@ elements.barrier = {
         if (pixel.emitted == 1) {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
-                    if (pixelMap[pixel.emitX][pixel.emitY].timer == 0) {
+                    if (pixelMap[pixel.emitX][pixel.emitY].element !== "shield_gen") {
+                        changePixel(pixel,"purplectric");
+                    } else if (pixelMap[pixel.emitX][pixel.emitY].timer > 0) {
                         changePixel(pixel,"purplectric");
                     }
                 }
