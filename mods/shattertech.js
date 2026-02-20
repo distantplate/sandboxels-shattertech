@@ -1055,21 +1055,25 @@ elements.shield_gen = {
                         }
                     }
                 } else if (pixel.syncCheck == 9) {
-                    if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
-                        if (p.emitted == 1) {
-                            var p2 = pixelMap[p.emitX][p.emitY];
-                            if (!outOfBounds(p2.x,p2.y) && !isEmpty(p2.x,p2.y)) {
-                                if (p2.element === "shield_gen" && p2.syncCheck == 10) {
-                                    var f = p2.fociLocOut;
-                                    var resonate = false;
-                                    if (findFociDistance(p.x,f[0],f[2],p.y,f[1],f[3]) <= f[4]) {
-                                        resonate = true;
-                                    }
-                                    if (resonate == true) {
-                                        changePixel(pixel,"plasma");
+                    if (!isEmpty(x,y)) {
+                        if (pixelMap[x][y].element === "barrier") {
+                            if (p.emitted == 1) {
+                                var p2 = pixelMap[p.emitX][p.emitY];
+                                if (!outOfBounds(p2.x,p2.y) && !isEmpty(p2.x,p2.y)) {
+                                    if (p2.element === "shield_gen" && p2.syncCheck == 10) {
+                                        var f = p2.fociLocOut;
+                                        var resonate = false;
+                                        if (findFociDistance(p.x,f[0],f[2],p.y,f[1],f[3]) <= f[4]) {
+                                            resonate = true;
+                                        }
+                                        if (resonate == true) {
+                                            changePixel(pixel,"plasma");
+                                        }
                                     }
                                 }
                             }
+                        } else if (pixelMap[x][y].element === "shield_gen") {
+                            changePixel(pixel, "plasma");
                         }
                     }
                 }
