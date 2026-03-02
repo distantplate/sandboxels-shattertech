@@ -1439,7 +1439,7 @@ function shieldcheck(x,y,radius,doDamage) {
       var x1 = storagelist.shieldgen[a].x;
       var y1 = storagelist.shieldgen[a].y;
       var p = pixelMap[x1][y1];
-      if (isEmpty(x,y)) {
+      if (isEmpty(x1,y1)) {
         continue;
       } else if ((p.element !== "shield_gen") || !(p.xStage && p.yStage)) {
         continue;
