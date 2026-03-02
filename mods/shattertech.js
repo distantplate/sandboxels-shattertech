@@ -1447,10 +1447,11 @@ function shieldcheck(x,y,radius,doDamage) {
       var fLI = p.fociLocIn;
       if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         sc1.c.push({x: x1,y: y1});
-        if (p.nestObj)
+        if (p.nestObj) {
           for (let b in p.nestObj) {
             nestList.t[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
+		}
       } else {
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
@@ -1515,8 +1516,8 @@ function shieldcheck(x,y,radius,doDamage) {
             }
           }
         }
-      }*/
-    }
+      }
+    }*/
     //var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
     //return tempobj;
     return false;
