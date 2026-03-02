@@ -1515,8 +1515,8 @@ function shieldcheck(x,y,radius,doDamage) {
             }
           }
         }
-      }
-    }*/
+      }*/
+    }
     //var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
     //return tempobj;
     return false;
