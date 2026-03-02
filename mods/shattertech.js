@@ -1429,76 +1429,98 @@ function isObjValDupe(obj,vals) {
 };
 
 function shieldcheck(x,y,radius,doDamage) {
-  if (!storageList.shield_gen) {return false;}
-  var scc = [];
-  var sfc = [];
-  var shieldCloseCheck = false;
-  var shieldFarCheck = false;
-  for (let d in storageList.shield_gen) {
-    var dx = storageList.shield_gen[d].x;
-    var dy = storageList.shield_gen[d].y;
-    if (isEmpty(dx,dy)) {continue;}
-    var dPixel = pixelMap[dx][dy];
-    var dFIn = [];
-    var dFOut = [];
-    if (dPixel.element === "shield_gen" && dPixel.syncCheck == 10){
-      if (dPixel.timer == 0) {
-        dFIn = dPixel.fociLocIn;
-        dFOut = dPixel.fociLocOut;
-        if (radius >= 10 && doDamage === true) {
-          var rdIn = [0,0];
-          var rILoc = [];
-          var rOLoc = [];
-          var smallRad;
-          var largeRad;
-          if (dFOut[5] === "y") {
-            smallRad = dPixel.xStage;
-            largeRad = dPixel.yStage;
-          } else {
-            smallRad = dPixel.yStage;
-            largeRad = dPixel.xStage;
+  if (storagelist.shieldgen) {
+    //stage 1
+    var sc1 = {c: [],f: []};
+    var shieldCloseCheck = false;
+    var shieldFarCheck = false;
+    var nestList = {t: {},f: {}};
+    for (let a in storagelist.shieldgen) {
+      var x1 = storagelist.shieldgen[a].x
+      var y1 = storagelist.shieldgen[a].y
+      var p = pixelMap[x1][y1];
+      if (isEmpty(x,y)) {
+        continue;
+      } else if ((p.element !== "shield_gen") || !(p.xStage && p.yStage)) {
+        continue;
+      }
+      var fLI = p.fociLocIn;
+      if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
+        sc1.c.push({x: x1,y: y1});
+        if (p.nestObj)
+          for (let b in p.nestObj) {
+            nestList.t[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
-          for (i = 0; i <= (2*radius); i+= (2*radius)) {
-            var j = i/(2*radius);
-            var k = (j*dPixel.gap)+(i-radius);
-            rdIn[j] = (Math.pow((Math.pow((largeRad + k),2) - Math.pow((smallRad + k),2)), (1/2)));
-          }
-          if (dFOut[5] == "y") {
-            rILoc = [dPixel.x,(dPixel.y+rdIn[0]),dPixel.x,(dPixel.y-rdIn[0])];
-            rOLoc = [dPixel.x,(dPixel.y+rdIn[1]),dPixel.x,(dPixel.y-rdIn[1])];
-          } else {
-            rILoc = [(dPixel.x+rdIn[0]),dPixel.y,(dPixel.x-rdIn[0]),dPixel.y];
-            rOLoc = [(dPixel.x+rdIn[1]),dPixel.y,(dPixel.x-rdIn[1]),dPixel.y];
-          }
-          var fODistance = findFociDistance(x,rOLoc[0],rOLoc[2],y,rOLoc[1],rOLoc[3]);
-          var fIDistance = findFociDistance(x,rILoc[0],rILoc[2],y,rILoc[1],rILoc[3]);
-          if (fODistance < (dFOut[4]+(2*radius))) {
-            if (fIDistance > (dFIn[4]-(2*radius)) || (radius > smallRad)) {
-              if (dPixel.health > 0) {
-                dPixel.health -= (Math.pow(10,((radius/10)-1)));
-              }
-              dPixel.heat = 60;
-            }
-          }
-        }
-        if (radius <= 30) {
-          if (findFociDistance(x,dFIn[0],dFIn[2],y,dFIn[1],dFIn[3]) <= dFIn[4]) {
-            scc.push({x: dPixel.x,y: dPixel.y,fx1: dFIn[0],fy1: dFIn[1],fx2: dFIn[2],fy2: dFIn[3],d: dFIn[4]});
-            shieldCloseCheck = true;
-          } else {
-            sfc.push({x: dPixel.x,y: dPixel.y,fx1: dFIn[0],fy1: dFIn[1],fx2: dFIn[2],fy2: dFIn[3],d: dFIn[4]});
-            shieldFarCheck = true;
+      } else {
+        sc1.f.push({x: x1,y: y1});
+        if (p.nestObj) {
+          for (let b in p.nestObj) {
+            nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
         }
       }
     }
-  }
-  var tempobj = {};
-  tempobj.sCC = scc;
-  tempobj.sCVal = shieldCloseCheck;
-  tempobj.sFC = sfc;
-  tempobj.sFVal = shieldFarCheck;
-  return tempobj;
+    //stage 2
+    /*var sc2 = {c: [],f: []};
+    for (let a in sc1) {
+      for (let b in sc1[a]) {
+        var x1 = sc1[a][b].x;
+        var y1 = sc1[a][b].y;
+        var p = pixelMap[x1][y1];
+        if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
+          if (nestList.t[x1][y1]) == true && !nestList.f[x1][y1]) {
+            sc2[a].push({x: x1,y: y1});
+          }
+        }
+      }
+    }*/
+    //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
+    /*var sc3 = {c: [],f: []};
+    for (let a in sc2) {
+      for (let b in sc2[a]) {
+        var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
+        var rIN = [0,0];
+        var rLoc = {I : {},O: {}};
+        var fLI = p.fociLocIn;
+        var fLO = p.fociLocOut;
+        var smallRad;
+        var largeRad;
+        if (fLO[5] === "y") {
+          smallRad = p.xStage;
+          largeRad = p.yStage;
+        } else {
+          smallRad = p.yStage;
+          largeRad = p.xStage;
+        }
+        for (i = 0; i < 2; i++) {
+          var j = i*2*radius;
+          var k = (i*p.gap)+(j-radius);
+          rIN[i] = Math.pow((Math.pow((largeRad+k),2) - Math.pow((smallRad+k),2)), (1/2));
+        }
+        if (fLO[5] === "y") {
+          rLoc.I = [p.x,(p.y+rIN[0]),p.x,(p.y-rIN[0])];
+          rLoc.O = [p.x,(p.y+rIN[1]),p.x,(p.y-rIN[1])];
+        } else {
+          rLoc.I = [(p.x+rIN[0]),p.y,(p.x-rIN[0]),p.y];
+          rLoc.O = [(p.x+rIN[1]),p.y,(p.x-rIN[1]),p.y];
+        }
+        var fOD = findFociDistance(x,rLoc.O[0],rLoc.O[2],y,rLoc.O[1],rLoc.O[3]);
+        var fID = findFociDistance(x,rLoc.I[0],rLoc.I[2],y,rLoc.I[1],rLoc.I[3]);
+        if (fOD < (fLO + (2*radius))) {
+          if (fID > (fLI + (2*radius)) || (radius > smallRad)) {
+            sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y});
+            if (a === “c”) {shieldCloseCheck = true;} else if (a === “f”) {shieldFarCheck = true;}
+            if (doDamage === true && p.health > 0) {
+              p.health-= Math.pow(10,((radius/10)-1));
+            }
+          }
+        }
+      }
+    }*/
+    //var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
+    //return tempobj;
+    return false;
+  } else {return false;}
 };
 
 explodeAt = function(x,y,radius,fire="fire") {
