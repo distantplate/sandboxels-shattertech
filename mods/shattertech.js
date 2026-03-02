@@ -1436,8 +1436,8 @@ function shieldcheck(x,y,radius,doDamage) {
     var shieldFarCheck = false;
     var nestList = {t: {},f: {}};
     for (let a in storagelist.shieldgen) {
-      var x1 = storagelist.shieldgen[a].x
-      var y1 = storagelist.shieldgen[a].y
+      var x1 = storagelist.shieldgen[a].x;
+      var y1 = storagelist.shieldgen[a].y;
       var p = pixelMap[x1][y1];
       if (isEmpty(x,y)) {
         continue;
