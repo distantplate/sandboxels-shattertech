@@ -1431,7 +1431,7 @@ function isObjValDupe(obj,vals) {
 function shieldcheck(x,y,radius,doDamage) {
   if (storageList.shieldgen) {
     //stage 1
-    var sc1 = {c: [],f: []};
+    var sc1 = {c: [0,0,0,0],f: [],confirm: [false,false]};
     var shieldCloseCheck = false;
     var shieldFarCheck = false;
     var nestList = {t: {},f: {}};
@@ -1446,12 +1446,12 @@ function shieldcheck(x,y,radius,doDamage) {
       }
       var fLI = p.fociLocIn;
       if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
-        sc1.c.push({x: x1,y: y1});
-        if (p.nestObj) {
-          for (let b in p.nestObj) {
-            nestList.t[p.nestObj[b].x][p.nestObj[b].y] = true;
-          }
+        if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {continue;}
+        if (sc1.confirm[0] !== false) {
+          if (p.xStage >= sc1.c[2] || p.yStage >= sc1.c[3]) {continue;}
         }
+        sc1.c = [x1,y1,p.xStage,p.yStage];
+        sc1.confirm[0] = true;
       } else {
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
@@ -1462,16 +1462,23 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2
-    var sc2 = {c: [],f: []};
-    for (let a in sc1) {
-      for (let b in sc1[a]) {
-        var x1 = sc1[a][b].x;
-        var y1 = sc1[a][b].y;
-        var p = pixelMap[x1][y1];
-        if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
-          if (nestList.t[x1][y1] == true && !nestList.f[x1][y1]) {
-            sc2[a].push({x: x1,y: y1});
-          }
+    var sfc2 = [];
+    if (sc1.confirm[0] !== false) {
+      var p = pixelMap[sc1.c[0]][sc1.c[1]];
+      if (p.nestObj) {
+        sc1.confirm[1] = true;
+        for (let a in p.nestObj) {
+          nestList.t[p.nestObj[a].x][p.nestObj[a].y] = true;
+        }
+      }
+    }
+    for (let a in sc1.f) {
+      var x1 = sc1.f[a].x;
+      var y1 = sc1.f[a].y;
+      var p = pixelMap[x1][y1];
+      if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
+        if (nestList.t[x1][y1] == true && !nestList.f[x1][y1]) {
+          sfc2.push({x: x1,y: y1});
         }
       }
     }
