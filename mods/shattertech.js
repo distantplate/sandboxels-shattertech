@@ -1468,11 +1468,11 @@ function shieldcheck(x,y,radius,doDamage) {
         var x1 = sc1[a][b].x;
         var y1 = sc1[a][b].y;
         var p = pixelMap[x1][y1];
-        //if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
-          if (nestList.t[x1][y1]) == true && !nestList.f[x1][y1]) {
+        if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
+          /*if (nestList.t[x1][y1]) == true && !nestList.f[x1][y1]) {
             sc2[a].push({x: x1,y: y1});
-          }
-        //}
+          }*/
+        }
       }
     }
     //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
