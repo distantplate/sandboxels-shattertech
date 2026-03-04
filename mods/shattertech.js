@@ -1425,6 +1425,7 @@ function isObjValDupe(obj,vals) {
 };
 
 function shieldcheck(x,y,radius,doDamage) {
+  logMessage("Check run");
   if (storageList.shieldgen) {
     //stage 1
     var sc1 = {c: [0,0,0,0],f: [],confirm: [false,false]};
