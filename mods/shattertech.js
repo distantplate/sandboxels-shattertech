@@ -1426,15 +1426,15 @@ function isObjValDupe(obj,vals) {
 
 function shieldcheck(x,y,radius,doDamage) {
   logMessage("Check run");
-  if (storageList.shieldgen) {
+  if (storageList.shield_gen) {
     //stage 1
     var sc1 = {c: [0,0,0,0],f: [],confirm: [false,false]};
     var shieldCloseCheck = false;
     var shieldFarCheck = false;
     var nestList = {t: {},f: {}};
-    for (let a in storageList.shieldgen) {
-      var x1 = storageList.shieldgen[a].x;
-      var y1 = storageList.shieldgen[a].y;
+    for (let a in storageList.shield_gen) {
+      var x1 = storageList.shield_gen[a].x;
+      var y1 = storageList.shield_gen[a].y;
       var p = pixelMap[x1][y1];
       if (isEmpty(x1,y1)) {
         continue;
