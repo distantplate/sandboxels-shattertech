@@ -1425,7 +1425,6 @@ function isObjValDupe(obj,vals) {
 };
 
 function shieldcheck(x,y,radius,doDamage) {
-  logMessage("Check run");
   if (storageList.shield_gen) {
     //stage 1
     var sc1 = {c: [0,0,0,0],f: [],confirm: [false,false]};
@@ -1459,10 +1458,9 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2
-    logMessage("Stage 2 reached");
     var sc2 = {f: []};
     if (sc1.confirm[0] !== false) {
-      sc2.c = [sc1.c[0],sc1.c[1]];
+      sc2.c = {x: sc1.c[0],y: sc1.c[1]};
       var p = pixelMap[sc1.c[0]][sc1.c[1]];
       if (p.nestObj) {
         sc1.confirm[1] = true;
@@ -1482,7 +1480,6 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
-    logMessage("Stage 3 reached");
     var sc3 = {c: [],f: []};
     for (let a in sc2) {
       for (let b in sc2[a]) {
