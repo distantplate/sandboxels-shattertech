@@ -1463,10 +1463,12 @@ function shieldcheck(x,y,radius,doDamage) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
       var p = pixelMap[sc1.c[0]][sc1.c[1]];
       if (p.nestObj) {
-        sc1.confirm[1] = true;
+        var tempVal = 0;
         for (let a in p.nestObj) {
           nestList.t[p.nestObj[a].x][p.nestObj[a].y] = true;
+          tempVal++;
         }
+        if (tempVal > 0) {sc1.confirm[1] = true;}
       }
     }
     for (let a in sc1.f) {
@@ -1480,7 +1482,6 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
-	logMessage("Stage 3");
     var sc3 = {c: [],f: []};
     for (let a in sc2) {
       for (let b in sc2[a]) {
