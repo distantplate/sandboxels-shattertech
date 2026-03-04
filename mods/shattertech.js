@@ -1458,9 +1458,9 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2
-    var sc2 = {f: []};
+    var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
-      sc2.c = {x: sc1.c[0],y: sc1.c[1]};
+      sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
       var p = pixelMap[sc1.c[0]][sc1.c[1]];
       if (p.nestObj) {
         sc1.confirm[1] = true;
