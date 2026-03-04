@@ -999,7 +999,6 @@ elements.shield_gen = {
                 }
             }
             pixel.nestObj = inList;
-            var tempcounter = 0;
             for (let B in outList) {
                 var targetloc = pixelMap[outList[B].x][outList[B].y];
                 if (!targetloc.fociLocIn) {continue;}
@@ -1008,10 +1007,7 @@ elements.shield_gen = {
                 if (findFociDistance(pixel.x,C[0],C[2],pixel.y,C[1],C[3]) <= C[4]) {
                     targetloc.nestObj.push({x: pixel.x,y: pixel.y});
                 }
-                tempcounter++;
             }
-            logMessage(tempcounter);
-            //logMessage(templength);
         }
         var tempobj = [];
         for (let a in pixel.nestObj) {
@@ -1462,6 +1458,7 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2
+    logMessage("Stage 2 reached");
     var sc2 = {f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c = [sc1.c[0],sc1.c[1]];
@@ -1478,12 +1475,13 @@ function shieldcheck(x,y,radius,doDamage) {
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
       if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
-        if (nestList.t[x1][y1] == true && !nestList.f[x1][y1]) {
+        if ((nestList.t[x1][y1] === true || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
           sc2.f.push({x: x1,y: y1});
         }
       }
     }
     //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
+    logMessage("Stage 3 reached");
     var sc3 = {c: [],f: []};
     for (let a in sc2) {
       for (let b in sc2[a]) {
