@@ -1518,7 +1518,7 @@ function shieldcheck(x,y,radius,doDamage) {
         if (fOD < (fLO + (2*radius))) {
           if (fID > (fLI + (2*radius)) || (radius > smallRad)) {
             sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y});
-            if (a === “c”) {shieldCloseCheck = true;} else if (a === “f”) {shieldFarCheck = true;}
+            if (a === "c") {shieldCloseCheck = true;} else if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true && p.health > 0) {
               p.health -= Math.pow(10,((radius/10)-1));
             }
