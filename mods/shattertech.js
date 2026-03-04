@@ -1515,6 +1515,7 @@ function shieldcheck(x,y,radius,doDamage) {
         var fID = findFociDistance(x,rLoc.I[0],rLoc.I[2],y,rLoc.I[1],rLoc.I[3]);
         if (fOD < (fLO + (2*radius))) {
           if (fID > (fLI - (2*radius)) || (radius > smallRad)) {
+            logMessage("this works");
             sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y});
             if (a === "c") {shieldCloseCheck = true;} else if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true) {
