@@ -1452,14 +1452,14 @@ function shieldcheck(x,y,radius,doDamage) {
             sc1.confirm[0] = true;
           }
         }
-      } /*else {
+      } else {
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
           for (let b in p.nestObj) {
             nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
         }
-      }*/
+      }
     }
     //stage 2
     /*var sc2 = {c: [],f: []};
