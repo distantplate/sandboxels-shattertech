@@ -1441,7 +1441,7 @@ function shieldcheck(x,y,radius,doDamage) {
         continue;
       }
       var fLI = p.fociLocIn;
-      /*if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
+      if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
           if (sc1.confirm[0] !== false) {
             if (p.xStage >= sc1.c[2] || p.yStage >= sc1.c[3]) {
@@ -1452,7 +1452,7 @@ function shieldcheck(x,y,radius,doDamage) {
             sc1.confirm[0] = true;
           }
         }
-      } else {
+      } /*else {
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
           for (let b in p.nestObj) {
