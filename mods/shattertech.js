@@ -1442,12 +1442,16 @@ function shieldcheck(x,y,radius,doDamage) {
       }
       var fLI = p.fociLocIn;
       if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
-        if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {continue;}
-        if (sc1.confirm[0] !== false) {
-          if (p.xStage >= sc1.c[2] || p.yStage >= sc1.c[3]) {continue;}
+        if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
+          if (sc1.confirm[0] !== false) {
+            if (p.xStage >= sc1.c[2] || p.yStage >= sc1.c[3]) {
+              sc1.c = [x1,y1,p.xStage,p.yStage];
+            }
+          } else {
+            sc1.c = [x1,y1,p.xStage,p.yStage];
+            sc1.confirm[0] = true;
+          }
         }
-        sc1.c = [x1,y1,p.xStage,p.yStage];
-        sc1.confirm[0] = true;
       } else {
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
@@ -1476,7 +1480,7 @@ function shieldcheck(x,y,radius,doDamage) {
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
       if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
-        if ((nestList.t[x1][y1] === true || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
+        if ((nestList.t[x1][y1] || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
           sc2.f.push({x: x1,y: y1});
         }
       }
@@ -1515,7 +1519,7 @@ function shieldcheck(x,y,radius,doDamage) {
         var fID = findFociDistance(x,rLoc.I[0],rLoc.I[2],y,rLoc.I[1],rLoc.I[3]);
         if (fOD < (fLO[4] + (2*radius))) {
           if (fID > (fLI[4] - (2*radius)) || (radius > smallRad)) {
-            sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y});
+            sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y,fx1: fLI[0],fy1: fLI[1],fx2: fLI[2],fy2: fLI[3],d: fLI[4]});
             if (a === "c") {shieldCloseCheck = true;} else if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true) {
               if (p.health > 0) {
