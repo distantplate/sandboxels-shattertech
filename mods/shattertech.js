@@ -1454,21 +1454,23 @@ function shieldcheck(x,y,radius,doDamage) {
         }
       } else {
         sc1.f.push({x: x1,y: y1});
-        /*if (p.nestObj) {
+        if (p.nestObj) {
           for (let b in p.nestObj) {
+            nestList.f[p.nestObj[b].x] = {};
             nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
-        }*/
+        }
       }
     }
     //stage 2
-    /*var sc2 = {c: [],f: []};
+    var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
       var p = pixelMap[sc1.c[0]][sc1.c[1]];
       if (p.nestObj) {
         var tempVal = 0;
         for (let a in p.nestObj) {
+          nestList.t[p.nestObj[a].x] = {};
           nestList.t[p.nestObj[a].x][p.nestObj[a].y] = true;
           tempVal++;
         }
@@ -1531,7 +1533,7 @@ function shieldcheck(x,y,radius,doDamage) {
         }
       }
     }
-    var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};*/
+    //var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
     return false;
   } else {return false;}
 };
