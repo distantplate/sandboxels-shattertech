@@ -1456,7 +1456,7 @@ function shieldcheck(x,y,radius,doDamage) {
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
           for (let b in p.nestObj) {
-            nestList.f[p.nestObj[b].x] = {};
+            if (!nestList.f[p.nestObj[b].x) {nestList.f[p.nestObj[b].x] = {};}
             nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
         }
@@ -1470,7 +1470,7 @@ function shieldcheck(x,y,radius,doDamage) {
       if (p.nestObj) {
         var tempVal = 0;
         for (let a in p.nestObj) {
-          nestList.t[p.nestObj[a].x] = {};
+          if (!nestList.t[p.nestObj[a].x]) {nestList.t[p.nestObj[a].x] = {};}
           nestList.t[p.nestObj[a].x][p.nestObj[a].y] = true;
           tempVal++;
         }
