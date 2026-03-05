@@ -1488,10 +1488,11 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
-    logMessage("works");
+    var checksum = 0;
     var sc3 = {c: [],f: []};
     for (let a in sc2) {
       for (let b in sc2[a]) {
+        checksum++;
         var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
         var rIN = [0,0];
         var rIloc = [];
@@ -1536,6 +1537,7 @@ function shieldcheck(x,y,radius,doDamage) {
         }
       }
     }
+    logMessage(checksum);
     var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
     return tempobj;
   } else {return false;}
