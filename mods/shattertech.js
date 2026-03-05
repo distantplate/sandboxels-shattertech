@@ -1494,7 +1494,8 @@ function shieldcheck(x,y,radius,doDamage) {
       for (let b in sc2[a]) {
         var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
         var rIN = [0,0];
-        var rLoc = {I: [],O: []};
+        var rIloc = [];
+        var rOLoc = [];
         var fLI = p.fociLocIn;
         var fLO = p.fociLocOut;
         var smallRad;
@@ -1512,14 +1513,14 @@ function shieldcheck(x,y,radius,doDamage) {
           rIN[i] = Math.pow((Math.pow((largeRad+k),2) - Math.pow((smallRad+k),2)), (1/2));
         }
         if (fLO[5] === "y") {
-          rLoc.I = [p.x,(p.y+rIN[0]),p.x,(p.y-rIN[0])];
-          rLoc.O = [p.x,(p.y+rIN[1]),p.x,(p.y-rIN[1])];
+          rILoc = [p.x,(p.y+rIN[0]),p.x,(p.y-rIN[0])];
+          rOLoc = [p.x,(p.y+rIN[1]),p.x,(p.y-rIN[1])];
         } else {
-          rLoc.I = [(p.x+rIN[0]),p.y,(p.x-rIN[0]),p.y];
-          rLoc.O = [(p.x+rIN[1]),p.y,(p.x-rIN[1]),p.y];
+          rILoc = [(p.x+rIN[0]),p.y,(p.x-rIN[0]),p.y];
+          rOLoc = [(p.x+rIN[1]),p.y,(p.x-rIN[1]),p.y];
         }
-        var fOD = findFociDistance(x,rLoc.O[0],rLoc.O[2],y,rLoc.O[1],rLoc.O[3]);
-        var fID = findFociDistance(x,rLoc.I[0],rLoc.I[2],y,rLoc.I[1],rLoc.I[3]);
+        var fOD = findFociDistance(x,rOLoc[0],rOLoc[2],y,rOLoc[1],rOLoc[3]);
+        var fID = findFociDistance(x,rILoc[0],rILoc[2],y,rILoc[1],rILoc[3]);
         if (fOD < (fLO[4] + (2*radius))) {
           if (fID > (fLI[4] - (2*radius)) || (radius > smallRad)) {
             sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y,fx1: fLI[0],fy1: fLI[1],fx2: fLI[2],fy2: fLI[3],d: fLI[4]});
