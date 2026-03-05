@@ -1523,6 +1523,7 @@ function shieldcheck(x,y,radius,doDamage) {
         if (fOD < (fLO[4] + (2*radius))) {
           if (fID > (fLI[4] - (2*radius)) || (radius > smallRad)) {
             sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y,fx1: fLI[0],fy1: fLI[1],fx2: fLI[2],fy2: fLI[3],d: fLI[4]});
+            logMessage(sc3[a].x + ", " + sc3[a].y + ", " + sc3[a].fx1 + ", " + sc3[a].fy1 + ", " + sc3[a].fx2 + ", " + sc3[a].fy2 + ", " + sc3[a].d);
             if (a === "c") {shieldCloseCheck = true;} else if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true) {
               if (p.health > 0) {
