@@ -1538,6 +1538,7 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     logMessage(checksum);
+	//please for the love of god work i beg you
     var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
     return tempobj;
   } else {return false;}
