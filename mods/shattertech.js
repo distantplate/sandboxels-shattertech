@@ -1433,7 +1433,6 @@ function shieldcheck(x,y,radius,doDamage) {
     var nestList = {t: {},f: {}};
     var checksum = 0;
     for (let a in storageList.shield_gen) {
-      checksum++;
       var x1 = storageList.shield_gen[a].x;
       var y1 = storageList.shield_gen[a].y;
       var p = pixelMap[x1][y1];
@@ -1442,6 +1441,7 @@ function shieldcheck(x,y,radius,doDamage) {
       } else if ((p.element !== "shield_gen") || !(p.xStage && p.yStage)) {
         continue;
       }
+      checksum++;
       var fLI = p.fociLocIn;
       if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
