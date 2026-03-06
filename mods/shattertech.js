@@ -1463,9 +1463,11 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2
+    var checksum = 0;
     var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
+      checksum++;
       var p = pixelMap[sc1.c[0]][sc1.c[1]];
       if (p.nestObj) {
         var tempVal = 0;
@@ -1484,15 +1486,15 @@ function shieldcheck(x,y,radius,doDamage) {
       if (p.offline == false && p.timer == 0 && p.syncCheck == 10) {
         if ((nestList.t[x1][y1] || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
           sc2.f.push({x: x1,y: y1});
+          checksum++;
         }
       }
     }
+    logMessage(checksum);
     //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
-    var checksum = 0;
     var sc3 = {c: [],f: []};
     for (let a in sc2) {
       for (let b in sc2[a]) {
-        checksum++;
         var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
         var rIN = [0,0];
         var rIloc = [];
@@ -1537,7 +1539,6 @@ function shieldcheck(x,y,radius,doDamage) {
         }
       }
     }
-    logMessage(checksum);
     var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
     return tempobj;
   } else {return false;}
