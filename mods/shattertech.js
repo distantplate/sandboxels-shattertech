@@ -1431,7 +1431,6 @@ function shieldcheck(x,y,radius,doDamage) {
     var shieldCloseCheck = false;
     var shieldFarCheck = false;
     var nestList = {t: {},f: {}};
-    var checksum = 0;
     for (let a in storageList.shield_gen) {
       var x1 = storageList.shield_gen[a].x;
       var y1 = storageList.shield_gen[a].y;
@@ -1467,6 +1466,7 @@ function shieldcheck(x,y,radius,doDamage) {
     var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
+      shieldCloseCheck = true;
       var p = pixelMap[sc1.c[0]][sc1.c[1]];
       if (p.nestObj) {
         var tempVal = 0;
@@ -1490,9 +1490,8 @@ function shieldcheck(x,y,radius,doDamage) {
     }
     //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
     var sc3 = {c: [],f: []};
-    /*for (let a in sc2) {
+    for (let a in sc2) {
       for (let b in sc2[a]) {
-        checksum++;
         var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
         var rIN = [0,0];
         var rIloc = [];
@@ -1525,20 +1524,19 @@ function shieldcheck(x,y,radius,doDamage) {
         if (fOD < (fLO[4] + (2*radius))) {
           if (fID > (fLI[4] - (2*radius)) || (radius > smallRad)) {
             sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y,fx1: fLI[0],fy1: fLI[1],fx2: fLI[2],fy2: fLI[3],d: fLI[4]});
-            if (a === "c") {shieldCloseCheck = true;} else if (a === "f") {shieldFarCheck = true;}
+            if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true) {
               if (p.health > 0) {
                 p.health -= Math.pow(10,((radius/10)-1));
               }
               p.heat = 60;
             }
-          }
+          } else if (a === "c") {sc3.c.push({x: sc2[a][b].x,y: sc2[a][b],f: true});}
         }
       }
-    }*/
-    logMessage(checksum);
-    //var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
-    return false;
+    }
+    var tempobj = {sCC: sc3.c,sCVal: shieldCloseCheck,sFC: sc3.f,sFVal: shieldFarCheck};
+    return tempobj;
   } else {return false;}
 };
 
@@ -1557,13 +1555,13 @@ explodeAt = function(x,y,radius,fire="fire") {
         if (radius <= 30 && bypass == false && checks !== false) {
             if (checks.sCVal == true) {
                 for (let z in checks.sCC){
-                    var tempsCC = [];
-                    for (let Z in checks.sCC[z]) {tempsCC.push(checks.sCC[z][Z]);}
-                    if (findFociDistance(coords[i].x,tempsCC[2],tempsCC[4],coords[i].y,tempsCC[3],tempsCC[5]) > tempsCC[6]){
+                    if (coords[i].x == checks.sCC[z].x && coords[i].y == checks.sCC[z].y) {
                         bypass = true;
-                    }
-                    if (pixelMap[coords[i].x][coords[i].y].element === "shield_gen") {
-                        bypass = true;
+                    } else if (!checks.sCC[z].f) {
+                        var tSCC = checks.sCC[z];
+                        if (findFociDistance(coords[i].x,tSCC.fx1,tSCC.fx2,coords[i].y,tSCC.fy1,tSCC.fy2) > tSCC.d){
+                            bypass = true;
+                        }
                     }
                 }
             }
