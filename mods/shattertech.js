@@ -1431,7 +1431,9 @@ function shieldcheck(x,y,radius,doDamage) {
     var shieldCloseCheck = false;
     var shieldFarCheck = false;
     var nestList = {t: {},f: {}};
+    var checksum = 0;
     for (let a in storageList.shield_gen) {
+      checksum++;
       var x1 = storageList.shield_gen[a].x;
       var y1 = storageList.shield_gen[a].y;
       var p = pixelMap[x1][y1];
@@ -1463,7 +1465,6 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2
-    var checksum = 0;
     var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
