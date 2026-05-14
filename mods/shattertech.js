@@ -1483,10 +1483,10 @@ function shieldcheck(x,y,radius,doDamage) {
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
       if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
-        var nLCheck = false;
-        if (!nestList.f[x1]) {nLCheck = true;}
-        else if (!nestList.f[x1][y1]) {nLCheck = true;}
-        /*this is the problem child*/if ((nestList.t[x1][y1] || sc1.confirm[1] === false) && nLCheck === true) {
+        var nLCheck = [false,false];
+        if (!nestList.f[x1]) {nLCheck[0] = true;} else if (!nestList.f[x1][y1]) {nLCheck[0] = true;}
+        if (nestList.t[x1]) {if (nestList.t[x1][y1]) {nLCheck[1] = true;}}
+        /*this is the problem child*/if ((nLCheck[1] === true || sc1.confirm[1] === false) && nLCheck[0] === true) {
           logMessage("please for the love of god work");
           sc2.f.push({x: x1,y: y1});
         }
