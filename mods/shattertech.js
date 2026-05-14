@@ -1483,7 +1483,7 @@ function shieldcheck(x,y,radius,doDamage) {
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
       if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
-        /*this is the problem child*/if ((nestList.t[x1][y1] || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
+        /*this is the problem child*/if ((nestList.t[x1][y1] || (sc1.confirm[1] === false)) && !nestList.f[x1][y1]) {
           sc2.f.push({x: x1,y: y1});
         }
       }
