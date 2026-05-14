@@ -1453,6 +1453,7 @@ function shieldcheck(x,y,radius,doDamage) {
           }
         }
       } else {
+        logMessage("stage 1 shield far success");
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
           for (let b in p.nestObj) {
@@ -1487,7 +1488,6 @@ function shieldcheck(x,y,radius,doDamage) {
           sc2.f.push({x: x1,y: y1});
         }
       }
-      logMessage("stage 2 far success");
     }
     //stage 3 - processes assembled lists
     //"your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
