@@ -1478,12 +1478,12 @@ function shieldcheck(x,y,radius,doDamage) {
         if (tempVal > 0) {sc1.confirm[1] = true;}
       }
     }
-    //code runs to this point at least
     for (let a in sc1.f) {
-      logMessage("stage 2 far begun");
+      //code runs until at least here
       var x1 = sc1.f[a].x;
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
+      logMessage("SFC 2 variables set");
       if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
         if ((nestList.t[x1][y1] || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
           sc2.f.push({x: x1,y: y1});
