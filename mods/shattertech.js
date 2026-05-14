@@ -1535,7 +1535,7 @@ function shieldcheck(x,y,radius,doDamage) {
               }
               p.heat = 60;
             }
-          }
+          } else if (a === "c") {sc3.c.push({x: sc2[a][b].x,y: sc2[a][b].y,f: true});}
         }
       }
     }
@@ -1557,12 +1557,15 @@ explodeAt = function(x,y,radius,fire="fire") {
     for (var i = 0; i < coords.length; i++) {
         bypass = false;
         if (radius <= 30 && bypass == false && checks !== false) {
-            if (pixelMap[coords[i].x][coords[i].y].element === "shield_gen") {continue;}
             if (checks.sCVal == true) {
                 for (let z in checks.sCC){
-                    var tSCC = checks.sCC[z];
-                    if (findFociDistance(coords[i].x,tSCC.fx1,tSCC.fx2,coords[i].y,tSCC.fy1,tSCC.fy2) > tSCC.d){
+                    if (coords[i].x == checks.sCC[z].x && coords[i].y == checks.sCC[z].y) {
                         bypass = true;
+                    } else if (!checks.sCC[z].f) {
+                        var tSCC = checks.sCC[z];
+                        if (findFociDistance(coords[i].x,tSCC.fx1,tSCC.fx2,coords[i].y,tSCC.fy1,tSCC.fy2) > tSCC.d){
+                            bypass = true;
+                        }
                     }
                 }
             }
