@@ -1426,7 +1426,7 @@ function isObjValDupe(obj,vals) {
 
 function shieldcheck(x,y,radius,doDamage) {
   if (storageList.shield_gen) {
-    //stage 1
+    //stage 1 - seperates shields by if explosion is outside shield area
     var sc1 = {c: [0,0,0,0],f: [],confirm: [false,false]};
     var shieldCloseCheck = false;
     var shieldFarCheck = false;
@@ -1462,7 +1462,7 @@ function shieldcheck(x,y,radius,doDamage) {
         }
       }
     }
-    //stage 2
+    //stage 2 - assembles nest list for closest shield, checks for valid far shields
     var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
@@ -1488,7 +1488,8 @@ function shieldcheck(x,y,radius,doDamage) {
         }
       }
     }
-    //stage 3 - "your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
+    //stage 3 - processes assembled lists
+    //"your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
     var sc3 = {c: [],f: []};
     for (let a in sc2) {
       for (let b in sc2[a]) {
@@ -1531,7 +1532,7 @@ function shieldcheck(x,y,radius,doDamage) {
               }
               p.heat = 60;
             }
-          } else if (a === "c") {sc3.c.push({x: sc2[a][b].x,y: sc2[a][b],f: true});}
+          } else if (a === "c") {sc3.c.push({x: sc2[a][b].x,y: sc2[a][b].y,f: true});}
         }
       }
     }
