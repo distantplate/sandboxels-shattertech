@@ -1478,8 +1478,9 @@ function shieldcheck(x,y,radius,doDamage) {
         if (tempVal > 0) {sc1.confirm[1] = true;}
       }
     }
-    logMessage("stage 2 close success");
+    //code runs to this point at least
     for (let a in sc1.f) {
+      logMessage("stage 2 far begun");
       var x1 = sc1.f[a].x;
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
