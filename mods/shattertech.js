@@ -1482,10 +1482,10 @@ function shieldcheck(x,y,radius,doDamage) {
       var x1 = sc1.f[a].x;
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
-      //stops working after here
       if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
-        logMessage("confirm");
+        //stops working after here
         if ((nestList.t[x1][y1] || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
+          logMessage("confirm");
           sc2.f.push({x: x1,y: y1});
         }
       }
