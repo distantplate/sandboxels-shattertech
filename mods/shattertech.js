@@ -1428,6 +1428,8 @@ function shieldcheck(x,y,radius,doDamage) {
   if (storageList.shield_gen) {
     //stage 1 - seperates shields by if explosion is outside shield area
     var sc1 = {c: [0,0,0,0],f: [],confirm: [false,false]};
+    var sc2 = {c: [],f: []};
+    var sc3 = {c: [],f: []};
     var shieldCloseCheck = false;
     var shieldFarCheck = false;
     var nestList = {t: {},f: {}};
@@ -1446,6 +1448,7 @@ function shieldcheck(x,y,radius,doDamage) {
           if (sc1.confirm[0] !== false) {
             if (p.xStage < sc1.c[2] && p.yStage < sc1.c[3]) {
               sc1.c = [x1,y1,p.xStage,p.yStage];
+              sc3.c.push({x: x1,y: y1,f: true});
             }
           } else {
             sc1.c = [x1,y1,p.xStage,p.yStage];
@@ -1463,7 +1466,6 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2 - assembles nest list for closest shield, checks for valid far shields
-    var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
       shieldCloseCheck = true;
@@ -1493,7 +1495,6 @@ function shieldcheck(x,y,radius,doDamage) {
     }
     //stage 3 - processes assembled lists
     //"your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
-    var sc3 = {c: [],f: []};
     for (let a in sc2) {
       for (let b in sc2[a]) {
         var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
