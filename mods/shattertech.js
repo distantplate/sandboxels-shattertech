@@ -1486,8 +1486,7 @@ function shieldcheck(x,y,radius,doDamage) {
         var nLCheck = [false,false];
         if (!nestList.f[x1]) {nLCheck[0] = true;} else if (!nestList.f[x1][y1]) {nLCheck[0] = true;}
         if (nestList.t[x1]) {if (nestList.t[x1][y1]) {nLCheck[1] = true;}}
-        /*this is the problem child*/if ((nLCheck[1] === true || sc1.confirm[1] === false) && nLCheck[0] === true) {
-          logMessage("please for the love of god work");
+        if ((nLCheck[1] === true || sc1.confirm[1] === false) && nLCheck[0] === true) {
           sc2.f.push({x: x1,y: y1});
         }
       }
