@@ -1464,6 +1464,7 @@ function shieldcheck(x,y,radius,doDamage) {
       }
     }
     //stage 2 - assembles nest list for closest shield, checks for valid far shields
+    logMessage("stage 1 complete");
     var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
