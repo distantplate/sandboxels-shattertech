@@ -1482,13 +1482,13 @@ function shieldcheck(x,y,radius,doDamage) {
       var x1 = sc1.f[a].x;
       var y1 = sc1.f[a].y;
       var p = pixelMap[x1][y1];
-      //code runs until at least this point
+      //stops working after here
       if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
+        logMessage("confirm");
         if ((nestList.t[x1][y1] || sc1.confirm[1] === false) && !nestList.f[x1][y1]) {
           sc2.f.push({x: x1,y: y1});
         }
       }
-      logMessage("SFC 2 success");
     }
     //stage 3 - processes assembled lists
     //"your scientists were so procupied with whether or not they could that they didn't stop to think if they should"
