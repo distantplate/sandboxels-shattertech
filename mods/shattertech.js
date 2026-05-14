@@ -1453,7 +1453,6 @@ function shieldcheck(x,y,radius,doDamage) {
           }
         }
       } else {
-        logMessage("stage 1 shield far success");
         sc1.f.push({x: x1,y: y1});
         if (p.nestObj) {
           for (let b in p.nestObj) {
@@ -1461,6 +1460,7 @@ function shieldcheck(x,y,radius,doDamage) {
             nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
         }
+        logMessage("stage 1 shield far success");
       }
     }
     //stage 2 - assembles nest list for closest shield, checks for valid far shields
