@@ -1460,11 +1460,9 @@ function shieldcheck(x,y,radius,doDamage) {
             nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
           }
         }
-        logMessage("stage 1 shield far success");
       }
     }
     //stage 2 - assembles nest list for closest shield, checks for valid far shields
-    logMessage("stage 1 complete");
     var sc2 = {c: [],f: []};
     if (sc1.confirm[0] !== false) {
       sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
@@ -1480,6 +1478,7 @@ function shieldcheck(x,y,radius,doDamage) {
         if (tempVal > 0) {sc1.confirm[1] = true;}
       }
     }
+    logMessage("stage 2 close success");
     for (let a in sc1.f) {
       var x1 = sc1.f[a].x;
       var y1 = sc1.f[a].y;
