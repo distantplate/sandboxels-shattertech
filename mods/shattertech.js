@@ -1558,10 +1558,8 @@ explodeAt = function(x,y,radius,fire="fire") {
         bypass = false;
         if (radius <= 30 && bypass == false && checks !== false) {
             if (checks.sCVal == true) {
-                for (let z in checks.sCC){
-                    if (coords[i].x == checks.sCC[z].x && coords[i].y == checks.sCC[z].y) {
-                        bypass = true;
-                    } else if (!checks.sCC[z].f) {
+                for (let z in checks.sCC) {
+                    if (!checks.sCC[z].f) {
                         var tSCC = checks.sCC[z];
                         if (findFociDistance(coords[i].x,tSCC.fx1,tSCC.fx2,coords[i].y,tSCC.fy1,tSCC.fy2) > tSCC.d){
                             bypass = true;
@@ -1724,6 +1722,7 @@ runEveryTick(function () {
 runAfterReset(function() {
     storageList = {};
 });
+
 runAfterLoad(function() {
     storageList = {};
 });
