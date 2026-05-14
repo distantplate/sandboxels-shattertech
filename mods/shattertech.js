@@ -1558,9 +1558,6 @@ explodeAt = function(x,y,radius,fire="fire") {
     for (var i = 0; i < coords.length; i++) {
         bypass = false;
         if (radius <= 30 && bypass == false && checks !== false) {
-            if (!isEmpty(coords[i].x,coords[i].y)) {
-                if (pixelMap[coords[i].x][coords[i].y].element === "shield_gen") {continue;}
-            }
             if (checks.sCVal == true) {
                 for (let z in checks.sCC) {
                     if (!checks.sCC[z].f) {
