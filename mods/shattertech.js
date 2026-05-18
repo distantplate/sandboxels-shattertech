@@ -1318,10 +1318,38 @@ function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
         templength++;
     }
     if (templength < 1) {
-      var coords = circleCoords(x,y,r1);
-      var tempVal = {x: x,y: y,r1: r1,r2: r2,fire: fire2,locList: coords,time: 31};
-      if (isObjValDupe(storageList.barrages,tempVal) == false) {
-        storageList.barrages[templength] = tempVal;
+      var tempCoords = circleCoords(x,y,r1);
+      var checks = shieldcheck(x,y,r1,false);
+      var coords = [];
+      if (r1 < 31 && checks !== false) {
+        var bypass = false;
+        for (i = 0; i < tempCoords.length; i++) {
+          bypass = false;
+          if (checks.sCVal == true) {
+            for (let z in checks.sCC) {
+              if (tempCoords[i].x == checks.sCC[z].x && tempCoords[i].y == checks.sCC[z].y) {
+                bypass = true;
+              } else if (!checks.sCC[z].f) {
+                var tSCC = checks.sCC[z];
+                if (findFociDistance(tempCoords[i].x,tSCC.fx1,tSCC.fx2,tempCoords[i].y,tSCC.fy1,tSCC.fy2) > tSCC.d) {bypass = true;}
+              }
+            }
+          }
+          if (checks.sFVal == true) {
+            for (let z in checks.sFC) {
+              var tSFC = [];
+              for (let Z in checks.sFC[z]) {tSFC.push(checks.sFC[z][Z]);}
+              if (findFociDistance(tempCoords[i].x,tSFC[2],tSFC[4],tempCoords[i].y,tSFC[3],tSFC[5]) <= tSFC[6]) {bypass = true;}
+            }
+          }
+          if (bypass == false) {coords.push(tempCoords[i]);}
+        }
+      } else {coords = tempCoords;}
+      if (coords.length > 0) {
+        var tempVal = {x: x,y: y,r1: r1,r2: r2,fire: fire2,locList: coords,time: 31};
+        if (isObjValDupe(storageList.barrages,tempVal) == false) {
+          storageList.barrages[templength] = tempVal;
+        }
       }
     }
 }
@@ -1711,7 +1739,7 @@ runEveryTick(function () {
               }
             }
           }
-          if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time = storageList.barrages[z].time - 1;}
+          if (storageList.barrages[z].time > 0 ) {storageList.barrages[z].time--;}
           if (storageList.barrages[z].time && storageList.barrages[z].time > 0) {placehold.push(storageList.barrages[z]);}
         }
         storageList.barrages = {};
