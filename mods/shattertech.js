@@ -1274,7 +1274,7 @@ elements.shattertech_info = {
   onSelect: function() {
     showInfo("shattertech_info");
   },
-  onMouseDown function() {
+  onMouseDown: function() {
     showInfo("shattertech_info");
   },
   category: "tools",
