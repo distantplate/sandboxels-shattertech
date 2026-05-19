@@ -1300,7 +1300,7 @@ elements.shield_config = {
             else if (answer2 < 1 || answer2 > 40) {selectElement("unknown"); logMessage("Height must be between 1 and 40!"); return}
             currentWidth = answer1;
             currentHeight = answer2;
-            //logMessage("("answer1 + " , " + answer2")");
+            logMessage("(" + answer1 + " , " + answer2 + ")");
           },
           "Enter height",currentHeight
         )
