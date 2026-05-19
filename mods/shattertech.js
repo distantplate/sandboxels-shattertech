@@ -362,48 +362,6 @@ elements.lance = {
     insulate: true,
 };
 
-elements.efuse = {
-    color: "#825d38",
-    tick: function(pixel) {
-        var quirgle = 5;
-        if (pixelTicks - pixel.start >= quirgle) {
-            doDefaults(pixel);
-            deletePixel(pixel.x,pixel.y)
-        }
-        else { doDefaults(pixel); }
-        if (pixel.charge) {
-            changePixel(pixel,"flash");
-            pixel.charge = 0;
-        }
-    },
-    movable: false,
-    tempHigh: 500,
-    stateHigh: "fire",
-    burn: 100,
-    burnTime: 1,
-    fireElement: "flash",
-    burnInto: "flash",
-    category: "machines",
-    state: "solid",
-    density: 1000,
-    conduct: 1,
-    ignoreConduct:["ecloner","sensor","fusebox"]
-};
-
-elements.fusebox = {
-    color: "#725c38",
-    behavior: behaviors.WALL,
-    behaviorOn: [
-        "XX|CR:efuse|XX",
-        "CR:efuse|XX|CR:efuse",
-        "XX|CR:efuse|XX",
-    ],
-    category: "machines",
-    conduct: 1,
-    ignoreConduct: ["efuse"],
-    temp: 20,
-};
-
 elements.conduit = {
     color: "#660066",
     onSelect: function() {
@@ -579,7 +537,7 @@ elements.conduit = {
         doDefaults(pixel);
     },
     colorOn: "#ff00ff",
-    ignoreConduct: ["sensor","efuse","fusebox"],
+    ignoreConduct: ["sensor"],
     conduct: 1,
     category: "machines",
     movable: false,
@@ -850,7 +808,7 @@ elements.c_utility = {
         }
         doDefaults(pixel);
     },
-    ignoreConduct: ["sensor","efuse","fusebox","conduit","portal_in"],
+    ignoreConduct: ["sensor","conduit","portal_in"],
     conduct: 1,
     category: "machines",
     movable: false,
@@ -1308,6 +1266,20 @@ elements.sized_disintegrate = {
   insulate: true,
   //charge: 0.5,
   conduct: 1
+};
+
+elements.shattertech_info = {
+  color: ["#6f00ff","#996bd9","#6f00ff"],
+  behavior: behaviors.WALL,
+  onSelect: function() {
+    showInfo("shattertech_info");
+  },
+  onMouseDown function() {
+    showInfo("shattertech_info");
+  },
+  category: "tools",
+  canPlace: false,
+  desc: "if you're having trouble figuring out an element, read its description"
 };
 
 function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
