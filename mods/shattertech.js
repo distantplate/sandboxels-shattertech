@@ -1277,6 +1277,9 @@ elements.shattertech_info = {
   tool: function() {
     showInfo("shattertech_info");
   },
+  onMouseDown function {
+    showInfo("shattertech_info");
+  },
   category: "tools",
   canPlace: false,
   desc: "if you're having trouble figuring out an element, read its description"
