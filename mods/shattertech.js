@@ -1286,7 +1286,7 @@ elements.shattertech_info = {
 };
 
 elements.shield_config = {
-  color: ["00c8c8","00afaf"],
+  color: ["#00c8c8","#00afaf"],
   onSelect: function(){
     promptInput("Enter desired shield width (1-40)",
       (answer1) => {
