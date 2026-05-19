@@ -1282,18 +1282,18 @@ elements.shattertech_info = {
   },
   category: "tools",
   canPlace: false,
-  desc: "if you're having trouble figuring out an element, read it's description<br>currently WIP"
+  desc: "if you're having trouble figuring out an element, read it's description<br/>currently WIP"
 };
 
 elements.shield_config = {
   color: ["00c8c8","00afaf"],
-  /*onSelect: function() {
+  onSelect: function(){
     promptInput("Enter desired shield width (1-40)",
       (answer1) => {
         if (!answer1) {selectElement("unknown"); return}
         else if (isNaN(answer1)) {selectElement("unknown"); logMessage("Not a number!"); return}
         else if (answer1 < 1 || answer1 > 40) {selectElement("unknown"); logMessage("Width must be between 1 and 40!"); return}
-        promptInput("Enter desired shield height (1-40)",
+        /*promptInput("Enter desired shield height (1-40)",
           (answer2) => {
             if (!answer2) {selectElement("unknown"); return}
             else if (isNaN(answer2)) {selectElement("unknown"); logMessage("Not a number!"); return}
@@ -1303,11 +1303,11 @@ elements.shield_config = {
             logMessage("("answer1 + " , " + answer2")");
           },
           "Enter height",currentHeight
-        )
+        )*/
       },
       "Enter width",currentWidth
     )
-  },*/
+  },
   tool: function(pixel) {
     if (!currentWidth || !currentHeight) {return}
     if (pixel.element === "shield_gen") {
