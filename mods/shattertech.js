@@ -1293,17 +1293,17 @@ elements.shield_config = {
         if (!answer1) {selectElement("unknown"); return}
         else if (isNaN(answer1)) {selectElement("unknown"); logMessage("Not a number!"); return}
         else if (answer1 < 1 || answer1 > 40) {selectElement("unknown"); logMessage("Width must be between 1 and 40!"); return}
-        /*promptInput("Enter desired shield height (1-40)",
+        promptInput("Enter desired shield height (1-40)",
           (answer2) => {
             if (!answer2) {selectElement("unknown"); return}
             else if (isNaN(answer2)) {selectElement("unknown"); logMessage("Not a number!"); return}
             else if (answer2 < 1 || answer2 > 40) {selectElement("unknown"); logMessage("Height must be between 1 and 40!"); return}
             currentWidth = answer1;
             currentHeight = answer2;
-            logMessage("("answer1 + " , " + answer2")");
+            //logMessage("("answer1 + " , " + answer2")");
           },
           "Enter height",currentHeight
-        )*/
+        )
       },
       "Enter width",currentWidth
     )
