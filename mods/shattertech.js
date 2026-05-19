@@ -1308,7 +1308,7 @@ elements.shield_config = {
       "Enter width",currentWidth
     )
   },
-  tool function(pixel) {
+  tool: function(pixel) {
     if (!currentWidth || !currentHeight) {return}
     if (pixel.element === "shield_gen") {
       pixel.xStage = currentWidth;
