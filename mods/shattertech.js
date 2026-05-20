@@ -1298,8 +1298,10 @@ elements.shield_config = {
             if (!answer2) {selectElement("unknown"); return}
             else if (isNaN(answer2)) {selectElement("unknown"); logMessage("Not a number!"); return}
             else if (answer2 < 1 || answer2 > 40) {selectElement("unknown"); logMessage("Height must be between 1 and 40!"); return}
-            shieldConfigVal = [answer1,answer2];
-            logMessage("width: " + answer1 + ", height: " + answer2);
+            var widthStore = Math.round(parseFloat(answer1));
+            var heightStore = Math.round(parseFloat(answer2));
+            shieldConfigVal = [widthStore,heightStore];
+            logMessage("width: " + widthStore + ", height: " + heightStore);
           }, "Enter height")
       }, "Enter width")
   },
