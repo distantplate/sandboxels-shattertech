@@ -1481,8 +1481,8 @@ function shieldcheck(x,y,radius,doDamage) {
         if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
           if (sc1.confirm[0] !== false) {
             if (p.xStage < sc1.c[2] && p.yStage < sc1.c[3]) {
+              sc3.c.push({x: sc1.c[0],y: sc1.c[1],f: true});
               sc1.c = [x1,y1,p.xStage,p.yStage];
-              sc3.c.push({x: x1,y: y1,f: true});
             }
           } else {
             sc1.c = [x1,y1,p.xStage,p.yStage];
