@@ -1285,34 +1285,28 @@ elements.shattertech_info = {
   desc: "if you're having trouble figuring out an element, read it's description<br/>currently WIP"
 };
 
+let shieldConfigVal = [15,15]; //setting to 15,15 in case it doesn't get set below
+
 elements.shield_config = {
   color: ["#00c8c8","#00afaf"],
   onSelect: function(){
-    promptInput("Enter desired shield width (1-40)",
-      (answer1) => {
+    promptInput("Enter desired shield width (1-40)", (answer1) => {
         if (!answer1) {selectElement("unknown"); return}
         else if (isNaN(answer1)) {selectElement("unknown"); logMessage("Not a number!"); return}
         else if (answer1 < 1 || answer1 > 40) {selectElement("unknown"); logMessage("Width must be between 1 and 40!"); return}
-        promptInput("Enter desired shield height (1-40)",
-          (answer2) => {
+        promptInput("Enter desired shield height (1-40)", (answer2) => {
             if (!answer2) {selectElement("unknown"); return}
             else if (isNaN(answer2)) {selectElement("unknown"); logMessage("Not a number!"); return}
             else if (answer2 < 1 || answer2 > 40) {selectElement("unknown"); logMessage("Height must be between 1 and 40!"); return}
-            currentWidth = answer1;
-            currentHeight = answer2;
-            logMessage("(" + answer1 + " , " + answer2 + ")");
-          },
-          "Enter height",currentHeight
-        )
-      },
-      "Enter width",currentWidth
-    )
+            shieldConfigVal = [answer1,answer2];
+            logMessage("width: " + answer1 + ", height: " + answer2);
+          }, "Enter height")
+      }, "Enter width")
   },
   tool: function(pixel) {
-    if (!currentWidth || !currentHeight) {return}
     if (pixel.element === "shield_gen") {
-      pixel.xStage = currentWidth;
-      pixel.yStage = currentHeight;
+      pixel.xStage = shieldConfigVal[0];
+      pixel.yStage = shieldConfigVal[1];
     }
     return;
   },
