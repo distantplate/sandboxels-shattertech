@@ -1290,11 +1290,11 @@ let shieldConfigVal = [15,15]; //setting to 15,15 in case it doesn't get set bel
 elements.shield_config = {
   color: ["#00c8c8","#00afaf"],
   onSelect: function(){
-    promptInput("Enter desired shield width (1-40)<br/>decimals will be rounded", (answer1) => {
+    promptInput("Enter desired shield width (1-40)\ndecimals will be rounded", (answer1) => {
         if (!answer1) {selectElement("unknown"); return}
         else if (isNaN(answer1)) {selectElement("unknown"); logMessage("Not a number!"); return}
         else if (answer1 < 1 || answer1 > 40) {selectElement("unknown"); logMessage("Width must be between 1 and 40!"); return}
-        promptInput("Enter desired shield height (1-40)<br/>decimals will be rounded", (answer2) => {
+        promptInput("Enter desired shield height (1-40)\ndecimals will be rounded", (answer2) => {
             if (!answer2) {selectElement("unknown"); return}
             else if (isNaN(answer2)) {selectElement("unknown"); logMessage("Not a number!"); return}
             else if (answer2 < 1 || answer2 > 40) {selectElement("unknown"); logMessage("Height must be between 1 and 40!"); return}
