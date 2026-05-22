@@ -321,7 +321,7 @@ elements.lance = {
                       if (elements[pixelMap[x][y].element].hardness != 1){
                         if (Math.random() >= elements[pixelMap[x][y].element].hardness || elements[pixelMap[x][y].element].hardness == null){
                           var newPixel = pixelMap[x][y];
-                          if (pixelMap[x][y].element === "c_utility"){
+                          if (pixelMap[x][y].element === "net_link"){
                             changePixel(newPixel,"pulse");
                           } else {
                             deletePixel(x,y);
@@ -362,189 +362,6 @@ elements.lance = {
     insulate: true,
 };
 
-elements.conduit = {
-    color: "#660066",
-    onSelect: function() {
-        logMessage("Draw a conduit, wait for walls to appear, then erase the exit hole. The conduit will burn out when broken.");
-    },
-    tick: function(pixel) {
-        if (!pixel.detection){
-          pixel.detection = [
-            0,0,0,
-            0,0,0,
-            0,0,0
-          ];
-        }
-        if (!pixel.primed){
-          pixel.primed = false;
-        }
-        if (pixel.stage === 1 || !pixel.stage){
-          pixel.color = "#414c4f";
-        }
-        if (!pixel.stage && pixelTicks-pixel.start > 60) {
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                if (!isEmpty(x,y,true) && elements[pixelMap[x][y].element].movable) {
-                    deletePixel(x,y)
-                }
-                if (isEmpty(x,y)) {
-                    createPixel("pipe_wall",x,y);
-                }
-            }
-            for (var dexx = 0; dexx < 3; dexx++){
-              for (var dexy = 0; dexy < 3; dexy++){
-                var x = (pixel.x + (dexx-1));
-                var y = (pixel.y + (dexy-1));
-                var dexi = (dexy + (3*dexx));
-                if (!isEmpty(x,y,true)){
-                  if (pixelMap[x][y].element === "conduit" || pixelMap[x][y].element === "c_utility"){
-                    pixel.detection[dexi] = 1;
-                  }
-                }
-              }
-            }
-            pixel.stage = 1;
-        }
-        else if (pixel.stage === 1 && pixelTicks-pixel.start > 70) { //uninitialized
-            for (var i = 0; i < adjacentCoords.length; i++) {
-                var coord = adjacentCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                if (isEmpty(x,y)) {
-                  pixel.stage = 2; //blue
-                  pixel.color = pixelColorPick(pixel,"#660066");
-                  for (var dexx = 0; dexx < 3; dexx++){
-                    for (var dexy = 0; dexy < 3; dexy++){
-                      var checkx = (pixel.x + (dexx-1));
-                      var checky = (pixel.y + (dexy-1));
-                      var dexi = (dexy + (3*dexx));
-                      if (!isEmpty(checkx,checky,true)){
-                        if (pixelMap[checkx][checky].element === "conduit" || pixelMap[checkx][checky].element === "c_utility"){
-                          pixel.detection[dexi] = 1;
-                        }
-                      }
-                    }
-                  }
-                  break;
-                }
-            }
-        }
-        else if (pixel.stage > 1 && pixel.stage < 5 && pixelTicks % 3 === pixel.stage-2) { //initialized
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "conduit"){
-                    var newPixel = pixelMap[x][y];
-                    if (newPixel.stage === 1) {
-                        var newColor;
-                        switch (pixel.stage) {
-                            case 2: newPixel.stage = 3; newColor = "#660066"; break; //green
-                            case 3: newPixel.stage = 4; newColor = "#660066"; break; //red
-                            case 4: newPixel.stage = 2; newColor = "#660066"; break; //blue
-                        }
-                        newPixel.color = pixelColorPick(newPixel,newColor);
-                    }
-                  }
-                }
-            }
-            for (var dexx = 0; dexx < 3; dexx++){
-              for (var dexy = 0; dexy < 3; dexy++){
-                var x = (pixel.x + (dexx-1));
-                var y = (pixel.y + (dexy-1));
-                var dexi = (dexy + (3*dexx));
-                if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "conduit" || pixelMap[x][y].element === "c_utility"){
-                    pixel.detection[dexi] = 1;
-                  }
-                  else if (pixel.detection[dexi] > 0){
-                    if (pixel.primed == true){
-                      pixel.detection[dexi] = 2;
-                    }
-                    else{
-                      pixel.detection[dexi] = 0;
-                    }
-                  }
-                }
-                else if (pixel.detection[dexi] > 0){
-                  if (pixel.primed == true){
-                    pixel.detection[dexi] = 2;
-                  }
-                  else {
-                    pixel.detection[dexi] = 0;
-                  }
-                }
-                if (dexi == 8){
-                  if (pixel.primed == true){
-                    if (pixel.detection.includes(2)){
-                      pixel.stage = 5;
-                      pixel.color = "#360036"
-                      pixel.conduct = 0;
-                    }
-                  }
-                  else {
-                    pixel.primed = true;
-                  }
-                }
-              }
-            }
-            shuffleArray(squareCoordsShuffle);
-        }
-        else if (pixel.stage > 4 && pixelTicks % 3 === pixel.stage-5) { //initialized
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "conduit"){
-                    var newPixel = pixelMap[x][y];
-                    if (newPixel.stage > 1 && newPixel.stage < 5) {
-                        var newColor;
-                        switch (pixel.stage) {
-                            case 5: newPixel.stage = 6; newColor = "#360036"; break; //green
-                            case 6: newPixel.stage = 7; newColor = "#360036"; break; //red
-                            case 7: newPixel.stage = 5; newColor = "#360036"; break; //blue
-                        }
-                        newPixel.color = pixelColorPick(newPixel,newColor);
-                    }
-                  }
-                  else if (pixelMap[x][y].element === "c_utility"){
-                    var newPixel = pixelMap[x][y];
-                    if (newPixel.stage > 1 && newPixel.stage < 5) {
-                        var newColor;
-                        switch (pixel.stage) {
-                            case 5: newPixel.stage = 6; newColor = "#360036"; break; //green
-                            case 6: newPixel.stage = 7; newColor = "#360036"; break; //red
-                            case 7: newPixel.stage = 5; newColor = "#360036"; break; //blue
-                        }
-                        newPixel.color = pixelColorPick(newPixel,newColor);
-                    }
-                  }
-                }
-            }
-            shuffleArray(squareCoordsShuffle);
-            if (pixel.burnt = 1){
-              changePixel(pixel, "burnt_conduit");
-              pixel.charge = 0;
-            }
-            else {
-              pixel.burnt = 1;
-            }
-        }
-        doDefaults(pixel);
-    },
-    colorOn: "#ff00ff",
-    ignoreConduct: ["sensor"],
-    conduct: 1,
-    category: "machines",
-    movable: false,
-    forceSaveColor: true,
-    hardness: 0,
-};
-
 elements.pulse = {
     color: ["#ff009b","#ff5e9b"],
     behavior: [
@@ -577,11 +394,11 @@ elements.purplectric = {
     ignoreConduct: ["shocker"]
 },
   
-elements.c_utility = {
+elements.net_link = {
     color: "#660066",
     colorOn: "#ff00ff",
     onSelect: function() {
-        logMessage("Draw a conduit, wait for walls to appear, then erase the exit hole. The conduit will burn out when broken.");
+        logMessage("Draw a link to connect components to. The link will burn out when any part is broken.");
     },
     tick: function(pixel) {
         if (!pixel.detection){
@@ -601,7 +418,7 @@ elements.c_utility = {
                 var y = (pixel.y + (dexy-1));
                 var dexi = (dexy + (3*dexx));
                 if (!isEmpty(x,y,true)){
-                  if (pixelMap[x][y].element === "conduit" || pixelMap[x][y].element === "c_utility"){
+                  if (pixelMap[x][y].element === "net_link"){
                     pixel.detection[dexi] = 1;
                   }
                 }
@@ -622,7 +439,7 @@ elements.c_utility = {
                     var checky = (pixel.y + (dexy-1));
                     var dexi = (dexy + (3*dexx));
                     if (!isEmpty(checkx,checky,true)){
-                      if (pixelMap[checkx][checky].element === "conduit" || pixelMap[checkx][checky].element === "c_utility"){
+                      if (pixelMap[checkx][checky].element === "net_link"){
                         pixel.detection[dexi] = 1;
                       }
                     }
@@ -630,20 +447,19 @@ elements.c_utility = {
                 }
             }
         }
-        else if (pixel.stage > 1 && pixel.stage < 5){
-          if (pixelTicks % 3 === pixel.stage-2) { //initialized
+        else if (pixel.stage === 2 && pixelTicks % 3 === 0){
               for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "conduit" || pixelMap[x][y].element === "c_utility"){
+                  if (pixelMap[x][y].element === "net_link"){
                     var newPixel = pixelMap[x][y];
                       if (newPixel.stage === 1) {
                           var newColor;
                           switch (pixel.stage) {
                               case 2: newPixel.stage = 2; newColor = "#660066"; break;
-                            }
+                          }
                           newPixel.color = pixelColorPick(newPixel,newColor);
                       }
                     }
@@ -655,7 +471,7 @@ elements.c_utility = {
                   var y = (pixel.y + (dexy-1));
                   var dexi = (dexy + (3*dexx));
                   if (!isEmpty(x,y,true)) {
-                    if (pixelMap[x][y].element === "conduit" || pixelMap[x][y].element === "c_utility"){
+                    if (pixelMap[x][y].element === "net_link"){
                       pixel.detection[dexi] = 1;
                     }
                     else if (pixel.detection[dexi] > 0){
@@ -678,7 +494,7 @@ elements.c_utility = {
                   if (dexi == 8){
                     if (pixel.primed == true){
                       if (pixel.detection.includes(2)){
-                        pixel.stage = 5;
+                        pixel.stage = 3;
                         pixel.color = "#360036"
                         pixel.conduct = 0;
                       }
@@ -690,54 +506,22 @@ elements.c_utility = {
                 }
               }
               shuffleArray(squareCoordsShuffle);
-          }
-          if (pixel.stage === 3){
-            for (var i = 0; i < squareCoords.length; i++) {
-              var coord = squareCoords[i];
-              var x = pixel.x+coord[0];
-              var y = pixel.y+coord[1];
-              if (!isEmpty(x,y,true)) {
-                var newPixel = pixelMap[x][y];
-                if (elements[newPixel.element].insulate !== true){
-                  newPixel.temp -= 10;
-                  pixelTempCheck(newPixel);
-                }
-              }
-            }
-          }
-          if (pixel.stage === 4){
-            for (var i = 0; i < adjacentCoords.length; i++) {
-              var coords = adjacentCoords[i];
-              var x = pixel.x + coords[0];
-              var y = pixel.y + coords[1];
-              if (!isEmpty(x,y,true)) {
-                var sensed = pixelMap[x][y];
-                if (pixelMap[x][y].element !== "flash"){
-                  if (sensed.con || elements[sensed.element].movable && elements.sensor.ignore.indexOf(sensed.element) === -1) {
-                    pixel.charge = 5;
-                    break;
-                  }
-                }
-              }
-            }
-          }
         }
-        else if (pixel.stage > 4 && pixelTicks % 3 === pixel.stage-5) { //dead
+        else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
             for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "conduit" || pixelMap[x][y].element === "c_utility"){
+                  if (pixelMap[x][y].element === "net_link"){
                     var newPixel = pixelMap[x][y];
-                    if (newPixel.stage > 1 && newPixel.stage < 5) {
-                        var newColor;
+                    if (newPixel.stage === 2) {
                         switch (pixel.stage) {
-                            case 5: newPixel.stage = 6; newColor = "#360036"; break; //green
-                            case 6: newPixel.stage = 7; newColor = "#360036"; break; //red
-                            case 7: newPixel.stage = 5; newColor = "#360036"; break; //blue
+                            case 5: newPixel.stage = 6; break;
+                            case 6: newPixel.stage = 7; break;
+                            case 7: newPixel.stage = 5; break;
                         }
-                        newPixel.color = pixelColorPick(newPixel,newColor);
+                        newPixel.color = pixelColorPick(newPixel,"#360036");
                     }
                   }
                 }
@@ -748,7 +532,7 @@ elements.c_utility = {
             shuffleArray(squareCoordsShuffle);
             if (pixel.burnt = 1){
               if ((Math.random() * 8) < 7) {
-                changePixel(pixel, "burnt_conduit");
+                changePixel(pixel, "burnt_link");
               } else {
                 changePixel(pixel, "pulse");
               }
@@ -758,14 +542,7 @@ elements.c_utility = {
               pixel.burnt = 1;
             }
         }
-        if (pixel.stage === 3){
-          if (pixel.charge > 0) {
-            pixel.color = "#9b00ff"
-          } else {
-            pixel.color = "#4d0084"
-          }
-        }
-        if (pixel.stage === 2 || pixel.stage === 4){
+        if (pixel.stage === 2){
           if (pixel.temp <= 10000){
             if (pixel.temp >= 1000){
               if (pixel.temp <= 7000){
@@ -808,7 +585,7 @@ elements.c_utility = {
         }
         doDefaults(pixel);
     },
-    ignoreConduct: ["sensor","conduit","portal_in"],
+    ignoreConduct: ["sensor","portal_in"],
     conduct: 1,
     category: "machines",
     movable: false,
@@ -816,7 +593,7 @@ elements.c_utility = {
     hardness: 0.99,
 };
 
-elements.burnt_conduit = {
+elements.burnt_link = {
   color: "#360036",
   behavior: behaviors.WALL,
   conduct: 0,
@@ -888,6 +665,7 @@ elements.shield_gen = {
             pixel.heat = 0;
             pixel.syncCheck = 0;
             pixel.nestObj = [];
+            pixel.threshold = 0;
         }
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
@@ -899,9 +677,12 @@ elements.shield_gen = {
             pixel.yStage = 15;
         }
         if (pixel.health <= 0) {
-            pixel.health = 100;
-            pixel.heat = 0;
-            pixel.timer = 60;
+            if (pixel.threshold > 0) {changePixel(pixel,"pulse");}
+            else {
+              pixel.health = 100;
+              pixel.heat = 0;
+              pixel.timer = 60;
+            }
         }
         if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
         if (pixel.heat == 0 && pixel.health < 100) {
@@ -1181,7 +962,7 @@ elements.disintegrate = {
               var newPixel = pixelMap[x][y];
               var es = newPixel.element;
               if (Math.random() > 0.5+(pixel.decay/10)) {continue;}
-              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "h_plasma" && es !== "plasma" && es !== "fire" && es !== "c_utility" && elements[es].hardness !== 1) {
+              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "h_plasma" && es !== "plasma" && es !== "fire" && es !== "net_link" && elements[es].hardness !== 1) {
                 var cstore = newPixel.color;
                 var hstore = 0;
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*20);}
@@ -1565,10 +1346,12 @@ function shieldcheck(x,y,radius,doDamage) {
             sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y,fx1: fLI[0],fy1: fLI[1],fx2: fLI[2],fy2: fLI[3],d: fLI[4]});
             if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true) {
+              var sDamage = Math.pow(10,((radius/10)-1));
+              if (sDamage <= p.threshold) {sDamage = 0;}
               if (p.health > 0) {
-                p.health -= Math.pow(10,((radius/10)-1));
+                p.health -= sDamage;
               }
-              p.heat = 60;
+              if (sDamage > 0) {p.heat = 60;}
             }
           } else if (a === "c") {sc3.c.push({x: sc2[a][b].x,y: sc2[a][b].y,f: true});}
         }
