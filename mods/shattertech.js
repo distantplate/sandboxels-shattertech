@@ -517,9 +517,9 @@ elements.net_link = {
                     var newPixel = pixelMap[x][y];
                     if (newPixel.stage === 2) {
                         switch (pixel.stage) {
-                            case 5: newPixel.stage = 6; break;
-                            case 6: newPixel.stage = 7; break;
-                            case 7: newPixel.stage = 5; break;
+                            case 3: newPixel.stage = 4; break;
+                            case 4: newPixel.stage = 5; break;
+                            case 5: newPixel.stage = 3; break;
                         }
                         newPixel.color = pixelColorPick(newPixel,"#360036");
                     }
