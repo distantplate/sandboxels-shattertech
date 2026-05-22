@@ -447,7 +447,7 @@ elements.net_link = {
                 }
             }
         }
-        else if (pixel.stage === 2){
+        else if (pixel.stage === 2 && pixelTicks % 3 === 0){
               for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
