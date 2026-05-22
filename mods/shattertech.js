@@ -507,7 +507,7 @@ elements.net_link = {
               }
               shuffleArray(squareCoordsShuffle);
         }
-        else if (pixel.stage === 3) { //dead
+        else if (pixel.stage === 3 && pixelTicks % 3 === 0) { //dead
             for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
