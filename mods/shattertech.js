@@ -1568,7 +1568,7 @@ function shieldcheck(x,y,radius,doDamage) {
             if (doDamage === true) {
               if (p.health > 0) {
                 var sDamage = Math.pow(10,((radius/10)-1));
-                if (p.threshold) {sDamage = Math.max(sDamage - 1,0);}
+                if (p.threshold) {sDamage = Math.max(sDamage - p.threshold,0);}
                 p.health -= sDamage;
               }
               p.heat = 60;
