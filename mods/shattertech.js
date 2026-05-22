@@ -1565,10 +1565,10 @@ function shieldcheck(x,y,radius,doDamage) {
           if (fID > (fLI[4] - (2*radius)) || (radius > smallRad)) {
             sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y,fx1: fLI[0],fy1: fLI[1],fx2: fLI[2],fy2: fLI[3],d: fLI[4]});
             if (a === "f") {shieldFarCheck = true;}
-            if (doDamage === true && p.threshold > 0) {
+            if (doDamage === true) {
               if (p.health > 0) {
-                var sDamage = Math.pow(10,((radius/10)-1)) - p.threshold;
-                if (sDamage < 0) {sDamage = 0;}
+                var sDamage = Math.pow(10,((radius/10)-1));
+                if (p.threshold) {sDamage = Math.max(sDamage - 1,0);}
                 p.health -= sDamage;
               }
               p.heat = 60;
