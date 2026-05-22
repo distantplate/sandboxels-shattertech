@@ -900,9 +900,12 @@ elements.shield_gen = {
             pixel.yStage = 15;
         }
         if (pixel.health <= 0) {
-            pixel.health = 100;
-            pixel.heat = 0;
-            pixel.timer = 60;
+            if (p.threshold > 0) {changePixel(pixel,"pulse");}
+            else {
+              pixel.health = 100;
+              pixel.heat = 0;
+              pixel.timer = 60;
+            }
         }
         if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
         if (pixel.heat == 0 && pixel.health < 100) {
