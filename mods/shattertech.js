@@ -1565,4 +1565,3 @@ runAfterReset(function() {
 runAfterLoad(function() {
     storageList = {};
 });
-//please work
