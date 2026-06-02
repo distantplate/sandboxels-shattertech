@@ -506,8 +506,8 @@ elements.net_link = {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
                 var y = pixel.y+coord[1];
+                var dexi = ((coord[0] + 1) + 3*(coord[1] + 1));
                 if (!isEmpty(x,y,true)) {
-                  var dexi = ((coord[0] + 1) + 3*(coord[1] + 1));
                   if (pixelMap[x][y].element === "net_link") {
                     var newPixel = pixelMap[x][y];
                     if (newPixel.stage === 1) {
@@ -518,11 +518,14 @@ elements.net_link = {
                         newPixel.color = pixelColorPick(newPixel,newColor);
                     }
                     pixel.detection[dexi] = 1;
-                  } else if (pixel.primed === true && pixel.detection[dexi] > 0) {
-                    pixel.detection[dexi] = 2;
+                  } else if (pixel.detection[dexi] > 0) {
+                    pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                   }
+                } else if (pixel.detection[dexi] > 0 && !outOfBounds(x,y)) {
+                  pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                 }
               }
+              if (pixel.primed === false) {pixel.primed = true;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
                 pixel.color = "#360036";
