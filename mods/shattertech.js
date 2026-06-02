@@ -470,7 +470,7 @@ elements.net_link = {
               for (var dexy = 0; dexy < 3; dexy++){
                 var x = (pixel.x + (dexx-1));
                 var y = (pixel.y + (dexy-1));
-                var dexi = (dexy + (3*dexx));
+                var dexi = (dexx + (3*dexy));
                 if (!isEmpty(x,y,true)){
                   if (pixelMap[x][y].element === "net_link"){
                     pixel.detection[dexi] = 1;
@@ -491,7 +491,7 @@ elements.net_link = {
                   for (var dexy = 0; dexy < 3; dexy++){                      
                     var checkx = (pixel.x + (dexx-1));
                     var checky = (pixel.y + (dexy-1));
-                    var dexi = (dexy + (3*dexx));
+                    var dexi = (dexx + (3*dexy));
                     if (!isEmpty(checkx,checky,true)){
                       if (pixelMap[checkx][checky].element === "net_link"){
                         pixel.detection[dexi] = 1;
@@ -507,57 +507,25 @@ elements.net_link = {
                 var x = pixel.x+coord[0];
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "net_link"){
+                  var dexi = ((coord[0] + 1) + 3*(coord[1] + 1));
+                  if (pixelMap[x][y].element === "net_link") {
                     var newPixel = pixelMap[x][y];
-                      if (newPixel.stage === 1) {
-                          var newColor;
-                          switch (pixel.stage) {
-                              case 2: newPixel.stage = 2; newColor = "#660066"; break;
-                          }
-                          newPixel.color = pixelColorPick(newPixel,newColor);
-                      }
+                    if (newPixel.stage === 1) {
+                        var newColor;
+                        switch (pixel.stage) {
+                            case 2: newPixel.stage = 2; newColor = "#660066"; break;
+                        }
+                        newPixel.color = pixelColorPick(newPixel,newColor);
                     }
-                  }
-              }
-              for (var dexx = 0; dexx < 3; dexx++){
-                for (var dexy = 0; dexy < 3; dexy++){
-                  var x = (pixel.x + (dexx-1));
-                  var y = (pixel.y + (dexy-1));
-                  var dexi = (dexy + (3*dexx));
-                  if (!isEmpty(x,y,true)) {
-                    if (pixelMap[x][y].element === "net_link"){
-                      pixel.detection[dexi] = 1;
-                    }
-                    else if (pixel.detection[dexi] > 0){
-                      if (pixel.primed == true){
-                        pixel.detection[dexi] = 2;
-                      }
-                      else{
-                        pixel.detection[dexi] = 0;
-                      }
-                    }
-                  }
-                  else if (pixel.detection[dexi] > 0){
-                    if (pixel.primed == true){
-                      pixel.detection[dexi] = 2;
-                    }
-                    else {
-                      pixel.detection[dexi] = 0;
-                    }
-                  }
-                  if (dexi == 8){
-                    if (pixel.primed == true){
-                      if (pixel.detection.includes(2)){
-                        pixel.stage = 3;
-                        pixel.color = "#360036"
-                        pixel.conduct = 0;
-                      }
-                    }
-                    else {
-                      pixel.primed = true;
-                    }
+                    pixel.detection[dexi] = 1;
+                  } else if (pixel.primed === true && pixel.detection[dexi] > 0) {
+                    pixel.detection[dexi] = 2;
                   }
                 }
+              }
+              if (pixel.detection.includes(2)) {
+                pixel.stage = 3;
+                pixel.color = "#360036";
               }
               shuffleArray(squareCoordsShuffle);
         }
