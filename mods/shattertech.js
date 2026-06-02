@@ -393,6 +393,60 @@ elements.purplectric = {
     ignore: ["shocker"],
     ignoreConduct: ["shocker"]
 },
+
+elements.net_core = {
+    color: "#ff0000",
+    onSelect: function() {
+        logMessage("When charged, pulls nearby net_link pixels into its network.");
+    },
+    tick: function(pixel) {
+        if (!pixel.active) {
+          pixel.active = 0;
+          pixel.fault = false;
+          pixel.compList = {
+            shields: [],
+            emitters: []
+          };
+          pixel.augList = {
+            shields: {hardeners: [],chargers: []},
+            emitters: {chargers: []}
+          };
+        }
+        if (pixel.charge && pixel.active === 0) {pixel.active = 5;}
+        if (pixel.active === 5) {
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coord = squareCoords[i];
+                var x = pixel.x+coord[0];
+                var y = pixel.y+coord[1];
+                if (!isEmpty(x,y,true)) {
+                    if (pixelMap[x][y].element === "net_link" && !pixelMap[x][y].active) {
+                        pixelMap[x][y].active = true;
+                        pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
+                    }
+                }
+            }
+        }
+        if (pixel.active > 0) {pixel.active--;}
+        if (pixel.fault === true) {
+            for (let a in pixel.compList.shields) {
+                var b = pixelMap[pixel.compList.shields[a].x][pixel.compList.shields[a].y];
+                b.linked = false;
+                b.linkObj = {};
+            }
+            for (let a in pixel.compList.emitters) {
+                var b = pixelMap[pixel.compList.emitters[a].x][pixel.compList.emitters[a].y];
+                b.linked = false;
+                b.linkObj = {};
+            }
+        }
+        doDefaults(pixel);
+    },
+    conduct: 1,
+    category: "machines",
+    movable: false,
+    forceSaveColor: true,
+    hardness: 0.6,
+};
   
 elements.net_link = {
     color: "#660066",
