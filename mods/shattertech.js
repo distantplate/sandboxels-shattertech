@@ -481,23 +481,17 @@ elements.net_link = {
             pixel.stage = 1;
         }
         else if (pixel.stage === 1 && pixelTicks-pixel.start > 70) { //uninitialized
-            for (var i = 0; i < adjacentCoords.length; i++) {
-                var coord = adjacentCoords[i];
+            pixel.stage = 2;
+            pixel.color = "#660066";
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
                 var y = pixel.y+coord[1];
-                pixel.stage = 2; //blue
-                pixel.color = pixelColorPick(pixel,"#660066");
-                for (var dexx = 0; dexx < 3; dexx++){
-                  for (var dexy = 0; dexy < 3; dexy++){                      
-                    var checkx = (pixel.x + (dexx-1));
-                    var checky = (pixel.y + (dexy-1));
-                    var dexi = (dexx + (3*dexy));
-                    if (!isEmpty(checkx,checky,true)){
-                      if (pixelMap[checkx][checky].element === "net_link"){
+                if (!isEmpty(x,y,true)) {
+                    if (pixelMap[x][y].element === "net_link") {
+                        var dexi = ((coord[0] + 1) + 3*(coord[1]+1));
                         pixel.detection[dexi] = 1;
-                      }
                     }
-                  }
                 }
             }
         }
