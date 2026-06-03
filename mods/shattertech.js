@@ -513,7 +513,7 @@ elements.net_link = {
                 }
               }
               if (pixel.primed === false) {pixel.primed = true;}
-              if (pixel.detection.includes(2)) {
+              /*if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
                 pixel.color = "#360036";
               } else if (pixel.temp > 10000) {
@@ -535,8 +535,9 @@ elements.net_link = {
                   var finalColor = "rgb("+colorVals[0]+","+colorVals[1]+","+colorVals[2]+")";
                   pixel.color = finalColor;
                 }
-              }
-              if (pixel.active > 1) {pixel.active--;}
+              }*/
+              if (pixel.active > 0) {pixel.color = "#00ff00";}
+              //if (pixel.active > 1) {pixel.active--;}
         }
         else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
             for (var i = 0; i < squareCoords.length; i++) {
