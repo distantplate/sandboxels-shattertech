@@ -465,12 +465,13 @@ elements.net_link = {
           pixel.active = 0;
         }
         if (!pixel.stage && pixelTicks-pixel.start > 60) {
-            for (var i = 0; i < squareCoords.length; i++) {
-              var coord = squareCoords[i];
-              var dexi = ((coord[0]+1) + 3*(coord[1]+1));
-              if (!isEmpty(pixel.x+coord[0],pixel.y+coord[1],true)) {
-                if (pixelMap[pixel.x+coord[0]][pixel.y+coord[1]].element === "net_link") {
-                  pixel.detection[dexi] = 1;
+            for (var a = -1; a < 2; a++) {
+              for (var b = -1; b < 2; b++) {
+                var dexi = ((a+1) + 3*(b+1));
+                if (!isEmpty(pixel.x+a,pixel.y+a,true)) {
+                  if (pixelMap[pixel.x+a][pixel.y+a].element === "net_link") {
+                    pixel.detection[dexi] = 1;
+                  }
                 }
               }
             }
@@ -479,41 +480,39 @@ elements.net_link = {
         else if (pixel.stage === 1 && pixelTicks-pixel.start > 70) { //uninitialized
             pixel.stage = 2;
             pixel.color = "#660066";
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                if (!isEmpty(x,y,true)) {
-                    if (pixelMap[x][y].element === "net_link") {
-                        var dexi = ((coord[0]+1) + 3*(coord[1]+1));
-                        pixel.detection[dexi] = 1;
+            for (var a = -1; a < 2; a++) {
+                for (var b = -1; b < 2; b++) {
+                    if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
+                        if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
+                            var dexi = ((a+1) + 3*(a+1));
+                            pixel.detection[dexi] = 1;
+                        }
                     }
                 }
             }
         }
         else if (pixel.stage === 2){
-              for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                var dexi = ((coord[0] + 1) + 3*(coord[1] + 1));
-                if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "net_link") {
-                    var newPixel = pixelMap[x][y];
-                    if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
-                      newPixel.active = 3;
-                      newPixel.coreLoc = pixel.coreLoc;
+              for (var a = -1; a < 2; a++) {
+                for (var b = -1; b < 2; b++) {
+                  var dexi = ((a+1) + 3*(b+1));
+                  if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
+                    if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
+                      var newPixel = pixelMap[pixel.x+a][pixel.y+b];
+                      if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
+                        newPixel.active = 3;
+                        newPixel.coreLoc = pixel.coreLoc;
+                      }
+                      pixel.detection[dexi] = 1;
+                    } else if (pixel.detection[dexi] > 0) {
+                      pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                     }
-                    pixel.detection[dexi] = 1;
-                  } else if (pixel.detection[dexi] > 0) {
+                  } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
                     pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                   }
-                } else if (pixel.detection[dexi] > 0 && !outOfBounds(x,y)) {
-                  pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                 }
               }
               if (pixel.primed === false) {pixel.primed = true;}
-              /*if (pixel.detection.includes(2)) {
+              if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
                 pixel.color = "#360036";
               } else if (pixel.temp > 10000) {
@@ -535,9 +534,9 @@ elements.net_link = {
                   var finalColor = "rgb("+colorVals[0]+","+colorVals[1]+","+colorVals[2]+")";
                   pixel.color = finalColor;
                 }
-              }*/
+              }
               if (pixel.active > 0) {pixel.color = "#00ff00";}
-              //if (pixel.active > 1) {pixel.active--;}
+              if (pixel.active > 1) {pixel.active--;}
         }
         else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
             for (var i = 0; i < squareCoords.length; i++) {
