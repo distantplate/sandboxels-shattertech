@@ -420,7 +420,7 @@ elements.net_core = {
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "net_link" && !pixelMap[x][y].active) {
-                        pixelMap[x][y].active = true;
+                        pixelMap[x][y].active = 3;
                         pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
                     }
                 }
@@ -461,9 +461,8 @@ elements.net_link = {
             0,0,0,
             0,0,0
           ];
-        }
-        if (!pixel.primed){
           pixel.primed = false;
+          pixel.active = 0;
         }
         if (!pixel.stage && pixelTicks-pixel.start > 60) {
             for (var dexx = 0; dexx < 3; dexx++){
@@ -504,12 +503,9 @@ elements.net_link = {
                 if (!isEmpty(x,y,true)) {
                   if (pixelMap[x][y].element === "net_link") {
                     var newPixel = pixelMap[x][y];
-                    if (newPixel.stage === 1) {
-                        var newColor;
-                        switch (pixel.stage) {
-                            case 2: newPixel.stage = 2; newColor = "#660066"; break;
-                        }
-                        newPixel.color = pixelColorPick(newPixel,newColor);
+                    if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
+                      newPixel.active = 3;
+                      newPixel.coreLoc = pixel.coreLoc;
                     }
                     pixel.detection[dexi] = 1;
                   } else if (pixel.detection[dexi] > 0) {
@@ -563,24 +559,29 @@ elements.net_link = {
         }
         if (pixel.stage === 2){
           if (pixel.temp <= 10000){
-            if (pixel.temp >= 1000){
-              if (pixel.temp <= 7000){
-                var tempGlowR = Math.round(153*((pixel.temp-1000)/9000));
+            if (pixel.active == 3) {
+              pixel.color = "#00ff00";
+              pixel.active--;
+            } else {
+              if (pixel.temp >= 1000){
+                if (pixel.temp <= 7000){
+                  var tempGlowR = Math.round(153*((pixel.temp-1000)/9000));
+                }
+                else {
+                  var tempGlowR = Math.round(153-(((pixel.temp)-7000)/30));
+                }
+                var tempGlowB = Math.round(153*((pixel.temp-1000)/9000));
               }
               else {
-                var tempGlowR = Math.round(153-(((pixel.temp)-7000)/30));
+                var tempGlowR = 0;
+                var tempGlowB = 0;
               }
-              var tempGlowB = Math.round(153*((pixel.temp-1000)/9000));
+              var r = (102 + tempGlowR);
+              var g = 0;
+              var b = (102 + tempGlowB);
+              var colored = "rgb("+r+","+g+","+b+")";
+              pixel.color = colored;
             }
-            else {
-              var tempGlowR = 0;
-              var tempGlowB = 0;
-            }
-            var r = (102 + tempGlowR);
-            var g = 0;
-            var b = (102 + tempGlowB);
-            var colored = "rgb("+r+","+g+","+b+")";
-            pixel.color = colored;
           }
           else if (pixel.temp > 10000){
             pixel.color = "#9b00ff";
