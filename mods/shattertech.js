@@ -465,15 +465,12 @@ elements.net_link = {
           pixel.active = 0;
         }
         if (!pixel.stage && pixelTicks-pixel.start > 60) {
-            for (var dexx = 0; dexx < 3; dexx++){
-              for (var dexy = 0; dexy < 3; dexy++){
-                var x = (pixel.x + (dexx-1));
-                var y = (pixel.y + (dexy-1));
-                var dexi = (dexx + (3*dexy));
-                if (!isEmpty(x,y,true)){
-                  if (pixelMap[x][y].element === "net_link"){
-                    pixel.detection[dexi] = 1;
-                  }
+            for (var i = 0; i < squareCoords.length; i++) {
+              var coord = squareCoords[i];
+              var dexi = ((coord[0]+1) + 3*(coord[1]+1));
+              if (!isEmpty(pixel.x+coord[0],pixel.y+coord[1],true)) {
+                if (pixelMap[pixel.x+coord[0]][pixel.y+coord[1]].element === "net_link") {
+                  pixel.detection[dexi] = 1;
                 }
               }
             }
@@ -488,7 +485,7 @@ elements.net_link = {
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "net_link") {
-                        var dexi = ((coord[0] + 1) + 3*(coord[1]+1));
+                        var dexi = ((coord[0]+1) + 3*(coord[1]+1));
                         pixel.detection[dexi] = 1;
                     }
                 }
@@ -540,7 +537,6 @@ elements.net_link = {
                 }
               }
               if (pixel.active > 1) {pixel.active--;}
-              shuffleArray(squareCoordsShuffle);
         }
         else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
             for (var i = 0; i < squareCoords.length; i++) {
