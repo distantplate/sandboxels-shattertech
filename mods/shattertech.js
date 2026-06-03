@@ -494,7 +494,7 @@ elements.net_link = {
                 }
             }
         }
-        else if (pixel.stage === 2 && pixelTicks % 3 === 0){
+        else if (pixel.stage === 2){
               for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
@@ -519,6 +519,25 @@ elements.net_link = {
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
                 pixel.color = "#360036";
+              } else if (pixel.temp > 10000) {
+                pixel.color = "#9b00ff"
+                if (pixel.shatter < 3 && pixel.shatter >= 0) {pixel.shatter++;}
+                if (pixel.shatter == 3) {
+                  if (pixel.shattered == 1) {changePixel(pixel,"pulse");}
+                  else {pixel.shattered = 1;}
+                }
+              } else {
+                if (pixel.active == 2) {pixel.color = "#00ff00";}
+                else {
+                  var colorVals = [102,0,102];
+                  if (pixel.temp >= 1000) {
+                    colorVals[2] += Math.round(153*((pixel.temp-1000)/9000));
+                    if (pixel.temp >= 7000) {colorVals[0] += Math.round(153-((pixel.temp-7000)/30));}
+                    else {colorVals[0] += Math.round(153*((pixel.temp-1000)/9000));}
+                  }
+                  var finalColor = "rgb("+colorVals[0]+","+colorVals[1]+","+colorVals[2]+")";
+                  pixel.color = finalColor;
+                }
               }
               shuffleArray(squareCoordsShuffle);
         }
@@ -556,52 +575,6 @@ elements.net_link = {
             else {
               pixel.burnt = 1;
             }
-        }
-        if (pixel.stage === 2){
-          if (pixel.temp <= 10000){
-            if (pixel.active == 3) {
-              pixel.color = "#00ff00";
-              pixel.active--;
-            } else {
-              if (pixel.temp >= 1000){
-                if (pixel.temp <= 7000){
-                  var tempGlowR = Math.round(153*((pixel.temp-1000)/9000));
-                }
-                else {
-                  var tempGlowR = Math.round(153-(((pixel.temp)-7000)/30));
-                }
-                var tempGlowB = Math.round(153*((pixel.temp-1000)/9000));
-              }
-              else {
-                var tempGlowR = 0;
-                var tempGlowB = 0;
-              }
-              var r = (102 + tempGlowR);
-              var g = 0;
-              var b = (102 + tempGlowB);
-              var colored = "rgb("+r+","+g+","+b+")";
-              pixel.color = colored;
-            }
-          }
-          else if (pixel.temp > 10000){
-            pixel.color = "#9b00ff";
-            if (pixel.shatter < 3 || pixel.shatter > 0){
-              if (pixel.shatter < 3 && pixel.shatter >= 0){
-                pixel.shatter += 1;
-              }
-            } else {
-              pixel.shatter = 0;
-              pixel.shattered = 0;
-            }
-          }
-          if (pixel.shatter === 3){
-            if (pixel.shattered === 1){
-              changePixel(pixel,"pulse");
-            }
-            else {
-              pixel.shattered = 1;
-            }
-          }
         }
         doDefaults(pixel);
     },
