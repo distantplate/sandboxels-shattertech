@@ -539,6 +539,7 @@ elements.net_link = {
                   pixel.color = finalColor;
                 }
               }
+              if (pixel.active > 0) {pixel.active--;}
               shuffleArray(squareCoordsShuffle);
         }
         else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
