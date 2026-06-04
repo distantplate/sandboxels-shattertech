@@ -492,8 +492,10 @@ elements.net_link = {
             }
         }
         else if (pixel.stage === 2){
+              var checksum = 0;
               for (var a = -1; a < 2; a++) {
                 for (var b = -1; b < 2; b++) {
+                  checksum++;
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
