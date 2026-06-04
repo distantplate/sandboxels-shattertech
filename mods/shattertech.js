@@ -405,12 +405,12 @@ elements.net_core = {
           pixel.active = 0;
           pixel.fault = true;
           pixel.compList = {
-            shields: [],
-            emitters: []
+            shields: {},
+            emitters: {}
           };
           pixel.augList = {
-            shields: {hardeners: [],chargers: []},
-            emitters: {chargers: []}
+            shields: {hardeners: {},chargers: {}},
+            emitters: {chargers: {}}
           };
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 5;}
@@ -433,14 +433,18 @@ elements.net_core = {
         pixel.color = (pixel.fault === true ? "#ff0000" : "#00ff00");
         if (pixel.fault === true) {
             for (let a in pixel.compList.shields) {
-                var b = pixelMap[pixel.compList.shields[a].x][pixel.compList.shields[a].y];
-                b.linked = false;
-                b.linkObj = {};
+                for (let b in pixel.compList.shields[a]) {
+                  var c = pixelMap[a][b];
+                  c.linked = false;
+                  c.linkObj = {};
+                }
             }
             for (let a in pixel.compList.emitters) {
-                var b = pixelMap[pixel.compList.emitters[a].x][pixel.compList.emitters[a].y];
-                b.linked = false;
-                b.linkObj = {};
+                for (let b in pixel.compList.emitters[a]) {
+                  var c = pixelMap[a][b];
+                  c.linked = false;
+                  c.linkObj = {};
+                }
             }
         }
         doDefaults(pixel);
@@ -502,9 +506,9 @@ elements.net_link = {
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
                       pixel.detection[dexi] = 1;
-                      var newPixel = pixelMap[pixel.x+a][pixel.y+b];
+                      if (pixel.active <= 0 || !pixel.coreLoc) {continue;}
                       if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
-                      if (pixel.active != 3 || !pixel.coreLoc) {continue;}
+                      var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                       if (newPixel.stage != 2 || newPixel.active != 0) {continue;}
                       newPixel.active = 3;
                       newPixel.activeStart = pixelTicks;
