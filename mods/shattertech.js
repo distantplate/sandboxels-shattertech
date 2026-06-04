@@ -492,8 +492,6 @@ elements.net_link = {
             }
         }
         else if (pixel.stage === 2){
-              var checksum1 = 0;
-              var checksum2 = 0;
               for (var a = -1; a < 2; a++) {
                 for (var b = -1; b < 2; b++) {
                   var dexi = ((a+1) + 3*(b+1));
@@ -501,13 +499,10 @@ elements.net_link = {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                       if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
-                        checksum1++;
-                        newPixel.active = 3;
+                        /*newPixel.active = 3;
                         newPixel.activeStart = pixelTicks;
-                        newPixel.coreLoc = pixel.coreLoc;
-                        //it can somehow register the new pixel as having been set, even when it hasn't.
-                        //words cannot describe my frustration
-                        if (newPixel.active == 3) {checksum2++;}
+                        newPixel.coreLoc = pixel.coreLoc;*/
+                        changePixel(newPixel,"plasma");
                       }
                       pixel.detection[dexi] = 1;
                     } else if (pixel.detection[dexi] > 0) {
@@ -518,7 +513,6 @@ elements.net_link = {
                   }
                 }
               }
-              if (pixel.devcheck) {logMessage(checksum1+","+checksum2);}
               if (pixel.primed === false) {pixel.primed = true;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
