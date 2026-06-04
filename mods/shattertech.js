@@ -497,13 +497,14 @@ elements.net_link = {
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
-                      var newPixel = pixelMap[pixel.x+a][pixel.y+b];
-                      if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
-                        newPixel.active = 3;
-                        newPixel.activeStart = pixelTicks;
-                        newPixel.coreLoc = pixel.coreLoc;
-                      }
                       pixel.detection[dexi] = 1;
+                      var newPixel = pixelMap[pixel.x+a][pixel.y+b];
+                      if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
+                      if (pixel.active != 2 || !pixel.coreLoc) {continue;}
+                      if (newPixel.stage != 2 || newPixel.active != 0) {continue;}
+                      newPixel.active = 2;
+                      newPixel.activeStart = pixelTicks;
+                      newPixel.coreLoc = pixel.coreLoc;
                     } else if (pixel.detection[dexi] > 0) {
                       pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                     }
