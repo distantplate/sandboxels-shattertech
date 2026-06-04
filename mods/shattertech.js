@@ -513,6 +513,7 @@ elements.net_link = {
                   }
                 }
               }
+              logMessage(checksum);
               if (pixel.primed === false) {pixel.primed = true;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
