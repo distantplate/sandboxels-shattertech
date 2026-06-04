@@ -495,10 +495,10 @@ elements.net_link = {
               var checksum = 0;
               for (var a = -1; a < 2; a++) {
                 for (var b = -1; b < 2; b++) {
-                  checksum++;
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
+                      checksum++;
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                       if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
                         newPixel.active = 3;
@@ -513,7 +513,7 @@ elements.net_link = {
                   }
                 }
               }
-              logMessage(checksum);
+              if (pixel.devcheck) {logMessage(checksum);}
               if (pixel.primed === false) {pixel.primed = true;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
