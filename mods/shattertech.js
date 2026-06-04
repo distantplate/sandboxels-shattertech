@@ -499,10 +499,9 @@ elements.net_link = {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                       if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
-                        /*newPixel.active = 3;
+                        newPixel.active = 3;
                         newPixel.activeStart = pixelTicks;
-                        newPixel.coreLoc = pixel.coreLoc;*/
-                        changePixel(newPixel,"plasma");
+                        newPixel.coreLoc = pixel.coreLoc;
                       }
                       pixel.detection[dexi] = 1;
                     } else if (pixel.detection[dexi] > 0) {
@@ -514,18 +513,19 @@ elements.net_link = {
                 }
               }
               if (pixel.primed === false) {pixel.primed = true;}
+              var newColor = "#660066";
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
-                pixel.color = "#360036";
+                newColor = "#360036";
               } else if (pixel.temp > 10000) {
-                pixel.color = "#9b00ff"
+                newColor = "#9b00ff"
                 if (pixel.shatter < 3 && pixel.shatter >= 0) {pixel.shatter++;}
                 if (pixel.shatter == 3) {
                   if (pixel.shattered == 1) {changePixel(pixel,"pulse");}
                   else {pixel.shattered = 1;}
                 }
               } else {
-                if (pixel.active == 2) {pixel.color = "#00ff00";}
+                if (pixel.active == 2) {newColor = "#00ff00";}
                 else {
                   var colorVals = [102,0,102];
                   if (pixel.temp >= 1000) {
@@ -533,11 +533,11 @@ elements.net_link = {
                     if (pixel.temp >= 7000) {colorVals[0] += Math.round(153-((pixel.temp-7000)/30));}
                     else {colorVals[0] += Math.round(153*((pixel.temp-1000)/9000));}
                   }
-                  var finalColor = "rgb("+colorVals[0]+","+colorVals[1]+","+colorVals[2]+")";
-                  pixel.color = finalColor;
+                  newColor = "rgb("+colorVals[0]+","+colorVals[1]+","+colorVals[2]+")";
                 }
               }
-              if (pixel.active > 0) {pixel.color = "#00ff00";}
+              if (pixel.active > 0) {newColor = "#00ff00";}
+              pixel.color = newColor;
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
         }
         else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
