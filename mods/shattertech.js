@@ -402,7 +402,7 @@ elements.net_core = {
     tick: function(pixel) {
         if (!pixel.active) {
           pixel.active = 0;
-          pixel.fault = false;
+          pixel.fault = true;
           pixel.compList = {
             shields: [],
             emitters: []
@@ -420,6 +420,7 @@ elements.net_core = {
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "net_link" && !pixelMap[x][y].active) {
+                        if (pixel.fault === true) {pixel.fault = false;}
                         pixelMap[x][y].active = 3;
                         pixelMap[x][y].activeStart = pixelTicks;
                         pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
@@ -428,6 +429,7 @@ elements.net_core = {
             }
         }
         if (pixel.active > 0) {pixel.active--;}
+        pixel.color = (pixel.fault === true ? "#ff0000" : "#00ff00");
         if (pixel.fault === true) {
             for (let a in pixel.compList.shields) {
                 var b = pixelMap[pixel.compList.shields[a].x][pixel.compList.shields[a].y];
@@ -519,6 +521,7 @@ elements.net_link = {
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
+                if (pixel.active > 0 && pixel.coreLoc) {pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].fault = true;}
                 newColor = "#360036";
               } else if (pixel.temp > 10000) {
                 newColor = "#9b00ff"
