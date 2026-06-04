@@ -536,7 +536,6 @@ elements.net_link = {
                   newColor = "rgb("+colorVals[0]+","+colorVals[1]+","+colorVals[2]+")";
                 }
               }
-              if (pixel.active > 0) {newColor = "#00ff00";}
               pixel.color = newColor;
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
         }
