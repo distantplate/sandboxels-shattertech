@@ -492,7 +492,8 @@ elements.net_link = {
             }
         }
         else if (pixel.stage === 2){
-              var checksum = 0;
+              var checksum1 = 0;
+              var checksum2 = 0;
               for (var a = -1; a < 2; a++) {
                 for (var b = -1; b < 2; b++) {
                   var dexi = ((a+1) + 3*(b+1));
@@ -500,9 +501,10 @@ elements.net_link = {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                       if (pixel.active == 2 && pixel.coreLoc && newPixel.stage === 2 && newPixel.active == 0) {
-                        checksum++;
+                        checksum1++;
                         newPixel.active = 3;
                         newPixel.coreLoc = pixel.coreLoc;
+                        if (newPixel.active == 3) {checksum2++;}
                       }
                       pixel.detection[dexi] = 1;
                     } else if (pixel.detection[dexi] > 0) {
@@ -513,7 +515,7 @@ elements.net_link = {
                   }
                 }
               }
-              if (pixel.devcheck) {logMessage(checksum);}
+              if (pixel.devcheck) {logMessage(checksum1+","+checksum2);}
               if (pixel.primed === false) {pixel.primed = true;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
