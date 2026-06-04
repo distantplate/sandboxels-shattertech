@@ -400,7 +400,8 @@ elements.net_core = {
         logMessage("When charged, pulls nearby net_link pixels into its network.");
     },
     tick: function(pixel) {
-        if (!pixel.active) {
+        if (!pixel.setup) {
+          pixel.setup = 1;
           pixel.active = 0;
           pixel.fault = true;
           pixel.compList = {
