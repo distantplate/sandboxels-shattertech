@@ -421,6 +421,7 @@ elements.net_core = {
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "net_link" && !pixelMap[x][y].active) {
                         pixelMap[x][y].active = 3;
+                        pixelMap[x][y].activeStart = pixelTicks;
                         pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
                     }
                 }
@@ -500,9 +501,9 @@ elements.net_link = {
                       pixel.detection[dexi] = 1;
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                       if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
-                      if (pixel.active != 2 || !pixel.coreLoc) {continue;}
+                      if (pixel.active != 3 || !pixel.coreLoc) {continue;}
                       if (newPixel.stage != 2 || newPixel.active != 0) {continue;}
-                      newPixel.active = 2;
+                      newPixel.active = 3;
                       newPixel.activeStart = pixelTicks;
                       newPixel.coreLoc = pixel.coreLoc;
                     } else if (pixel.detection[dexi] > 0) {
@@ -515,6 +516,7 @@ elements.net_link = {
               }
               if (pixel.primed === false) {pixel.primed = true;}
               var newColor = "#660066";
+              if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
                 newColor = "#360036";
@@ -538,7 +540,6 @@ elements.net_link = {
                 }
               }
               pixel.color = newColor;
-              if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
         }
         else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
             for (var i = 0; i < squareCoords.length; i++) {
