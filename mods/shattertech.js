@@ -511,7 +511,7 @@ elements.net_link = {
                       if (pixel.active <= 0 || !pixel.coreLoc) {continue;}
                       if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
-                      if (newPixel.stage != 2 || newPixel.active > 0) {continue;}
+                      //if (newPixel.stage != 2 || newPixel.active > 0) {continue;}
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
                           /*var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
