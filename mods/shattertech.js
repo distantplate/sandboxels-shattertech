@@ -517,7 +517,10 @@ elements.net_link = {
                           var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
                           var check = 1;
                           for (i = 0; i < 4; i++) {
-                            if (list1[i] > list2[i]) {check = 2; break;}
+                            if (check == 1) {
+                              if (list1[i] > list2[i]) {check = 2;}
+                              else if (list1[i] < list2[i]) {check = 3;}
+                            }
                           }
                           if (check == 2) {continue;}
                         } else if (newPixel.active == 1) {continue;}
