@@ -514,17 +514,17 @@ elements.net_link = {
                       //if (newPixel.stage != 2 || newPixel.active > 0) {continue;}
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
-                          //works until at least here
                           var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
                           var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
                           var check = 1;
-                          /*for (i = 0; i < 4; i++) {
+                          //works until at least here
+                          for (i = 0; i < 4; i++) {
                             if (check == 1) {
                               if (list1[i] > list2[i]) {check = 2;}
                               else if (list1[i] < list2[i]) {check = 3;}
                             }
                           }
-                          if (check == 2) {continue;}*/
+                          //if (check == 2) {continue;}
                           continue;
                         } else if (newPixel.active == 1) {continue;}
                       }
