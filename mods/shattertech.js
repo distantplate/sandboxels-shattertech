@@ -514,6 +514,7 @@ elements.net_link = {
                       //if (newPixel.stage != 2 || newPixel.active > 0) {continue;}
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
+                          //works until at least here
                           /*var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
                           var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
                           var check = 1;
