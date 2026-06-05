@@ -523,7 +523,8 @@ elements.net_link = {
                               else if (list1[i] < list2[i]) {check = 3;}
                             }
                           }
-                          if (check == 2) {continue;}
+                          //if (check == 2) {continue;}
+                          continue;
                         } else if (newPixel.active == 1) {continue;}
                       }
                       newPixel.active = 3;
