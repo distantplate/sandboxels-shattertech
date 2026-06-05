@@ -524,6 +524,7 @@ elements.net_link = {
                       }
                       newPixel.active = 3;
                       newPixel.activeStart = pixelTicks;
+                      newPixel.netConflict = pixel.netConflict;
                       newPixel.coreLoc = pixel.coreLoc;
                     } else if (pixel.detection[dexi] > 0) {
                       pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
