@@ -511,7 +511,8 @@ elements.net_link = {
                       if (pixel.active <= 0 || !pixel.coreLoc) {continue;}
                       if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
-                      if (newPixel.stage != 2) {continue;} else {
+                      if (newPixel.stage != 2 || newPixel.active > 0) {continue;}
+                      /*if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
                           var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
                           var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
@@ -524,7 +525,7 @@ elements.net_link = {
                           }
                           if (check == 2) {continue;}
                         } else if (newPixel.active == 1) {continue;}
-                      }
+                      }*/
                       newPixel.active = 3;
                       newPixel.activeStart = pixelTicks;
                       newPixel.netConflict = pixel.netConflict;
