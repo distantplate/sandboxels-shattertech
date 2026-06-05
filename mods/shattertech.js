@@ -402,6 +402,7 @@ elements.net_core = {
     tick: function(pixel) {
         if (!pixel.setup) {
           pixel.setup = 1;
+          pixel.overrideVal = Math.random();
           pixel.active = 0;
           pixel.fault = true;
           pixel.compList = {
@@ -424,6 +425,7 @@ elements.net_core = {
                         if (pixel.fault === true) {pixel.fault = false;}
                         pixelMap[x][y].active = 3;
                         pixelMap[x][y].activeStart = pixelTicks;
+                        pixelMap[x][y].netConflict = [pixelTicks,pixel.overrideVal];
                         pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
                     }
                 }
@@ -509,7 +511,17 @@ elements.net_link = {
                       if (pixel.active <= 0 || !pixel.coreLoc) {continue;}
                       if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
-                      if (newPixel.stage != 2 || newPixel.active != 0) {continue;}
+                      if (newPixel.stage != 2) {continue;} else {
+                        if (newPixel.active > 0) {
+                          var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
+                          var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
+                          var check = 1;
+                          for (i = 0; i < 4; i++) {
+                            if (list1[i] > list2[i]) {check = 2; break;}
+                          }
+                          if (check == 2) {continue;}
+                        } else if (newPixel.active == 1) {continue;}
+                      }
                       newPixel.active = 3;
                       newPixel.activeStart = pixelTicks;
                       newPixel.coreLoc = pixel.coreLoc;
@@ -538,6 +550,8 @@ elements.net_link = {
               } else {
                 if (pixel.active == 2) {newColor = "#00ff00";}
                 else {
+                  pixel.shatter = 0;
+                  pixel.shattered = 0;
                   var colorVals = [102,0,102];
                   if (pixel.temp >= 1000) {
                     colorVals[2] += Math.round(153*((pixel.temp-1000)/9000));
