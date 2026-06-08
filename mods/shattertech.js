@@ -536,19 +536,21 @@ elements.net_link = {
                       pixel.detection[dexi] = 1;
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
-                          if (newPixel.active > 1 && pixel.coreLoc === newPixel.coreLoc) {continue;}
-                          var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
-                          var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
-                          var c = 1;
-                          for (i = 0; i < 4; i++) {
-                            if (c == 1) {
-                              if (list1[i] > list2[i]) {c = 2;}
-                              else if (list1[i] < list2[i]) {c = 3;}
+                          if (newPixel.active > 1) {
+                            if (pixel.coreLoc === newPixel.coreLoc) {continue;}
+                            var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
+                            var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
+                            var c = 1;
+                            for (i = 0; i < 4; i++) {
+                              if (c == 1) {
+                                if (list1[i] > list2[i]) {c = 2;}
+                                else if (list1[i] < list2[i]) {c = 3;}
+                              }
                             }
+                            if (c == 2) {continue;}
+                            var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
+                            if (d.fault === false) {d.fault = true;}
                           }
-                          if (c == 2) {continue;}
-                          var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
-                          if (d.fault === false) {d.fault = true;}
                         }
                       }
                       newPixel.active = 4;
