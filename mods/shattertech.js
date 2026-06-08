@@ -464,6 +464,12 @@ elements.net_core = {
                 }
             }
         }
+        if (pixel.devcheck == 1) {
+          for (let a in pixel.augList.emitters.chargers) {
+            logMessage(pixel.augList.emitters.chargers.x + "," + pixel.augList.emitters.chargers.y);
+          }
+          pixel.devcheck = 0;
+        }
         doDefaults(pixel);
     },
     conduct: 1,
@@ -526,7 +532,6 @@ elements.net_link = {
                     if (pixel.active <= 1 || !pixel.coreLoc) {continue;}
                     if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
-                    if (pixel.coreLoc === newPixel.coreLoc) {continue;}
                     if (newPixel.element === "net_link") {
                       pixel.detection[dexi] = 1;
                       if (newPixel.stage != 2) {continue;} else {
@@ -543,7 +548,7 @@ elements.net_link = {
                           if (c == 2) {continue;}
                           var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
                           if (d.fault === false) {d.fault = true;}
-                        } else if (newPixel.active == 1) {continue;}
+                        } else if (newPixel.active == 2 && pixel.coreLoc !== newPixel.coreLoc) {continue;}
                       }
                       newPixel.active = 3;
                       newPixel.activeStart = pixelTicks;
