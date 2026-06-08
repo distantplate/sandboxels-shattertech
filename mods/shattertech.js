@@ -524,11 +524,7 @@ elements.net_link = {
                               else if (list1[i] < list2[i]) {c = 3;}
                             }
                           }
-                          logMessage(c);
-                          //somehow this single if statment (the commented one) is causing it to break in tests.
-                          //this is despite the fact that it shouldn't even get to this point in said tests.
                           if (c == 2) {continue;}
-                          //continue;
                         } else if (newPixel.active == 1) {continue;}
                       }
                       newPixel.active = 3;
@@ -610,7 +606,7 @@ elements.net_link = {
         }
         doDefaults(pixel);
     },
-    ignoreConduct: ["sensor","portal_in"],
+    ignoreConduct: ["sensor","portal_in","net_core"],
     conduct: 1,
     category: "machines",
     movable: false,
