@@ -154,7 +154,7 @@ elements.charged_blaster = {
     excludeRandom: true,
 };
 
-elements.key = {
+elements.beam_charger = {
     color: "#808080",
     behavior: behaviors.WALL,
     category: "machines",
@@ -209,12 +209,12 @@ elements.emitter = {
         if (pixel.spooled > 450){
             pixel.spooled = 450;
         }
-        // Detect if emitter is in contact with key
+        // Detect if emitter is in contact with a beam_charger pixel
         var cStore = {left: {x: pixel.x-1,y: pixel.y},up: {x: pixel.x,y: pixel.y-1},right: {x: pixel.x+1,y: pixel.y}};
         for (let z in cStore) {
           if (pixel.detects !== true) {pixel.detects = false;}
           x = cStore[z].x; y = cStore[z].y;
-          if (!isEmpty(x,y,true) && pixelMap[x][y].element === "key") {
+          if (!isEmpty(x,y,true) && pixelMap[x][y].element === "beam_charger") {
             pixel.detects = true;
           }
         }
@@ -393,6 +393,8 @@ elements.purplectric = {
     ignore: ["shocker"],
     ignoreConduct: ["shocker"]
 },
+
+let validComps = ["emitter","shield_gen","beam_charger","shield_charger"];
 
 elements.net_core = {
     color: "#ff0000",
@@ -855,6 +857,13 @@ elements.shield_gen = {
     excludeRandom: true,
     insulate: true,
     movable: false,
+};
+
+elements.shield_charger = {
+    color: "#a8a897",
+    behavior: behaviors.WALL,
+    conduct: 0,
+    category: "components"
 };
 
 elements.barrier = {
