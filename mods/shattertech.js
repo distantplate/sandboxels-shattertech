@@ -438,7 +438,7 @@ elements.net_core = {
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "net_link" && !pixelMap[x][y].active) {
                         if (pixel.fault === true) {pixel.fault = false;}
-                        pixelMap[x][y].active = 3;
+                        pixelMap[x][y].active = 4;
                         pixelMap[x][y].activeStart = pixelTicks;
                         pixelMap[x][y].netConflict = [pixelTicks,pixel.overrideVal];
                         pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
@@ -529,14 +529,14 @@ elements.net_link = {
                   if (a == 0 && b == 0) {continue;} //skip if looking at self
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
-                    if (pixel.active <= 2 || !pixel.coreLoc) {continue;}
+                    if (pixel.active <= 3 || !pixel.coreLoc) {continue;}
                     if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
                       pixel.detection[dexi] = 1;
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
-                          if (newPixel.active == 2 && pixel.coreLoc === newPixel.coreLoc) {continue;}
+                          if (newPixel.active > 1 && pixel.coreLoc === newPixel.coreLoc) {continue;}
                           var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
                           var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
                           var c = 1;
@@ -551,7 +551,7 @@ elements.net_link = {
                           if (d.fault === false) {d.fault = true;}
                         }
                       }
-                      newPixel.active = 3;
+                      newPixel.active = 4;
                       newPixel.activeStart = pixelTicks;
                       newPixel.netConflict = pixel.netConflict;
                       newPixel.coreLoc = pixel.coreLoc;
@@ -585,7 +585,7 @@ elements.net_link = {
                   else {pixel.shattered = 1;}
                 }
               } else {
-                if (pixel.active == 2) {newColor = "#00ff00";}
+                if (pixel.active == 3) {newColor = "#00ff00";}
                 else {
                   pixel.shatter = 0;
                   pixel.shattered = 0;
