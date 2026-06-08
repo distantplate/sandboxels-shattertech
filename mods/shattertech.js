@@ -550,7 +550,7 @@ elements.net_link = {
                       newPixel.netConflict = pixel.netConflict;
                       newPixel.coreLoc = pixel.coreLoc;
                     } else {
-                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
+                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0); logMessage("site 1");}
                       else if (!pixel.active) {
                         switch (newPixel.element) {
                           case "beam_charger": newPixel.augList.emitters.chargers.push({x: pixel.x+a,y: pixel.y+b}); break;
@@ -561,6 +561,7 @@ elements.net_link = {
                     }
                   } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
                     pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
+                    logMessage("site 2");
                   }
                 }
               }
@@ -568,6 +569,7 @@ elements.net_link = {
               var newColor = "#660066";
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
+                logMessage(site 3);
                 pixel.stage = 3;
                 if (pixel.active > 0 && pixel.coreLoc) {pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].fault = true;}
                 newColor = "#360036";
