@@ -157,6 +157,19 @@ elements.charged_blaster = {
 elements.beam_charger = {
     color: "#808080",
     behavior: behaviors.WALL,
+    tick function(pixel) {
+      if (!pixel.startup) {
+        pixel.active = 0;
+        pixel.coreLoc = [];
+        pixel.startup = 1;
+      }
+      if (pixel.active) {
+        if (pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].fault === true) {
+          pixel.coreLoc = [];
+          pixel.active = 0;
+        }
+      }
+    },
     category: "components",
     insulate: true,
     state: "solid",
@@ -408,12 +421,12 @@ elements.net_core = {
           pixel.active = 0;
           pixel.fault = true;
           pixel.compList = {
-            shields: {},
-            emitters: {}
+            shields: [],
+            emitters: []
           };
           pixel.augList = {
-            shields: {hardeners: {},chargers: {}},
-            emitters: {chargers: {}}
+            shields: {hardeners: [],chargers: []},
+            emitters: {chargers: []}
           };
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 5;}
@@ -510,12 +523,12 @@ elements.net_link = {
                   if (a == 0 && b == 0) {continue;} //skip if looking at self
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
+                    if (pixel.active <= 1 || !pixel.coreLoc) {continue;}
+                    if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
+                    if (pixel.coreLoc === newPixel.coreLoc) {continue;}
                     if (newPixel.element === "net_link") {
                       pixel.detection[dexi] = 1;
-                      if (pixel.active <= 0 || !pixel.coreLoc) {continue;}
-                      if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
-                      if (pixel.coreLoc === newPixel.coreLoc) {continue;}
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
                           var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
@@ -538,7 +551,7 @@ elements.net_link = {
                       newPixel.coreLoc = pixel.coreLoc;
                     } else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
-                      else {
+                      else if (!pixel.active) {
                         switch (newPixel.element) {
                           case "beam_charger": newPixel.augList.emitters.chargers.push({x: pixel.x+a,y: pixel.y+b}); break;
                           case "shield_charger": newPixel.augList.shields.chargers.push({x: pixel.x+a,y: pixel.y}); break;
