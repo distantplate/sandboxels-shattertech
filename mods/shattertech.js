@@ -392,9 +392,9 @@ elements.purplectric = {
     ignoreAir: true,
     ignore: ["shocker"],
     ignoreConduct: ["shocker"]
-},
+};
 
-//let validComps = ["emitter","shield_gen","beam_charger","shield_charger"];
+let validComps = ["emitter","shield_gen","beam_charger","shield_charger"];
 
 elements.net_core = {
     color: "#ff0000",
