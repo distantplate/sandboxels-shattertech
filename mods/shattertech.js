@@ -569,7 +569,7 @@ elements.net_link = {
               var newColor = "#660066";
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
-                logMessage(site 3);
+                logMessage("site 3");
                 pixel.stage = 3;
                 if (pixel.active > 0 && pixel.coreLoc) {pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].fault = true;}
                 newColor = "#360036";
