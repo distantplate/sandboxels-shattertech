@@ -452,6 +452,7 @@ elements.net_core = {
         doDefaults(pixel);
     },
     conduct: 1,
+    ignoreConduct: ["net_link"],
     category: "machines",
     movable: false,
     forceSaveColor: true,
@@ -504,6 +505,7 @@ elements.net_link = {
         else if (pixel.stage === 2){
               for (var a = -1; a < 2; a++) {
                 for (var b = -1; b < 2; b++) {
+                  if (a == 0 && b == 0) {continue;} //skip if looking at self
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
                     if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
@@ -511,7 +513,6 @@ elements.net_link = {
                       if (pixel.active <= 0 || !pixel.coreLoc) {continue;}
                       if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
                       var newPixel = pixelMap[pixel.x+a][pixel.y+b];
-                      //if (newPixel.stage != 2 || newPixel.active > 0) {continue;}
                       if (pixel.coreLoc === newPixel.coreLoc) {continue;}
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
@@ -525,6 +526,8 @@ elements.net_link = {
                             }
                           }
                           if (c == 2) {continue;}
+                          var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
+                          if (d.fault === false) {d.fault = true;}
                         } else if (newPixel.active == 1) {continue;}
                       }
                       newPixel.active = 3;
