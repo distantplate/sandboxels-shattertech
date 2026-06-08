@@ -157,7 +157,7 @@ elements.charged_blaster = {
 elements.beam_charger = {
     color: "#808080",
     behavior: behaviors.WALL,
-    category: "machines",
+    category: "components",
     insulate: true,
     state: "solid",
     conduct: 1,
@@ -510,11 +510,11 @@ elements.net_link = {
                   if (a == 0 && b == 0) {continue;} //skip if looking at self
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
-                    if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
+                    var newPixel = pixelMap[pixel.x+a][pixel.y+b];
+                    if (newPixel.element === "net_link") {
                       pixel.detection[dexi] = 1;
                       if (pixel.active <= 0 || !pixel.coreLoc) {continue;}
                       if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
-                      var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                       if (pixel.coreLoc === newPixel.coreLoc) {continue;}
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
@@ -536,8 +536,15 @@ elements.net_link = {
                       newPixel.activeStart = pixelTicks;
                       newPixel.netConflict = pixel.netConflict;
                       newPixel.coreLoc = pixel.coreLoc;
-                    } else if (pixel.detection[dexi] > 0) {
-                      pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
+                    } else {
+                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
+                      else {
+                        switch (newPixel.element) {
+                          case "beam_charger": newPixel.augList.emitters.chargers.push({x: pixel.x+a,y: pixel.y+b}); break;
+                          case "shield_charger": newPixel.augList.shields.chargers.push({x: pixel.x+a,y: pixel.y}); break;
+                          default: break;
+                        }
+                      }
                     }
                   } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
                     pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
