@@ -523,6 +523,7 @@ elements.net_link = {
                               else if (list1[i] < list2[i]) {check = 3;}
                             }
                           }
+                          logMessage(check);
                           //somehow this single if statment (the commented one) is causing it to break in tests.
                           //this is despite the fact that it shouldn't even get to this point in said tests.
                           //if (check == 2) {continue;}
