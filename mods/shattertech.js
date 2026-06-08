@@ -157,7 +157,7 @@ elements.charged_blaster = {
 elements.beam_charger = {
     color: "#808080",
     behavior: behaviors.WALL,
-    tick function(pixel) {
+    tick: function(pixel) {
       if (!pixel.startup) {
         pixel.active = 0;
         pixel.coreLoc = [];
@@ -551,13 +551,13 @@ elements.net_link = {
                       newPixel.coreLoc = pixel.coreLoc;
                     } else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
-                      /*else if (!pixel.active) {
+                      else if (!pixel.active) {
                         switch (newPixel.element) {
                           case "beam_charger": newPixel.augList.emitters.chargers.push({x: pixel.x+a,y: pixel.y+b}); break;
                           case "shield_charger": newPixel.augList.shields.chargers.push({x: pixel.x+a,y: pixel.y}); break;
                           default: break;
                         }
-                      }*/
+                      }
                     }
                   } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
                     pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
