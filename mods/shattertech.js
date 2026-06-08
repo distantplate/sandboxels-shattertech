@@ -859,12 +859,12 @@ elements.shield_gen = {
     movable: false,
 };
 
-elements.shield_charger = {
+/*elements.shield_charger = {
     color: "#a8a897",
     behavior: behaviors.WALL,
     conduct: 0,
     category: "components"
-};
+};*/
 
 elements.barrier = {
     color: ["#ff00ff","#000000","#ff00ff","#000000","#ff00ff"],
