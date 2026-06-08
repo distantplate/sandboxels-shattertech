@@ -536,7 +536,7 @@ elements.net_link = {
                       pixel.detection[dexi] = 1;
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
-                          if (newPixel.active == 2 || pixel.coreLoc === newPixel.coreLoc) {continue;}
+                          if (newPixel.active == 2 && pixel.coreLoc === newPixel.coreLoc) {continue;}
                           var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
                           var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
                           var c = 1;
