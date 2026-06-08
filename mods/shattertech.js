@@ -526,8 +526,8 @@ elements.net_link = {
                           logMessage(check);
                           //somehow this single if statment (the commented one) is causing it to break in tests.
                           //this is despite the fact that it shouldn't even get to this point in said tests.
-                          //if (check == 2) {continue;}
-                          continue;
+                          if (check == 2) {continue;}
+                          //continue;
                         } else if (newPixel.active == 1) {continue;}
                       }
                       newPixel.active = 3;
