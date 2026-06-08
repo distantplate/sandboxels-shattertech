@@ -429,8 +429,8 @@ elements.net_core = {
             emitters: {chargers: []}
           };
         }
-        if (pixel.charge && pixel.active === 0) {pixel.active = 5;}
-        if (pixel.active === 5) {
+        if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
+        if (pixel.active === 10) {
             for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
