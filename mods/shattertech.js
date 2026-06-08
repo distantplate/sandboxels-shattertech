@@ -436,7 +436,7 @@ elements.net_core = {
                 var x = pixel.x+coord[0];
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
-                    if (pixelMap[x][y].element === "net_link" && (pixelMap[x][y].active ? ((pixelMap[x][y].coreLoc == [pixel.x,pixel.y]) ? true : false)) : true) {
+                    if (pixelMap[x][y].element === "net_link" && (pixelMap[x][y].active ? ((pixelMap[x][y].coreLoc == [pixel.x,pixel.y]) ? true : false) : true)) {
                         if (pixel.fault === true) {pixel.fault = false;}
                         pixelMap[x][y].active = 4;
                         pixelMap[x][y].activeStart = pixelTicks;
