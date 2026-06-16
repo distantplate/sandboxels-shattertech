@@ -551,10 +551,12 @@ elements.net_link = {
                   if (a == 0 && b == 0) {continue;} //skip if looking at self
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
-                    if (pixel.active <= 3 || !pixel.coreLoc) {continue;}
-                    if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
+                    var bypass = false;
+                    if (pixel.active <= 3 || !pixel.coreLoc) {bypass = true;}
+                    if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {bypass = true;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
+                      if (bypass == true) {continue;}
                       pixel.detection[dexi] = 1;
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
@@ -581,7 +583,7 @@ elements.net_link = {
                       newPixel.coreLoc = pixel.coreLoc;
                     } else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
-                      else if (!pixel.active) {
+                      else if (bypass == false) {
                         if (elements[newPixel.element].category === "components") {
                           var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                           if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
