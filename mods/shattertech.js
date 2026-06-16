@@ -428,6 +428,8 @@ elements.net_core = {
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
+            pixel.compList = {shields: [], emitters: []};
+            pixel.augList = {};
             for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
