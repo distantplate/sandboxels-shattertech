@@ -488,7 +488,7 @@ elements.net_core = {
         }
         if (pixel.devcheck == 1) {
           for (let a in pixel.augList.beam_charger) {
-            logMessage(pixel.augList.beam_charger[a].x + "," + pixel.augList.beam_chargers[a].y);
+            logMessage(pixel.augList.beam_charger[a].x + "," + pixel.augList.beam_charger[a].y);
           }
           pixel.devcheck = 0;
         }
