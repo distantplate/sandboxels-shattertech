@@ -585,9 +585,12 @@ elements.net_link = {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
                       else if (bypass == false) {
                         if (elements[newPixel.element].category === "components") {
-                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
-                          if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
-                          target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
+                          if (newPixel.netData ? (newPixel.netData != [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]]) : true) {
+                            newPixel.netData = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                            var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                            if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
+                            target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
+                          }
                         }
                       }
                     }
@@ -601,7 +604,12 @@ elements.net_link = {
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
-                if (pixel.active > 0 && pixel.coreLoc) {pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].fault = true;}
+                if (pixel.active > 0 && pixel.coreLoc) {
+                  var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                  if (!isEmpty(target.x,target.y,true) ? (target.element === "net_core") : false) {
+                    target.fault = true;
+                  }
+                }
                 newColor = "#360036";
               } else if (pixel.temp > 10000) {
                 newColor = "#9b00ff"
