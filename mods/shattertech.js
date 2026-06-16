@@ -424,10 +424,7 @@ elements.net_core = {
             shields: [],
             emitters: []
           };
-          pixel.augList = {
-            shields: {hardeners: [],chargers: []},
-            emitters: {chargers: []}
-          };
+          pixel.augList = {};
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -463,6 +460,31 @@ elements.net_core = {
                   c.linkObj = {};
                 }
             }
+        } else {
+          var tempObj = {
+            comps: {shields: [], emitters: []},
+            augs: {}
+          };
+          for (let a in pixel.compList) {
+            var type = (a === "shields" ? "shield_gen" : "emitter");
+            for (let b in pixel.compList[a]) {
+              var c = pixel.compList[a][b];
+              if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
+                tempObj.comps[a].push({x: c.x,y: c.y});
+              }
+            }
+          }
+          for (let a in pixel.augList) {
+            tempObj.augs[a] = [];
+            for (let b in pixel.augList[a]) {
+              var c = pixel.augList[a][b];
+              if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === a : false) {
+                tempObj.augs[a].push({x: c.x,y: c.y});
+              }
+            }
+          }
+          pixel.compList = {shields: tempObj.comps.shields,emitters: tempObj.comps.emitters};
+          pixel.augList = tempObj.augs;
         }
         if (pixel.devcheck == 1) {
           for (let a in pixel.augList.emitters.chargers) {
@@ -560,10 +582,10 @@ elements.net_link = {
                     } else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
                       else if (!pixel.active) {
-                        switch (newPixel.element) {
-                          case "beam_charger": newPixel.augList.emitters.chargers.push({x: pixel.x+a,y: pixel.y+b}); break;
-                          case "shield_charger": newPixel.augList.shields.chargers.push({x: pixel.x+a,y: pixel.y}); break;
-                          default: break;
+                        if (elements[newPixel.element].category === "components") {
+                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                          if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
+                          target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
                         }
                       }
                     }
