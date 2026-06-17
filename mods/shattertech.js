@@ -160,12 +160,12 @@ elements.beam_charger = {
     tick: function(pixel) {
       if (!pixel.startup) {
         pixel.active = 0;
-        pixel.coreLoc = [];
+        pixel.netData = [false,false,false];
         pixel.startup = 1;
       }
       if (pixel.active) {
-        if (pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].fault === true) {
-          pixel.coreLoc = [];
+        if (!isEmpty(pixel.netData[1],pixel.netData[2],true) ? pixelMap[pixel.netData[1]][pixel.netData[2]].fault == true : false) {
+          pixel.netData = [false,false,false];
           pixel.active = 0;
         }
       }
@@ -587,8 +587,8 @@ elements.net_link = {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
                       else if (bypass == false) {
                         if (elements[newPixel.element].category === "components") {
-                          if (newPixel.netData ? (newPixel.netData != [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]]) : true) {
-                            newPixel.netData = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                          if (newPixel.netData[0] == pixel.netConflict[0] || newPixel.netData[1] != pixel.coreLoc[0] || newPixel.netData[2] != pixel.coreLoc[1]) {
+                            newPixel.netData = [pixel.netConflict[0],pixel.coreLoc[0],pixel.coreLoc[1]];
                             var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                             if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
                             target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
@@ -924,6 +924,19 @@ elements.shield_gen = {
 elements.shield_charger = {
     color: "#a8a897",
     behavior: behaviors.WALL,
+    tick: function(pixel) {
+      if (!pixel.startup) {
+        pixel.active = 1;
+        pixel.netData = [false,false,false];
+        pixel.startup = 1;
+      }
+      if (pixel.active) {
+        if (!isEmpty(pixel.netData[1],pixel.netData[2],true) ? pixelMap[pixel.netData[1]][pixel.netData[2]].fault == true : false) {
+          pixel.netData = [false,false,false];
+          pixel.active = 0;
+        }
+      }
+    },
     conduct: 0,
     category: "components"
 };
