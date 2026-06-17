@@ -736,6 +736,7 @@ elements.imploder = {
     },
     category: "weapons",
     state: "solid",
+    hardness: 1,
     density: 100000000,
     maxSize: 1,
     cooldown: defaultCooldown,
