@@ -720,7 +720,7 @@ elements.imploder = {
                     }
                 })
             }
-            if (pixel.stage < 0) {
+            if (pixel.stage <= 0) {
                 changePixel(pixel,"h_explosion");
                 return;
             }
