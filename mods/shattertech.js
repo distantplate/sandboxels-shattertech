@@ -692,7 +692,7 @@ elements.imploder = {
     color: "#533653",
     tick: function(pixel) {
         if ((!pixel.gap) || (pixel.gap < 0)){
-          pixel.gap = 1;
+          pixel.gap = 2;
         }
         if (pixel.trigger) {
             if (pixel.stage >= 0){
