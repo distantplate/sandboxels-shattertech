@@ -193,7 +193,7 @@ elements.emitter = {
                 pixel.spooled += 2;
             }
         }
-        if (pixel.setup) {
+        if (!pixel.setup) {
           pixel.link = false;
           pixel.setup = true;
         }
