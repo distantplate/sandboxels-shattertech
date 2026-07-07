@@ -450,16 +450,12 @@ elements.net_core = {
         if (pixel.fault === true) {
             for (let a in pixel.compList.shields) {
                 for (let b in pixel.compList.shields[a]) {
-                  var c = pixelMap[a][b];
-                  c.linked = false;
-                  c.linkObj = {};
+                  pixelMap[a][b].link = false;
                 }
             }
             for (let a in pixel.compList.emitters) {
                 for (let b in pixel.compList.emitters[a]) {
-                  var c = pixelMap[a][b];
-                  c.linked = false;
-                  c.linkObj = {};
+                  pixelMap[a][b].linkObj = false;
                 }
             }
             pixel.compList = {shields: [],emitters: []};
@@ -766,6 +762,7 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.nestObj = [];
             pixel.threshold = 0;
+            pixel.link = false;
         }
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
             pixel.gap = 3;
@@ -775,6 +772,10 @@ elements.shield_gen = {
         }
         if ((!pixel.yStage) || (pixel.yStage < 0) || (pixel.yStage > 40)){
             pixel.yStage = 15;
+        }
+        if (pixel.link != false) {
+          if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
         }
         if (pixel.health <= 0) {
             if (pixel.threshold > 0) {changePixel(pixel,"pulse");}
@@ -887,6 +888,7 @@ elements.shield_gen = {
                             p.emitX = pixel.x;
                             p.emitY = pixel.y;
                             p.timer = 5;
+                            p.link = (pixel.link != false ? pixel.link[0].toString() + "." + pixel.link[1].toString : false);
                         }
                     }
                 } else if (pixel.syncCheck == 9) {
