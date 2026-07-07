@@ -600,6 +600,10 @@ elements.net_link = {
                             if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
                             target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
                           }
+                        } else if (newPixel.element === "shield_gen") {
+                          newPixel.link = pixel.coreLoc;
+                          target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.shields;
+                          target.push({x: pixel.x+a,y: pixel.y.b});
                         }
                       }
                     }
