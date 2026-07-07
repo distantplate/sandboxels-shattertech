@@ -193,6 +193,14 @@ elements.emitter = {
                 pixel.spooled += 2;
             }
         }
+        if (pixel.setup) {
+          pixel.link = false;
+          pixel.setup = true;
+        }
+        if (pixel.link != false) {
+          if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
+        }
         if (pixel.spooled){
             if (pixel.spooled > 150){
                 var r = 150;
@@ -207,6 +215,9 @@ elements.emitter = {
                 createPixel("lance", pixel.x, pixel.y+1);
                 pixelMap[pixel.x][pixel.y+1].color = colored;
                 pixelMap[pixel.x][pixel.y+1].focus = pixel.spooled;
+                if (pixel.link != false) {
+                  pixelMap[pixel.x][pixel.y+1].link = pixel.link[0].toString() + "." + pixel.link[1].toString();
+                }
             }
             if (!pixel.buffer){
                 pixel.spooled = pixel.spooled-1;
@@ -604,6 +615,10 @@ elements.net_link = {
                           newPixel.link = pixel.coreLoc;
                           target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.shields;
                           target.push({x: pixel.x+a,y: pixel.y.b});
+                        } else if (newPixel.element === "emitter") {
+                          newPixel.link = pixel.coreLoc;
+                          target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.emitters;
+                          target.push({x: pixel.x+a,y: pixel.y+b});
                         }
                       }
                     }
