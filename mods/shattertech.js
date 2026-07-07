@@ -580,6 +580,9 @@ elements.net_link = {
                               if (pixel.netConflict[0] == newPixel.netConflict[0]) {
                                 continue;
                               }
+                            } else {
+                              var target = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
+                              if (target.fault === false) {target.fault = true;}
                             }
                           }
                         }
