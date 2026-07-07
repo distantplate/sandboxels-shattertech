@@ -497,7 +497,6 @@ elements.net_core = {
         doDefaults(pixel);
     },
     conduct: 1,
-    ignoreConduct: ["net_link"],
     category: "machines",
     movable: false,
     forceSaveColor: true,
@@ -673,7 +672,7 @@ elements.net_link = {
         }
         doDefaults(pixel);
     },
-    ignoreConduct: ["sensor","portal_in","net_core"],
+    ignoreConduct: ["sensor","portal_in"],
     conduct: 1,
     category: "machines",
     movable: false,
