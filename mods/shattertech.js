@@ -462,6 +462,8 @@ elements.net_core = {
                   c.linkObj = {};
                 }
             }
+            pixel.compList = {shields: [],emitters: []};
+            pixel.augList = {};
         } else {
           var tempObj = {
             comps: {shields: [], emitters: []},
