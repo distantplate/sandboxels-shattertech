@@ -573,7 +573,7 @@ elements.net_link = {
                                 else if (list1[i] < list2[i]) {c = 3;}
                               }
                             }
-                            if (c == 2) {continue;}
+                            if (c != 3) {continue;}
                             var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
                             if (d.fault === false) {d.fault = true;}
                           }
