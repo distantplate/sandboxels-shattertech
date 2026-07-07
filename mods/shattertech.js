@@ -305,20 +305,6 @@ elements.lance = {
                 if (isEmpty(x, y-1)) { createPixel("smoke", x, y-1); }
                 break;
             }
-            if (!isEmpty(x+1, y) && !outOfBounds(x+1, y) && focused == 900) {
-                p = pixelMap[x+1][y].element;
-                if (p !== "lance" && p !== "emitter" && p !== "portal_in" && p !== "portal_out" && elements[p].state !== "gas") {
-                  pixelMap[x+1][y].temp += 1000;
-                  pixelTempCheck(pixelMap[x+1][y]);
-                }
-            }
-            if (!isEmpty(x-1, y) && !outOfBounds(x-1, y) && focused == 900) {
-                p = pixelMap[x-1][y].element;
-                if (p !== "lance" && p !== "emitter" && p !== "portal_in" && p !== "portal_out" && elements[p].state !== "gas") {
-                  pixelMap[x-1][y].temp += 1000;
-                  pixelTempCheck(pixelMap[x-1][y]);
-                }
-            }
             if (isEmpty(x, y)) {
                 if (Math.random() > 0.05) { continue }
                 createPixel("flash", x, y);
@@ -330,6 +316,11 @@ elements.lance = {
                 if (elements[pixelMap[x][y].element].isGas) { continue }
                 if (pixelMap[x][y].element === "portal_out") { continue }
                 if (pixelMap[x][y].element === "portal_in") { break }
+                if (pixel.link) {
+                    if (pixelMap[x][y].element === "barrier") {
+                        if (pixel.link === pixelMap[x][y].link) {continue}
+                    }
+                }
                 if (elements[pixelMap[x][y].element].id === elements.lance.id) {
                     pixelMap[x][y].temp = 3500;
                     break;
@@ -373,6 +364,20 @@ elements.lance = {
                 }
                 pixelTempCheck(pixelMap[x][y]);
                 break;
+            }
+            if (!isEmpty(x+1,y,true) && focused == 900) {
+                p = pixelMap[x+1][y].element;
+                if (p !== "lance" && p !== "emitter" && p !== "portal_in" && p !== "portal_out" && elements[p].state !== "gas") {
+                  pixelMap[x+1][y].temp += 1000;
+                  pixelTempCheck(pixelMap[x+1][y]);
+                }
+            }
+            if (!isEmpty(x-1,y,true) && focused == 900) {
+                p = pixelMap[x-1][y].element;
+                if (p !== "lance" && p !== "emitter" && p !== "portal_in" && p !== "portal_out" && elements[p].state !== "gas") {
+                  pixelMap[x-1][y].temp += 1000;
+                  pixelTempCheck(pixelMap[x-1][y]);
+                }
             }
         }
         deletePixel(pixel.x, pixel.y);
