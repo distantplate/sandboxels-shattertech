@@ -575,6 +575,12 @@ elements.net_link = {
                             if (c != 3) {continue;}
                             var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
                             if (d.fault === false) {d.fault = true;}
+                          } else {
+                            if (pixel.coreLoc[0] == newPixel.coreLoc[0] && pixel.coreLoc[1] == newPixel.coreLoc[1]) {
+                              if (pixel.netConflict[0] == newPixel.netConflict[0]) {
+                                continue;
+                              }
+                            }
                           }
                         }
                       }
