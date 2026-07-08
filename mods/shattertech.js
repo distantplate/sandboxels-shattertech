@@ -143,13 +143,14 @@ elements.emitter = {
         if (pixel.charge){
             pixel.buffer = 10;
         }
+        var has_charger = false;
         if (pixel.buffer){
             if (!pixel.charge) {
                 pixel.buffer = pixel.buffer-1;
             }
-            if (pixel.detects === true && pixel.spooled < 450){
+            if (has_charger === true && pixel.spooled < 450){
                 pixel.spooled += 2;
-            } else if (pixel.detects !== true && pixel.spooled < 150) {
+            } else if (has_charger !== true && pixel.spooled < 150) {
                 pixel.spooled += 2;
             }
         }
@@ -160,6 +161,8 @@ elements.emitter = {
         if (pixel.link != false) {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
+          var p = pixelMap[pixel.link[0]][pixel.link[1]];
+          if (p.augList.beam_charger ? p.augList.beam_charger.length > 0 : false) {has_charger = true;}
         }
         if (pixel.spooled){
             if (pixel.spooled > 150){
@@ -193,17 +196,8 @@ elements.emitter = {
         if (pixel.spooled > 450){
             pixel.spooled = 450;
         }
-        // Detect if emitter is in contact with a beam_charger pixel
-        var cStore = {left: {x: pixel.x-1,y: pixel.y},up: {x: pixel.x,y: pixel.y-1},right: {x: pixel.x+1,y: pixel.y}};
-        for (let z in cStore) {
-          if (pixel.detects !== true) {pixel.detects = false;}
-          x = cStore[z].x; y = cStore[z].y;
-          if (!isEmpty(x,y,true) && pixelMap[x][y].element === "beam_charger") {
-            pixel.detects = true;
-          }
-        }
         // Cap for spooled #2
-        if (pixel.detects !== true || (!pixel.buffer)){
+        if (has_charger !== true || (!pixel.buffer)){
           if (pixel.spooled > 150){
             pixel.spooled = 150;
           }
