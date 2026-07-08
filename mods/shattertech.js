@@ -307,8 +307,7 @@ elements.lance = {
             }
             if (!isEmpty(x+1,y,true) && focused == 900) {
                 p = pixelMap[x+1][y].element;
-                var skip = false;
-                if (pixel.link && p.element === "barrier" ? pixel.link !== p.link : true) {
+                if (pixel.link && p === "barrier" ? pixel.link !== pixelMap[x+1][y].link : true) {
                     if (p !== "lance" && p !== "emitter" && p !== "portal_in" && p !== "portal_out" && elements[p].state !== "gas") {
                         pixelMap[x+1][y].temp += 1000;
                         pixelTempCheck(pixelMap[x+1][y]);
@@ -317,7 +316,7 @@ elements.lance = {
             }
             if (!isEmpty(x-1,y,true) && focused == 900) {
                 p = pixelMap[x-1][y].element;
-                if (pixel.link && p.element === "barrier" ? pixel.link !== p.link : true) {
+                if (pixel.link && p === "barrier" ? pixel.link !== pixelMap[x-1][y].link : true) {
                     if (p !== "lance" && p !== "emitter" && p !== "portal_in" && p !== "portal_out" && elements[p].state !== "gas") {
                         pixelMap[x-1][y].temp += 1000;
                         pixelTempCheck(pixelMap[x-1][y]);
