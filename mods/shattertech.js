@@ -881,14 +881,9 @@ elements.shield_gen = {
         }
         pixel.nestObj = tempobj;
         if (pixel.devcheck == 1) {
+          if (pixel.link) {logMessage(pixel.link[1].toString() + "." + pixel.link[1].toString());}
+          else {logMessage("not linked");}
           pixel.devcheck = 0;
-          var tempVal = 0;
-          for (let A in pixel.nestObj) {
-            var B = pixel.nestObj[A].x + ", " + pixel.nestObj[A].y;
-            tempVal++;
-            logMessage(B);
-          }
-          logMessage(tempVal);
         }
         if (pixel.timer == 10) {pixel.syncCheck = 0;}
         if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
