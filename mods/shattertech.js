@@ -2,17 +2,34 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
+elements.hotter_plasma = {
+    color: ["#6f00ff","#996bd9","#6f00ff"],
+    behavior: behaviors.DGAS,
+    behaviorOn: [
+        "M2|M1|M2",
+        "CL%5 AND M1|XX|CL%5 AND M1",
+        "M2|M1|M2",
+    ],
+    temp:15000,
+    tempLow:5000,
+    stateLow: "fire",
+    category: "energy",
+    state: "gas",
+    density: 1,
+    //charge: 0.5,
+    conduct: 1
+};
+
 elements.plasma_burst = {
     color: ["#6f00ff","#7f48ff","#6f00ff"],
     behavior: [
         "XX|XX|XX",
-        "XX|EX:5>plasma|XX",
+        "XX|EX:5>hotter_plasma|XX",
         "XX|XX|XX",
     ],
-    temp: 7065,
+    temp: 15000,
     category: "energy",
     state: "gas",
-    desc: "explodes into plasma",
     density: 1000,
     excludeRandom: true,
     noMix: true
@@ -30,7 +47,7 @@ elements.barrage_spawner = {
             }
         }
         if ((Math.random() < 0.75 && done) || pixel.alpha >= 1) {
-            barrage(pixel.x,pixel.y,20,10,"plasma","plasma");
+            barrage(pixel.x,pixel.y,20,10,"hotter_plasma","hotter_plasma");
             deletePixel(pixel.x,pixel.y);
         }
         if (pixel.delay) {
@@ -39,7 +56,7 @@ elements.barrage_spawner = {
         doHeat(pixel);
     },
     hardness: 1,
-    temp: 7065,
+    temp: 15000,
     category: "energy",
     state: "gas",
     desc: "creates a barrage of plasma explosions<br/>VERY destructive",
@@ -90,7 +107,7 @@ elements.charged_blaster = {
     state: "solid",
     desc: "the ultimate bunker-buster",
     density: 100000000,
-    temp: 10000,
+    temp: 15000,
     hardness: 1,
     maxSize: 1,
     cooldown: defaultCooldown,
@@ -363,7 +380,6 @@ elements.purplectric = {
     charge: 3,
     category: "energy",
     state: "gas",
-    desc: "it's electric, but purple",
     density: 2.1,
     insulate: true,
     ignoreAir: true,
@@ -460,6 +476,8 @@ elements.net_core = {
     },
     conduct: 1,
     category: "machines",
+    desc: `Activate to pull nearby net_link pixels into its network.
+        Shield gens, emitters, and anything in the components category can also be pulled via net_links, but cannot be directly connected.`,
     movable: false,
     forceSaveColor: true,
     hardness: 0.6,
@@ -686,7 +704,7 @@ elements.imploder = {
                     var y = coord.y;
                     if (!isEmpty(x,y,true)) {
                         var p = pixelMap[x][y];
-                        if (p.element === "imploder" || p.element === "plasma" || p.element === "plasma_burst") {
+                        if (p.element === "imploder" || p.element === "hotter_plasma" || p.element === "plasma_burst") {
                             return;
                         }
                         if (elements[p.element].hardness != 1) {
@@ -1048,7 +1066,7 @@ elements.disintegrate = {
               var newPixel = pixelMap[x][y];
               var es = newPixel.element;
               if (Math.random() > 0.5+(pixel.decay/10)) {continue;}
-              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "plasma" && es !== "fire" && es !== "net_link" && elements[es].hardness !== 1) {
+              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "hotter_plasma" && es !== "plasma" && es !== "fire" && es !== "net_link" && elements[es].hardness !== 1) {
                 var cstore = newPixel.color;
                 var hstore = 0;
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*20);}
@@ -1072,7 +1090,7 @@ elements.disintegrate = {
           pixel.oldColor = pixel.color;
           pixel.timer = pixel.timerMax;
         } else if (pixelTicks-pixel.start>=3) {
-          changePixel(pixel, "plasma");
+          changePixel(pixel, "hotter_plasma");
         }
       }
       if (pixel.trigger == 3) {
@@ -1090,13 +1108,13 @@ elements.disintegrate = {
           pixel.color = "rgb("+fC[0]+","+fC[1]+","+fC[2]+")";
           pixel.timer--;
         } else {
-          changePixel(pixel, "plasma");
+          changePixel(pixel, "hotter_plasma");
         }
       }
-      if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "plasma");}
+      if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "hotter_plasma");}
       doDefaults(pixel);
     },
-    temp: 7065,
+    temp:15000,
     category: "energy",
     state: "solid",
     density: 1,
