@@ -226,11 +226,6 @@ elements.emitter = {
         else{
             doDefaults(pixel);
         }
-        if (pixel.devcheck == 1) {
-          if (pixel.link != false) {logMessage(pixel.link[0].toString() + "." + pixel.link[1].toString());}
-          else {logMessage("not linked");}
-          pixel.devcheck = 0;
-        }
         if (pixel.spooled < 0){
             pixel.spooled = 0;
         }
@@ -310,6 +305,16 @@ elements.lance = {
                 if (isEmpty(x, y-1)) { createPixel("smoke", x, y-1); }
                 break;
             }
+            if (!isEmpty(x,y,true)) {
+                if (elements[pixelMap[x][y].element].isGas) { continue }
+                if (pixelMap[x][y].element === "portal_out") { continue }
+                if (pixelMap[x][y].element === "portal_in") { break }
+                if (pixel.link) {
+                    if (pixelMap[x][y].element === "barrier") {
+                        if (pixel.link === pixelMap[x][y].link) { continue }
+                    }
+                }
+            }
             if (!isEmpty(x+1,y,true) && focused == 900) {
                 p = pixelMap[x+1][y].element;
                 if (p !== "lance" && p !== "emitter" && p !== "portal_in" && p !== "portal_out" && elements[p].state !== "gas") {
@@ -332,18 +337,6 @@ elements.lance = {
                 pixelMap[x][y].delay = (y - pixel.y) / 8;
             }
             else {
-                if (elements[pixelMap[x][y].element].isGas) { continue }
-                if (pixelMap[x][y].element === "portal_out") { continue }
-                if (pixelMap[x][y].element === "portal_in") { break }
-                if (pixel.link) {
-                    if (pixelMap[x][y].element === "barrier") {
-                        logMessage("check 1");
-                        if (pixel.link === pixelMap[x][y].link) {
-                          logMessage("it works");
-                          continue;
-                        }
-                    }
-                }
                 if (elements[pixelMap[x][y].element].id === elements.lance.id) {
                     pixelMap[x][y].temp = 3500;
                     break;
