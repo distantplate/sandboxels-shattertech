@@ -323,7 +323,10 @@ elements.lance = {
                 if (pixelMap[x][y].element === "portal_in") { break }
                 if (pixel.link) {
                     if (pixelMap[x][y].element === "barrier") {
-                        if (pixel.link === pixelMap[x][y].link) {continue}
+                        if (pixel.link === pixelMap[x][y].link) {
+                          logMessage("it works");
+                          continue;
+                        }
                     }
                 }
                 if (elements[pixelMap[x][y].element].id === elements.lance.id) {
@@ -368,7 +371,6 @@ elements.lance = {
                     pixelMap[x][y].temp += 100;
                 }
                 pixelTempCheck(pixelMap[x][y]);
-                break;
             }
             if (!isEmpty(x+1,y,true) && focused == 900) {
                 p = pixelMap[x+1][y].element;
@@ -384,6 +386,7 @@ elements.lance = {
                   pixelTempCheck(pixelMap[x-1][y]);
                 }
             }
+            break;
         }
         deletePixel(pixel.x, pixel.y);
     },
