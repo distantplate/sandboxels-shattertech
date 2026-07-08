@@ -226,6 +226,11 @@ elements.emitter = {
         else{
             doDefaults(pixel);
         }
+        if (pixel.devcheck == 1) {
+          if (pixel.link != false) {logMessage(pixel.link[0].toString() + "." + pixel.link[1].toString());}
+          else {logMessage("not linked");}
+          pixel.devcheck = 0;
+        }
         if (pixel.spooled < 0){
             pixel.spooled = 0;
         }
@@ -880,11 +885,6 @@ elements.shield_gen = {
             tempobj.push({x: pixel.nestObj[a].x,y: pixel.nestObj[a].y});
         }
         pixel.nestObj = tempobj;
-        if (pixel.devcheck == 1) {
-          if (pixel.link) {logMessage(pixel.link[1].toString() + "." + pixel.link[1].toString());}
-          else {logMessage("not linked");}
-          pixel.devcheck = 0;
-        }
         if (pixel.timer == 10) {pixel.syncCheck = 0;}
         if (pixel.store1 != pixel.x) {pixel.syncCheck = 0; pixel.store1 = pixel.x;}
         if (pixel.store2 != pixel.y) {pixel.syncCheck = 0; pixel.store2 = pixel.y;}
