@@ -476,8 +476,8 @@ elements.net_core = {
     },
     conduct: 1,
     category: "machines",
-    desc: `When charged, pulls nearby net_links into its network.
-Shield gens, emitters, and anything in the components category can also be pulled via net_links, but cannot be directly connected.`,
+    desc: "When charged, pulls nearby net_links into its network" +
+    " Shield gens, emitters, and anything in the components category can also be pulled via net_links, but cannot be directly connected.",
     movable: false,
     forceSaveColor: true,
     hardness: 0.6,
@@ -487,7 +487,7 @@ elements.net_link = {
     color: "#660066",
     colorOn: "#ff00ff",
     onSelect: function() {
-        logMessage("Draw a link to connect components and net_core to.<br/>All connected net_links will burn out when one is broken.");
+        logMessage("Draw a link to connect components and net_core to.\nThe entire link will burn out when any part is broken.");
     },
     tick: function(pixel) {
         if (!pixel.detection){
