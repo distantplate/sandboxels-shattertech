@@ -200,7 +200,7 @@ elements.emitter = {
           if (has_charger != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
-            pixel.temp += Math.ceil(100/p.augCount.beam_charger);
+            pixel.temp += Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_charger);
             pixelTempCheck(pixel);
           }
         }
