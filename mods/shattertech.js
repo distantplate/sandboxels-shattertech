@@ -2,34 +2,17 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
-elements.h_plasma = {
-    color: ["#6f00ff","#996bd9","#6f00ff"],
-    behavior: behaviors.DGAS,
-    behaviorOn: [
-        "M2|M1|M2",
-        "CL%5 AND M1|XX|CL%5 AND M1",
-        "M2|M1|M2",
-    ],
-    temp:15000,
-    tempLow:5000,
-    stateLow: "fire",
-    category: "energy",
-    state: "gas",
-    density: 1,
-    //charge: 0.5,
-    conduct: 1
-};
-
-elements.h_explosion = {
+elements.plasma_burst = {
     color: ["#6f00ff","#7f48ff","#6f00ff"],
     behavior: [
         "XX|XX|XX",
-        "XX|EX:5>h_plasma|XX",
+        "XX|EX:5>plasma|XX",
         "XX|XX|XX",
     ],
-    temp: 15000,
+    temp: 7065,
     category: "energy",
     state: "gas",
+    desc: "explodes into plasma",
     density: 1000,
     excludeRandom: true,
     noMix: true
@@ -47,7 +30,7 @@ elements.barrage_spawner = {
             }
         }
         if ((Math.random() < 0.75 && done) || pixel.alpha >= 1) {
-            barrage(pixel.x,pixel.y,20,10,"h_plasma","h_plasma");
+            barrage(pixel.x,pixel.y,20,10,"plasma","plasma");
             deletePixel(pixel.x,pixel.y);
         }
         if (pixel.delay) {
@@ -56,55 +39,14 @@ elements.barrage_spawner = {
         doHeat(pixel);
     },
     hardness: 1,
-    temp: 15000,
+    temp: 7065,
     category: "energy",
     state: "gas",
+    desc: "creates a barrage of plasma explosions<br/>VERY destructive",
     //density: 1000,
     excludeRandom: true,
     //movable: false,
     cooldown: defaultCooldown,
-    noMix: true
-};
-
-elements.bombling = {
-    color: ["#6a00aa","#7a48aa","#6a00aa"],
-    tick: function(pixel) {
-	if (!pixel.primed) {
-	    pixel.primed = 1;
-	    pixel.quirgle = (Math.floor(Math.random()*30)) + 1;
-	}
-        if (pixelTicks - pixel.start >= pixel.quirgle) {
-            doDefaults(pixel);
-            explodeAt (pixel.x,pixel.y,10,"h_plasma")
-            deletePixel(pixel.x,pixel.y);
-        }
-        else { doDefaults(pixel); }
-    },
-    temp: 15000,
-    category: "energy",
-    state: "gas",
-    //density: 1000,
-    excludeRandom: true,
-    noMix: true
-};
-
-elements.timed_nova = {
-    color: ["#b8e7ff","#b8e7ff","#b8e7ff"],
-    tick: function(pixel) {
-        var quirgle = 30;
-        if (pixelTicks - pixel.start >= quirgle) {
-            doDefaults(pixel);
-            changePixel(pixel, "void");
-            explodeAt (pixel.x,pixel.y,80,"plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,plasma,molten_iron,molten_uranium,molten_lead,oxygen,molten_sodium,sulfur_gas,neon,chlorine,molten_calcium,molten_nickel,molten_copper,molten_zinc,gallium_gas,molten_potassium");
-        }
-        else { doDefaults(pixel); }
-    },
-    behavior: behaviors.WALL,
-    temp: 99999999700,
-    category: "energy",
-    state: "gas",
-    density: 1000,
-    excludeRandom: true,
     noMix: true
 };
 
@@ -146,8 +88,9 @@ elements.charged_blaster = {
     category: "weapons",
     glow: true,
     state: "solid",
+    desc: "the ultimate bunker-buster",
     density: 100000000,
-    temp: 15000,
+    temp: 10000,
     hardness: 1,
     maxSize: 1,
     cooldown: defaultCooldown,
@@ -420,6 +363,7 @@ elements.purplectric = {
     charge: 3,
     category: "energy",
     state: "gas",
+    desc: "it's electric, but purple",
     density: 2.1,
     insulate: true,
     ignoreAir: true,
@@ -742,21 +686,21 @@ elements.imploder = {
                     var y = coord.y;
                     if (!isEmpty(x,y,true)) {
                         var p = pixelMap[x][y];
-                        if (p.element === "imploder" || p.element === "h_plasma" || p.element === "h_explosion") {
+                        if (p.element === "imploder" || p.element === "plasma" || p.element === "plasma_burst") {
                             return;
                         }
                         if (elements[p.element].hardness != 1) {
-                            changePixel(p, "h_explosion");
+                            changePixel(p, "plasma_burst");
                         }
                         if (p.del || !elements[p.element].movable) { return }
                         tryMove(p,p.x,p.y-1);
                     } else if (isEmpty(x,y) && !outOfBounds(x,y)) {
-                        createPixel("h_explosion",x,y);
+                        createPixel("plasma_burst",x,y);
                     }
                 })
             }
             if (pixel.stage <= 0) {
-                changePixel(pixel,"h_explosion");
+                changePixel(pixel,"plasma_burst");
                 return;
             }
             if (pixel.stage > 0 && pixel.collapse === true){
@@ -1104,7 +1048,7 @@ elements.disintegrate = {
               var newPixel = pixelMap[x][y];
               var es = newPixel.element;
               if (Math.random() > 0.5+(pixel.decay/10)) {continue;}
-              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "h_plasma" && es !== "plasma" && es !== "fire" && es !== "net_link" && elements[es].hardness !== 1) {
+              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "plasma" && es !== "fire" && es !== "net_link" && elements[es].hardness !== 1) {
                 var cstore = newPixel.color;
                 var hstore = 0;
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*20);}
@@ -1128,7 +1072,7 @@ elements.disintegrate = {
           pixel.oldColor = pixel.color;
           pixel.timer = pixel.timerMax;
         } else if (pixelTicks-pixel.start>=3) {
-          changePixel(pixel, "h_plasma");
+          changePixel(pixel, "plasma");
         }
       }
       if (pixel.trigger == 3) {
@@ -1146,13 +1090,13 @@ elements.disintegrate = {
           pixel.color = "rgb("+fC[0]+","+fC[1]+","+fC[2]+")";
           pixel.timer--;
         } else {
-          changePixel(pixel, "h_plasma");
+          changePixel(pixel, "plasma");
         }
       }
-      if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "h_plasma");}
+      if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "plasma");}
       doDefaults(pixel);
     },
-    temp:15000,
+    temp: 7065,
     category: "energy",
     state: "solid",
     density: 1,
