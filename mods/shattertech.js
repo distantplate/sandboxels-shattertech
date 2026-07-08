@@ -152,7 +152,10 @@ elements.emitter = {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
           var p = pixelMap[pixel.link[0]][pixel.link[1]];
-          if (p.augList.beam_charger) {has_charger = true;}
+          if (p.augList.beam_charger) {
+            has_charger = true;
+            pixel.temp += Math.ceil(20/p.augCount.beam_charger);
+          }
         }
         if (pixel.buffer){
             if (!pixel.charge) {
@@ -213,7 +216,6 @@ elements.emitter = {
                 var b2 = 255-(((pixel.spooled-150)/300)*255);
                 pixel.color = "rgb("+r2+","+g2+","+b2+")";
             }
-            if (pixel.spooled == 450) {explodeAt(pixel.x,pixel.y,15,"plasma");}
         }
         else{
             pixel.color = "#a8a897";
@@ -226,7 +228,7 @@ elements.emitter = {
     //colorOn: "#ebebc3",
     movable: false,
     category: "machines",
-    tempHigh: 6000,
+    tempHigh: 3000,
     stateHigh: ["explosion"],
     state: "solid",
     desc: "Creates a destructive beam when charged. Can shoot through shields if on the same network.",
@@ -397,6 +399,7 @@ elements.net_core = {
             emitters: []
           };
           pixel.augList = {};
+          pixel.augCount = {};
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -435,7 +438,8 @@ elements.net_core = {
         } else {
           var tempObj = {
             comps: {shields: [], emitters: []},
-            augs: {}
+            augList: {},
+            augCount: {}
           };
           for (let a in pixel.compList) {
             var type = (a === "shields" ? "shield_gen" : "emitter");
@@ -447,16 +451,19 @@ elements.net_core = {
             }
           }
           for (let a in pixel.augList) {
-            tempObj.augs[a] = [];
             for (let b in pixel.augList[a]) {
               var c = pixel.augList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === a : false) {
-                tempObj.augs[a].push({x: c.x,y: c.y});
+                if (!tempObj.augList[a]) {tempObj.augList[a] = [];}
+                if (!tempObj.augCount[a]) {tempObj.augCount[a] = 0;}
+                tempObj.augList[a].push({x: c.x,y: c.y});
+                tempObj.augCount[a]++;
               }
             }
           }
           pixel.compList = {shields: tempObj.comps.shields,emitters: tempObj.comps.emitters};
-          pixel.augList = tempObj.augs;
+          pixel.augList = tempObj.augList;
+          pixel.augCount = tempObj.augCount;
         }
         if (pixel.devcheck == 1) {
           for (let a in pixel.augList.beam_charger) {
