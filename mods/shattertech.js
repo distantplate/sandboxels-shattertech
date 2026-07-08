@@ -213,10 +213,7 @@ elements.emitter = {
                 var b2 = 255-(((pixel.spooled-150)/300)*255);
                 pixel.color = "rgb("+r2+","+g2+","+b2+")";
             }
-            if (pixel.spooled == 450) {
-                changePixel(pixel,"charged_blaster");
-                pixel.charge = 0;
-            }
+            if (pixel.spooled == 450) {explodeAt(pixel.x,pixel.y,15,"plasma");}
         }
         else{
             pixel.color = "#a8a897";
