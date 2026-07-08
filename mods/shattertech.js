@@ -154,7 +154,8 @@ elements.emitter = {
           var p = pixelMap[pixel.link[0]][pixel.link[1]];
           if (p.augList.beam_charger) {
             has_charger = true;
-            pixel.temp += Math.ceil(20/p.augCount.beam_charger);
+            pixel.temp += Math.ceil(100/p.augCount.beam_charger);
+            pixelTempCheck(pixel);
           }
         }
         if (pixel.buffer){
