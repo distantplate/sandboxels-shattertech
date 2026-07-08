@@ -151,6 +151,7 @@ elements.emitter = {
         if (pixel.link != false) {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].fault === true) {pixel.link = false;}
           if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_charger) {has_charger = true;}
         }
         if (pixel.buffer){
@@ -200,7 +201,10 @@ elements.emitter = {
           if (has_charger != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
-            pixel.temp += Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_charger);
+            var count = Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_charger);
+            if (isNan(count)) {count = 0;}
+            else if (count < 0) {count = 0;}
+            pixel.temp += count;
             pixelTempCheck(pixel);
           }
         }
