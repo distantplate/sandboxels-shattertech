@@ -476,8 +476,8 @@ elements.net_core = {
     },
     conduct: 1,
     category: "machines",
-    desc: "When charged, pulls nearby net_links into its network" +
-    " Shield gens, emitters, and anything in the components category can also be pulled via net_links, but cannot be directly connected.",
+    desc: "When charged, pulls nearby net_links into its network." +
+    " Shield gens, emitters, and anything in the components category can also be pulled via net_links, but cannot be directly connected.<br/>",
     movable: false,
     forceSaveColor: true,
     hardness: 0.6,
