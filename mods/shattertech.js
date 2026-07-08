@@ -229,7 +229,7 @@ elements.emitter = {
     //colorOn: "#ebebc3",
     movable: false,
     category: "machines",
-    tempHigh: 3000,
+    tempHigh: 6000,
     stateHigh: ["explosion"],
     state: "solid",
     desc: "Creates a destructive beam when charged. Can shoot through shields if on the same network.",
