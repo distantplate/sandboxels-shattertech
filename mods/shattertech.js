@@ -674,7 +674,7 @@ elements.net_link = {
     ignoreConduct: ["sensor","portal_in"],
     conduct: 1,
     category: "machines",
-    desc: "Used by a net_core to form a network and connect components." +
+    desc: "Used by a net_core to form a network and connect components. " +
     "Extremely durable, but burns out if above 10000 degrees.<br/>",
     movable: false,
     forceSaveColor: true,
