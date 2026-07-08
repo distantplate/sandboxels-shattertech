@@ -162,7 +162,7 @@ elements.emitter = {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
           var p = pixelMap[pixel.link[0]][pixel.link[1]];
-          if (p.augList.beam_charger ? p.augList.beam_charger.length > 0 : false) {has_charger = true;}
+          if (p.augList.beam_charger) {has_charger = true;}
         }
         if (pixel.spooled){
             if (pixel.spooled > 150){
