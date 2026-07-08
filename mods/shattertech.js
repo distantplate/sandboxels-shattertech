@@ -151,12 +151,7 @@ elements.emitter = {
         if (pixel.link != false) {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
-          var p = pixelMap[pixel.link[0]][pixel.link[1]];
-          if (p.augList.beam_charger) {
-            has_charger = true;
-            pixel.temp += Math.ceil(100/p.augCount.beam_charger);
-            pixelTempCheck(pixel);
-          }
+          if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_charger) {has_charger = true;}
         }
         if (pixel.buffer){
             if (!pixel.charge) {
@@ -201,9 +196,12 @@ elements.emitter = {
             pixel.spooled = 450;
         }
         // Cap for spooled #2
-        if (has_charger != true || (!pixel.buffer)){
-          if (pixel.spooled > 150){
+        if (pixel.spooled > 150){
+          if (has_charger != true || (!pixel.buffer)) {
             pixel.spooled = 150;
+          } else {
+            pixel.temp += Math.ceil(100/p.augCount.beam_charger);
+            pixelTempCheck(pixel);
           }
         }
         // Make the emiiter change color (or go kaboom) depending on spooled
