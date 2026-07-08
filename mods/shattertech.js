@@ -144,16 +144,6 @@ elements.emitter = {
             pixel.buffer = 10;
         }
         var has_charger = false;
-        if (pixel.buffer){
-            if (!pixel.charge) {
-                pixel.buffer = pixel.buffer-1;
-            }
-            if (has_charger === true && pixel.spooled < 450){
-                pixel.spooled += 2;
-            } else if (has_charger !== true && pixel.spooled < 150) {
-                pixel.spooled += 2;
-            }
-        }
         if (!pixel.setup) {
           pixel.link = false;
           pixel.setup = true;
@@ -163,6 +153,16 @@ elements.emitter = {
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
           var p = pixelMap[pixel.link[0]][pixel.link[1]];
           if (p.augList.beam_charger) {has_charger = true;}
+        }
+        if (pixel.buffer){
+            if (!pixel.charge) {
+                pixel.buffer = pixel.buffer-1;
+            }
+            if (has_charger === true && pixel.spooled < 450){
+                pixel.spooled += 2;
+            } else if (has_charger !== true && pixel.spooled < 150) {
+                pixel.spooled += 2;
+            }
         }
         if (pixel.spooled){
             if (pixel.spooled > 150){
@@ -197,7 +197,7 @@ elements.emitter = {
             pixel.spooled = 450;
         }
         // Cap for spooled #2
-        if (has_charger !== true || (!pixel.buffer)){
+        if (has_charger != true || (!pixel.buffer)){
           if (pixel.spooled > 150){
             pixel.spooled = 150;
           }
