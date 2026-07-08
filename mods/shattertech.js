@@ -911,7 +911,9 @@ elements.shield_gen = {
                             p.emitX = pixel.x;
                             p.emitY = pixel.y;
                             p.timer = 5;
-                            p.link = (pixel.link != false ? pixel.link[0].toString() + "." + pixel.link[1].toString : false);
+                            if (pixel.link != false) {
+                              p.link = pixel.link[0].toString() + "." + pixel.link[1].toString();
+                            } else {p.link = false;}
                         }
                     }
                 } else if (pixel.syncCheck == 9) {
