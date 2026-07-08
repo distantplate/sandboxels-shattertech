@@ -238,6 +238,7 @@ elements.emitter = {
     tempHigh: 6000,
     stateHigh: ["explosion"],
     state: "solid",
+    desc: "Creates a destructive beam when charged. Can shoot through shields if on the same network.",
     conduct: 1,
     breakInto: "explosion"
 };
@@ -487,7 +488,7 @@ elements.net_link = {
     color: "#660066",
     colorOn: "#ff00ff",
     onSelect: function() {
-        logMessage("Draw a link to connect components and net_core to.\nThe entire link will burn out when any part is broken.");
+        logMessage("Draw a link to connect components and net_core to.\nThe entire link will burn out when any part is broken or gets too hot.");
     },
     tick: function(pixel) {
         if (!pixel.detection){
@@ -673,6 +674,8 @@ elements.net_link = {
     ignoreConduct: ["sensor","portal_in"],
     conduct: 1,
     category: "machines",
+    desc: "Used by a net_core to form a network and connect components." +
+    "Extremely durable, but burns out if above 10000 degrees.<br/>",
     movable: false,
     forceSaveColor: true,
     hardness: 0.99,
@@ -911,6 +914,7 @@ elements.shield_gen = {
     },
     category: "machines",
     state: "solid",
+    desc: "Creates a barrier that stops most explosions. Can be overwhelmed by enough explosions, with larger ones hurting more.",
     maxSize: 1,
     excludeRandom: true,
     insulate: true,
