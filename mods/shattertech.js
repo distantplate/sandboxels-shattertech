@@ -452,10 +452,10 @@ elements.net_core = {
             for (let b in pixel.compList[a]) {
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
                 logMessage("valid pixel");
-                if (pixel.updateAll) {
+                /*if (pixel.updateAll) {
                   logMessage("pixel updated");
                   c_u_handler(c.x,c.y,type,tempObj.augCount);
-                }
+                }*/
                 tempObj.comps[a].push({x: c.x,y: c.y});
               }
             }
