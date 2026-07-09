@@ -443,8 +443,8 @@ elements.net_core = {
                 tempObj.augCount[a]++;
               }
             }
-            logMessage("updated data");
             if (!pixel.augCount[a] ? true : pixel.augCount[a] !== tempObj.augCount[a]) {
+                logMessage("flag set");
                 pixel.compUpdate[elements[a].compType] = true;
             }
           }
