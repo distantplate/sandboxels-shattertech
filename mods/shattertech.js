@@ -543,8 +543,8 @@ elements.net_link = {
                     if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {bypass = true;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
-                      if (bypass == true) {continue;}
                       pixel.detection[dexi] = 1;
+                      if (bypass == true) {continue;}
                       if (newPixel.stage != 2) {continue;} else {
                         if (newPixel.active > 0) {
                           if (newPixel.active > 1) {
