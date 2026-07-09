@@ -191,10 +191,7 @@ elements.emitter = {
           if (pixel.overclocked != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
-            var count = Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_overclocker);
-            if (isNaN(count)) {count = 0;}
-            else if (count < 0) {count = 0;}
-            pixel.temp += count;
+            pixel.temp += heatup;
             pixelTempCheck(pixel);
           }
         }
