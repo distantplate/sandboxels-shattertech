@@ -476,7 +476,7 @@ elements.net_core = {
     hardness: 0.6,
 };
   
-elements.net_link = {
+/*elements.net_link = {
     color: "#660066",
     colorOn: "#ff00ff",
     onSelect: function() {
@@ -676,7 +676,7 @@ elements.net_link = {
     movable: false,
     forceSaveColor: true,
     hardness: 0.99,
-};
+};*/
 
 elements.burnt_link = {
   color: "#360036",
