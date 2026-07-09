@@ -202,7 +202,7 @@ elements.emitter = {
             pixel.spooled = 150;
           } else {
             var count = Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_charger);
-            if (isNan(count)) {count = 0;}
+            if (isNaN(count)) {count = 0;}
             else if (count < 0) {count = 0;}
             pixel.temp += count;
             pixelTempCheck(pixel);
