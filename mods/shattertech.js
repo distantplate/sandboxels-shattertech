@@ -133,7 +133,6 @@ elements.emitter = {
         if (pixel.charge){
             pixel.buffer = 10;
         }
-        pixel.overclocked = false;
         if (pixel.link) {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.failsafe = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.failsafe = false;}
@@ -141,6 +140,8 @@ elements.emitter = {
         }
         if (!pixel.failsafe) {
           pixel.link = false;
+          pixel.overclocked = false;
+          pixel.heatup = 0;
           pixel.failsafe = true;
         }
         if (pixel.buffer){
