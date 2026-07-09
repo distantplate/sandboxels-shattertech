@@ -133,24 +133,24 @@ elements.emitter = {
         if (pixel.charge){
             pixel.buffer = 10;
         }
-        var overclocked = false;
-        if (!pixel.setup) {
-          pixel.link = false;
-          pixel.setup = true;
+        if (pixel.link) {
+          if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.reset = 0;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.reset = 0;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].fault === true) {pixel.reset = 0;}
         }
-        if (pixel.link != false) {
-          if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
-          else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
-          else if (pixelMap[pixel.link[0]][pixel.link[1]].fault === true) {pixel.link = false;}
-          else if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_overclocker) {overclocked = true;}
+        if (!pixel.reset) {
+          pixel.link = false;
+          pixel.overclocked = false;
+          pixel.heatup = 0;
+          pixel.reset = 1;
         }
         if (pixel.buffer){
             if (!pixel.charge) {
                 pixel.buffer = pixel.buffer-1;
             }
-            if (overclocked === true && pixel.spooled < 450){
+            if (pixel.overclocked === true && pixel.spooled < 450){
                 pixel.spooled += 2;
-            } else if (overclocked !== true && pixel.spooled < 150) {
+            } else if (pixel.overclocked !== true && pixel.spooled < 150) {
                 pixel.spooled += 2;
             }
         }
@@ -191,14 +191,11 @@ elements.emitter = {
           if (overclocked != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
-            var count = Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_overclocker);
-            if (isNaN(count)) {count = 0;}
-            else if (count < 0) {count = 0;}
-            pixel.temp += count;
+            pixel.temp += pixel.heatup;
             pixelTempCheck(pixel);
           }
         }
-        // Make the emiiter change color (or go kaboom) depending on spooled
+        // Make the emitter change color (or go kaboom) depending on spooled
         if (pixel.spooled >= 150){
             if (pixel.spooled == 150){
                 pixel.color = "rgb(150,0,255)";
@@ -393,7 +390,7 @@ elements.net_core = {
           };
           pixel.augList = {};
           pixel.augCount = {};
-          pixel.addComps = {};
+          pixel.compUpdate = {};
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -446,6 +443,9 @@ elements.net_core = {
                 tempObj.augCount[a]++;
               }
             }
+            if (!pixel.augCount[a] ? true : pixel.augCount[a] !== tempObj.augCount[a]) {
+                pixel.compUpdate[elements[a].compType] = true;
+            }
           }
           for (let a in pixel.compList) {
             var type = (a === "shields" ? "shield_gen" : "emitter");
@@ -453,6 +453,10 @@ elements.net_core = {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
+                if (pixel.compUpdate[a]) {
+                    var d = pixelMap[c.x][c.y];
+                    c_u_handler(d,type,tempObj.augCount);
+                }
               }
             }
           }
@@ -1199,6 +1203,30 @@ elements.shield_config = {
   },
   category: "special",
   maxSize: 1
+};
+
+function c_u_handler(target,type,counts) {
+    if (target.element === type) {
+        if (type === "shield_gen") {
+            if (counts.shield_hardener) {
+                target.threshold = 2.5 * counts.shield_hardener;
+            } else {target.threshold = 0;}
+        } else if (type === "emitter") {
+            if (counts.beam_overclocker) {
+                target.overclocked = true;
+                var heat = Math.ceil(100/counts.beam_overclocker);
+                if (isNaN(heat)) {heat = 0;}
+                else if (heat < 0) {heat = 0;}
+                target.heatup = heat;
+            } else {
+                target.overclocked = false;
+                target.heatup = 0;
+            }
+        }
+        return;
+    } else {
+        return;
+    }
 };
 
 function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
