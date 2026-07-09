@@ -117,13 +117,6 @@ elements.charged_blaster = {
 elements.beam_overclocker = {
     color: "#808080",
     behavior: behaviors.WALL,
-    tick: function(pixel) {
-      if (!pixel.startup) {
-        pixel.active = 0;
-        pixel.netData = [false,false,false];
-        pixel.startup = 1;
-      }
-    },
     category: "components",
     desc: "Strengthens emitters in its network, but allows them to overheat. " +
 "The more overclockers are connected, the slower the emitters will heat up.<br/>",
@@ -380,7 +373,7 @@ elements.purplectric = {
     ignoreConduct: ["shocker"]
 };
 
-let validComps = ["emitter","shield_gen","beam_overclocker","shield_charger"];
+let validComps = ["emitter","shield_gen","beam_overclocker","shield_hardener"];
 
 elements.net_core = {
     color: "#ff0000",
@@ -399,6 +392,7 @@ elements.net_core = {
           };
           pixel.augList = {};
           pixel.augCount = {};
+          pixel.addComps = {};
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -441,15 +435,6 @@ elements.net_core = {
             augList: {},
             augCount: {}
           };
-          for (let a in pixel.compList) {
-            var type = (a === "shields" ? "shield_gen" : "emitter");
-            for (let b in pixel.compList[a]) {
-              var c = pixel.compList[a][b];
-              if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
-                tempObj.comps[a].push({x: c.x,y: c.y});
-              }
-            }
-          }
           for (let a in pixel.augList) {
             for (let b in pixel.augList[a]) {
               var c = pixel.augList[a][b];
@@ -458,6 +443,15 @@ elements.net_core = {
                 if (!tempObj.augCount[a]) {tempObj.augCount[a] = 0;}
                 tempObj.augList[a].push({x: c.x,y: c.y});
                 tempObj.augCount[a]++;
+              }
+            }
+          }
+          for (let a in pixel.compList) {
+            var type = (a === "shields" ? "shield_gen" : "emitter");
+            for (let b in pixel.compList[a]) {
+              var c = pixel.compList[a][b];
+              if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
+                tempObj.comps[a].push({x: c.x,y: c.y});
               }
             }
           }
@@ -770,8 +764,15 @@ elements.shield_gen = {
             pixel.yStage = 15;
         }
         if (pixel.link != false) {
-          if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
-          else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
+          var p = pixelMap[pixel.link[0]][pixel.link[1]];
+          var check = false;
+          if (isEmpty(pixel.link[0],pixel.link[1],true) {check = true;}
+          else if (p.element !== "net_core") {check = true;}
+          else if (p.fault != false) {check = true;}
+          if (check == true) {
+            pixel.link = false;
+            pixel.threshold = 0;
+          }
         }
         if (pixel.health <= 0) {
             if (pixel.threshold > 0) {changePixel(pixel,"pulse");}
@@ -924,24 +925,14 @@ elements.shield_gen = {
     movable: false,
 };
 
-elements.shield_charger = {
+elements.shield_hardener = {
     color: "#a8a897",
     behavior: behaviors.WALL,
-    tick: function(pixel) {
-      if (!pixel.startup) {
-        pixel.active = 1;
-        pixel.netData = [false,false,false];
-        pixel.startup = 1;
-      }
-      if (pixel.active) {
-        if (!isEmpty(pixel.netData[1],pixel.netData[2],true) ? pixelMap[pixel.netData[1]][pixel.netData[2]].fault == true : false) {
-          pixel.netData = [false,false,false];
-          pixel.active = 0;
-        }
-      }
-    },
-    conduct: 0,
-    category: "components"
+    conduct: 1,
+    category: "components",
+    desc: "WIP",
+    insulate: true,
+    state: "solid"
 };
 
 elements.barrier = {
