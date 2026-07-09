@@ -444,7 +444,6 @@ elements.net_core = {
               }
             }
             if (!pixel.augCount[a] ? true : pixel.augCount[a] !== tempObj.augCount[a]) {
-                logMessage("flag set");
                 pixel.compUpdate[elements[a].compType] = true;
             }
           }
@@ -453,6 +452,7 @@ elements.net_core = {
             for (let b in pixel.compList[a]) {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
+                logMessage("check 2");
                 tempObj.comps[a].push({x: c.x,y: c.y});
                 if (pixel.compUpdate[a] || pixel.updateAll) {
                     c_u_handler(c.x,c.y,type,tempObj.augCount);
