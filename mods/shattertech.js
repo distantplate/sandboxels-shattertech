@@ -123,12 +123,6 @@ elements.beam_overclocker = {
         pixel.netData = [false,false,false];
         pixel.startup = 1;
       }
-      if (pixel.active) {
-        if (!isEmpty(pixel.netData[1],pixel.netData[2],true) ? pixelMap[pixel.netData[1]][pixel.netData[2]].fault == true : false) {
-          pixel.netData = [false,false,false];
-          pixel.active = 0;
-        }
-      }
     },
     category: "components",
     desc: "Strengthens emitters in its network, but allows them to overheat. " +
@@ -581,7 +575,12 @@ elements.net_link = {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
                       else if (bypass == false) {
                         if (elements[newPixel.element].category === "components") {
-                          if (newPixel.netData[0] != pixel.netConflict[0] || newPixel.netData[1] != pixel.coreLoc[0] || newPixel.netData[2] != pixel.coreLoc[1]) {
+                          var check = false;
+                          if (!newPixel.netData) {check = true;}
+                          else if (newPixel.netData[0] != pixel.netConflict[0]) {check = true;}
+                          else if (newPixel.netData[1] != pixel.coreLoc[0]) {check = true;}
+                          else if (newPixel.netData[2] != pixel.coreLoc[1]) {check = true;}
+                          if (check == true) {
                             newPixel.netData = [pixel.netConflict[0],pixel.coreLoc[0],pixel.coreLoc[1]];
                             var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                             if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
