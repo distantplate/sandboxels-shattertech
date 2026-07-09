@@ -198,7 +198,7 @@ elements.emitter = {
             pixelTempCheck(pixel);
           }
         }
-        // Make the emiiter change color (or go kaboom) depending on spooled
+        // Make the emitter change color (or go kaboom) depending on spooled
         if (pixel.spooled >= 150){
             if (pixel.spooled == 150){
                 pixel.color = "rgb(150,0,255)";
@@ -393,7 +393,7 @@ elements.net_core = {
           };
           pixel.augList = {};
           pixel.augCount = {};
-          pixel.addComps = {};
+          pixel.compUpdate = {};
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -446,6 +446,9 @@ elements.net_core = {
                 tempObj.augCount[a]++;
               }
             }
+            if (pixel.augCount[a] !== tempObj.augCount[a]) {
+              pixel.compUpdate[a] = true;
+            }
           }
           for (let a in pixel.compList) {
             var type = (a === "shields" ? "shield_gen" : "emitter");
@@ -459,6 +462,7 @@ elements.net_core = {
           pixel.compList = {shields: tempObj.comps.shields,emitters: tempObj.comps.emitters};
           pixel.augList = tempObj.augList;
           pixel.augCount = tempObj.augCount;
+          pixel.compUpdate = {};
         }
         if (pixel.devcheck == 1) {
           for (let a in pixel.augList.beam_overclocker) {
@@ -580,6 +584,8 @@ elements.net_link = {
                             var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                             if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
                             target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
+                            if (!target.augCount[newPixel.element]) {target.augCount[newPixel.element] = 0;}
+                            target.augCount[newPixel.element]++;
                           }
                         } else if (newPixel.element === "shield_gen") {
                           newPixel.link = pixel.coreLoc;
