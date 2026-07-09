@@ -123,6 +123,7 @@ elements.beam_overclocker = {
     insulate: true,
     state: "solid",
     conduct: 1,
+    compType: "emitters"
 };
 
 elements.emitter = {
@@ -932,7 +933,8 @@ elements.shield_hardener = {
     category: "components",
     desc: "WIP",
     insulate: true,
-    state: "solid"
+    state: "solid",
+    compType: "shields"
 };
 
 elements.barrier = {
