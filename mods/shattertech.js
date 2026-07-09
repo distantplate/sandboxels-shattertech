@@ -133,7 +133,7 @@ elements.emitter = {
         if (pixel.charge){
             pixel.buffer = 10;
         }
-        var overclocked = false;
+        pixel.overclocked = false;
         if (!pixel.setup) {
           pixel.link = false;
           pixel.setup = true;
@@ -142,15 +142,15 @@ elements.emitter = {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].fault === true) {pixel.link = false;}
-          else if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_overclocker) {overclocked = true;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_overclocker) {pixel.overclocked = true;}
         }
         if (pixel.buffer){
             if (!pixel.charge) {
                 pixel.buffer = pixel.buffer-1;
             }
-            if (overclocked === true && pixel.spooled < 450){
+            if (pixel.overclocked === true && pixel.spooled < 450){
                 pixel.spooled += 2;
-            } else if (overclocked !== true && pixel.spooled < 150) {
+            } else if (pixel.overclocked !== true && pixel.spooled < 150) {
                 pixel.spooled += 2;
             }
         }
@@ -188,7 +188,7 @@ elements.emitter = {
         }
         // Cap for spooled #2
         if (pixel.spooled > 150){
-          if (overclocked != true || (!pixel.buffer)) {
+          if (pixel.overclocked != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
             var count = Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_overclocker);
