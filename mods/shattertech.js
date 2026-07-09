@@ -443,6 +443,7 @@ elements.net_core = {
                 tempObj.augCount[a]++;
               }
             }
+            logMessage("updated data");
             if (!pixel.augCount[a] ? true : pixel.augCount[a] !== tempObj.augCount[a]) {
                 pixel.compUpdate[elements[a].compType] = true;
             }
@@ -454,7 +455,6 @@ elements.net_core = {
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
                 if (pixel.compUpdate[a] || pixel.updateAll) {
-                    logMessage("ran the check");
                     c_u_handler(c.x,c.y,type,tempObj.augCount);
                 }
               }
