@@ -134,14 +134,15 @@ elements.emitter = {
             pixel.buffer = 10;
         }
         pixel.overclocked = false;
-        if (pixel.link != false) {
-          if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.failsafe = false;}
-          else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.failsafe = false;}
-          else if (pixelMap[pixel.link[0]][pixel.link[1]].fault === true) {pixel.failsafe = false;}
-        }
-        if (!pixel.failsafe) {
+        if (!pixel.setup) {
           pixel.link = false;
-          pixel.failsafe = true;
+          pixel.setup = true;
+        }
+        if (pixel.link != false) {
+          if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].fault === true) {pixel.link = false;}
+          else if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_overclocker) {pixel.overclocked = true;}
         }
         if (pixel.buffer){
             if (!pixel.charge) {
