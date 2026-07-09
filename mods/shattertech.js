@@ -608,12 +608,12 @@ elements.net_link = {
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
-                if (pixel.active > 0 && pixel.coreLoc) {
+                /*if (pixel.active > 0 && pixel.coreLoc) {
                   var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                   if (!isEmpty(target.x,target.y,true) ? (target.element === "net_core") : false) {
                     target.fault = true;
                   }
-                }
+                }*/
                 newColor = "#360036";
               } else if (pixel.temp > 10000) {
                 newColor = "#9b00ff"
