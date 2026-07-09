@@ -375,7 +375,7 @@ elements.purplectric = {
 
 let validComps = ["emitter","shield_gen","beam_overclocker","shield_hardener"];
 
-/*elements.net_core = {
+elements.net_core = {
     color: "#ff0000",
     onSelect: function() {
         logMessage("When charged, pulls nearby net_link pixels into its network.");
@@ -676,7 +676,7 @@ elements.net_link = {
     movable: false,
     forceSaveColor: true,
     hardness: 0.99,
-};*/
+};
 
 elements.burnt_link = {
   color: "#360036",
@@ -766,7 +766,7 @@ elements.shield_gen = {
         if (pixel.link != false) {
           var p = pixelMap[pixel.link[0]][pixel.link[1]];
           var check = false;
-          if (isEmpty(pixel.link[0],pixel.link[1],true) {check = true;}
+          if (isEmpty(pixel.link[0],pixel.link[1],true)) {check = true;}
           else if (p.element !== "net_core") {check = true;}
           else if (p.fault != false) {check = true;}
           if (check == true) {
