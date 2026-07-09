@@ -454,8 +454,7 @@ elements.net_core = {
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
                 if (pixel.compUpdate[a]) {
-                    var d = pixelMap[c.x][c.y];
-                    c_u_handler(d,type,tempObj.augCount);
+                    c_u_handler(c.x,c.y,type,tempObj.augCount);
                 }
               }
             }
@@ -1205,7 +1204,8 @@ elements.shield_config = {
   maxSize: 1
 };
 
-function c_u_handler(target,type,counts) {
+function c_u_handler(x,y,type,counts) {
+    var target = pixelMap[x][y];
     if (target.element === type) {
         if (type === "shield_gen") {
             if (counts.shield_hardener) {
@@ -1222,6 +1222,7 @@ function c_u_handler(target,type,counts) {
                 target.overclocked = false;
                 target.heatup = 0;
             }
+            logMessage("check 1");
         }
         return;
     } else {
