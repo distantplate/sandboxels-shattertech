@@ -451,12 +451,12 @@ elements.net_core = {
             var type = (a === "shields" ? "shield_gen" : "emitter");
             for (let b in pixel.compList[a]) {
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
-                tempObj.comps[a].push({x: c.x,y: c.y});
                 logMessage("valid pixel");
                 if (pixel.updateAll) {
                   logMessage("pixel updated");
                   c_u_handler(c.x,c.y,type,tempObj.augCount);
                 }
+                tempObj.comps[a].push({x: c.x,y: c.y});
               }
             }
           }
