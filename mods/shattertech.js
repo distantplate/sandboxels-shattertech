@@ -375,7 +375,7 @@ elements.purplectric = {
 
 let validComps = ["emitter","shield_gen","beam_overclocker","shield_hardener"];
 
-elements.net_core = {
+/*elements.net_core = {
     color: "#ff0000",
     onSelect: function() {
         logMessage("When charged, pulls nearby net_link pixels into its network.");
@@ -476,7 +476,7 @@ elements.net_core = {
     hardness: 0.6,
 };
   
-/*elements.net_link = {
+elements.net_link = {
     color: "#660066",
     colorOn: "#ff00ff",
     onSelect: function() {
