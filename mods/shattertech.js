@@ -114,7 +114,7 @@ elements.charged_blaster = {
     excludeRandom: true,
 };
 
-elements.beam_charger = {
+elements.beam_overclocker = {
     color: "#808080",
     behavior: behaviors.WALL,
     tick: function(pixel) {
@@ -131,6 +131,8 @@ elements.beam_charger = {
       }
     },
     category: "components",
+    desc: "Strengthens emitters in its network, but allows them to overheat. " +
+"The more overclockers are connected, the slower the emitters will heat up.<br/>",
     insulate: true,
     state: "solid",
     conduct: 1,
@@ -143,7 +145,7 @@ elements.emitter = {
         if (pixel.charge){
             pixel.buffer = 10;
         }
-        var has_charger = false;
+        var overclocked = false;
         if (!pixel.setup) {
           pixel.link = false;
           pixel.setup = true;
@@ -152,15 +154,15 @@ elements.emitter = {
           if (isEmpty(pixel.link[0],pixel.link[1],true)) {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].element !== "net_core") {pixel.link = false;}
           else if (pixelMap[pixel.link[0]][pixel.link[1]].fault === true) {pixel.link = false;}
-          if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_charger) {has_charger = true;}
+          if (pixelMap[pixel.link[0]][pixel.link[1]].augList.beam_overclocker) {overclocked = true;}
         }
         if (pixel.buffer){
             if (!pixel.charge) {
                 pixel.buffer = pixel.buffer-1;
             }
-            if (has_charger === true && pixel.spooled < 450){
+            if (overclocked === true && pixel.spooled < 450){
                 pixel.spooled += 2;
-            } else if (has_charger !== true && pixel.spooled < 150) {
+            } else if (overclocked !== true && pixel.spooled < 150) {
                 pixel.spooled += 2;
             }
         }
@@ -198,10 +200,10 @@ elements.emitter = {
         }
         // Cap for spooled #2
         if (pixel.spooled > 150){
-          if (has_charger != true || (!pixel.buffer)) {
+          if (overclocked != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
-            var count = Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_charger);
+            var count = Math.ceil(100/pixelMap[pixel.link[0]][pixel.link[1]].augCount.beam_overclocker);
             if (isNaN(count)) {count = 0;}
             else if (count < 0) {count = 0;}
             pixel.temp += count;
@@ -384,7 +386,7 @@ elements.purplectric = {
     ignoreConduct: ["shocker"]
 };
 
-let validComps = ["emitter","shield_gen","beam_charger","shield_charger"];
+let validComps = ["emitter","shield_gen","beam_overclocker","shield_charger"];
 
 elements.net_core = {
     color: "#ff0000",
@@ -470,8 +472,8 @@ elements.net_core = {
           pixel.augCount = tempObj.augCount;
         }
         if (pixel.devcheck == 1) {
-          for (let a in pixel.augList.beam_charger) {
-            logMessage(pixel.augList.beam_charger[a].x + "," + pixel.augList.beam_charger[a].y);
+          for (let a in pixel.augList.beam_overclocker) {
+            logMessage(pixel.augList.beam_overclocker[a].x + "," + pixel.augList.beam_overclocker[a].y);
           }
           pixel.devcheck = 0;
         }
