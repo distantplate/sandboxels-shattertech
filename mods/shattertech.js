@@ -435,6 +435,7 @@ elements.net_core = {
           };
           for (let a in pixel.compList) {
             var type = (a === "shields" ? "shield_gen" : "emitter");
+            logMessage("even fucking runs");
             for (let b in pixel.compList[a]) {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
