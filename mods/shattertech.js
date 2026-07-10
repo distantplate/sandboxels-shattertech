@@ -191,7 +191,7 @@ elements.emitter = {
           if (pixel.overclocked != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
-            pixel.temp += pixel.heatup;
+            pixel.temp += heatup;
             pixelTempCheck(pixel);
           }
         }
@@ -454,6 +454,17 @@ elements.net_core = {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
+                if (pixel.compUpdate[a]) {
+                  if (a === "emitters") {
+                    if (tempObj.augCount[beam_overclocker]) {
+                      pixelMap[c.x][c.y].overclocked = true;
+                      var count = Math.ceil(100 / tempObj.augCount[beam_overclocker]);
+                      if (isNaN(count)) {count = 0;}
+                      else if (count < 0) {count = 0;}
+                      pixelMap[c.x][c.y].heatup = count;
+                    }
+                  }
+                }
               }
             }
           }
