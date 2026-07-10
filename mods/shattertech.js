@@ -444,7 +444,8 @@ elements.net_core = {
               }
             }
             if (pixel.augCount[a] !== tempObj.augCount[a]) {
-              pixel.compUpdate[a] = true;
+              var store = elements[pixelMap[c.x][c.y].element].compType;
+              pixel.compUpdate[store] = true;
             }
           }
           for (let a in pixel.compList) {
@@ -582,7 +583,7 @@ elements.net_link = {
                             if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
                             target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
                             if (!target.augCount[newPixel.element]) {target.augCount[newPixel.element] = 0;}
-                            target.augCount[newPixel.element]++;
+                            target.augCount[elements[newPixel.element].compType]++;
                           }
                         } else if (newPixel.element === "shield_gen") {
                           newPixel.link = pixel.coreLoc;
