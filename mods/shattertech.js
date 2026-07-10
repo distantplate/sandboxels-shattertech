@@ -191,7 +191,7 @@ elements.emitter = {
           if (pixel.overclocked != true || (!pixel.buffer)) {
             pixel.spooled = 150;
           } else {
-            pixel.temp += heatup;
+            pixel.temp += pixel.heatup;
             pixelTempCheck(pixel);
           }
         }
