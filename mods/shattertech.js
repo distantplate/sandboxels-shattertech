@@ -443,10 +443,10 @@ elements.net_core = {
                 tempObj.augCount[a]++;
               }
             }
-            if (pixel.augCount[a] !== tempObj.augCount[a] || !pixel.augCount[a]) {
+            /*if (pixel.augCount[a] !== tempObj.augCount[a] || !pixel.augCount[a]) {
               var store = elements[pixelMap[c.x][c.y].element].compType;
               pixel.compUpdate[store] = true;
-            }
+            }*/
           }
           for (let a in pixel.compList) {
             var type = (a === "shields" ? "shield_gen" : "emitter");
