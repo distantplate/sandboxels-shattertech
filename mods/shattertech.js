@@ -591,6 +591,7 @@ elements.net_link = {
                             newPixel.link = list;
                             var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                             target.compList.shields.push({x: pixel.x+a,y: pixel.y.b});
+                            target.compUpdate.shields = true;
                           }
                         } else if (newPixel.element === "emitter") {
                           var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
@@ -598,6 +599,7 @@ elements.net_link = {
                             newPixel.link = list;
                             var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                             target.compList.emitters.push({x: pixel.x+a,y: pixel.y+b});
+                            target.compUpdate.emitters = true;
                           }
                         }
                       }
