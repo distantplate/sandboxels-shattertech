@@ -455,11 +455,11 @@ elements.net_core = {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
+                logMessage("check 2");
                 if (pixel.compUpdate[a] || pixel.forceUpdate) {
                   if (a === "emitters") {
-                    logMessage("check 2");
+                    logMessage("check 3");
                     if (tempObj.augCount[beam_overclocker]) {
-                      logMessage("check 3");
                       pixelMap[c.x][c.y].overclocked = true;
                       var count = Math.ceil(100 / tempObj.augCount[beam_overclocker]);
                       if (isNaN(count)) {count = 0;}
