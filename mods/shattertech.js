@@ -444,6 +444,7 @@ elements.net_core = {
               }
             }
             if (pixel.augCount[a] !== tempObj.augCount[a]) {
+              logMessage("check 1");
               var store = elements[pixelMap[c.x][c.y].element].compType;
               pixel.compUpdate[store] = true;
             }
@@ -456,7 +457,9 @@ elements.net_core = {
                 tempObj.comps[a].push({x: c.x,y: c.y});
                 if (pixel.compUpdate[a]) {
                   if (a === "emitters") {
+                    logMessage("check 2");
                     if (tempObj.augCount[beam_overclocker]) {
+                      logMessage("check 3");
                       pixelMap[c.x][c.y].overclocked = true;
                       var count = Math.ceil(100 / tempObj.augCount[beam_overclocker]);
                       if (isNaN(count)) {count = 0;}
