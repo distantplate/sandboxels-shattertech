@@ -444,20 +444,17 @@ elements.net_core = {
               }
             }
             if (pixel.augCount[a] !== tempObj.augCount[a] || !pixel.augCount[a]) {
-              logMessage("check 1");
               var store = elements[pixelMap[c.x][c.y].element].compType;
               pixel.compUpdate[store] = true;
             }
           }
-          logMessage("gets to compList");
           for (let a in pixel.compList) {
             var type = (a === "shields" ? "shield_gen" : "emitter");
             for (let b in pixel.compList[a]) {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
-                logMessage("problem child");
                 tempObj.comps[a].push({x: c.x,y: c.y});
-                /*if (pixel.compUpdate[a] || pixel.forceUpdate) {
+                if (pixel.compUpdate[a] || pixel.forceUpdate) {
                   if (a === "emitters") {
                     if (tempObj.augCount[beam_overclocker]) {
                       pixelMap[c.x][c.y].overclocked = true;
@@ -467,7 +464,7 @@ elements.net_core = {
                       pixelMap[c.x][c.y].heatup = count;
                     }
                   }
-                }*/
+                }
               }
             }
           }
