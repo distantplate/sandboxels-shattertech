@@ -584,6 +584,7 @@ elements.net_link = {
                             target.augCount[elements[newPixel.element].compType]++;
                           }
                         } else if (newPixel.element === "shield_gen") {
+                          logMessage("shield linked");
                           var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
                           if (newPixel.link ? listCompare(list,newPixel.link) : true) {
                             newPixel.link = list;
