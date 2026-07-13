@@ -456,9 +456,9 @@ elements.net_core = {
                 tempObj.comps[a].push({x: c.x,y: c.y});
                 if (pixel.compUpdate[a] || pixel.forceUpdate) {
                   if (a === "emitters") {
-                    if (tempObj.augCount[beam_overclocker]) {
+                    if (tempObj.augCount.beam_overclocker) {
                       pixelMap[c.x][c.y].overclocked = true;
-                      var count = Math.ceil(100 / tempObj.augCount[beam_overclocker]);
+                      var count = Math.ceil(100 / tempObj.augCount.beam_overclocker);
                       if (isNaN(count)) {count = 0;}
                       else if (count < 0) {count = 0;}
                       pixelMap[c.x][c.y].heatup = count;
