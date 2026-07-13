@@ -421,7 +421,7 @@ elements.net_core = {
             }
             for (let a in pixel.compList.emitters) {
                 for (let b in pixel.compList.emitters[a]) {
-                  pixelMap[a][b].linkObj = false;
+                  pixelMap[a][b].link = false;
                 }
             }
             pixel.compList = {shields: [],emitters: []};
