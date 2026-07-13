@@ -607,7 +607,7 @@ elements.net_link = {
                           var check = false;
                           if (!newPixel.link) {check = true;}
                           else if (newPixel.link[0] != pixel.coreLoc[0]) {check = true;}
-                          else if (newPixel.link[1] != pxiel.coreLoc[1]) {check = true;}
+                          else if (newPixel.link[1] != pixel.coreLoc[1]) {check = true;}
                           else if (newPixel.link[2] != pixel.netConflict[0]) {check = true;}
                           if (check == true) {
                             newPixel.link = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
