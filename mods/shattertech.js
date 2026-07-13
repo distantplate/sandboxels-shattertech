@@ -443,7 +443,7 @@ elements.net_core = {
                 tempObj.augCount[a]++;
               }
             }
-            if (pixel.augCount[a] !== tempObj.augCount[a]) {
+            if (pixel.augCount[a] !== tempObj.augCount[a] || !pixel.augCount[a]) {
               logMessage("check 1");
               var store = elements[pixelMap[c.x][c.y].element].compType;
               pixel.compUpdate[store] = true;
