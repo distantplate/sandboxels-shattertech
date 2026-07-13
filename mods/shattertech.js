@@ -454,7 +454,7 @@ elements.net_core = {
             var type = (a === "shields" ? "shield_gen" : "emitter");
             for (let b in pixel.compList[a]) {
               var c = pixel.compList[a][b];
-              if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y] === type : false) {
+              if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
                 logMessage("problem child");
                 tempObj.comps[a].push({x: c.x,y: c.y});
                 /*if (pixel.compUpdate[a] || pixel.forceUpdate) {
