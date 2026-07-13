@@ -586,13 +586,9 @@ elements.net_link = {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
                       else if (bypass == false) {
                         if (elements[newPixel.element].category === "components") {
-                          var check = false;
-                          if (!newPixel.netData) {check = true;}
-                          else if (newPixel.netData[0] != pixel.netConflict[0]) {check = true;}
-                          else if (newPixel.netData[1] != pixel.coreLoc[0]) {check = true;}
-                          else if (newPixel.netData[2] != pixel.coreLoc[1]) {check = true;}
-                          if (check == true) {
-                            newPixel.netData = [pixel.netConflict[0],pixel.coreLoc[0],pixel.coreLoc[1]];
+                          var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                          if (newPixel.netData ? listCompare(list,newPixel.netData) : true) {
+                            newPixel.netData = list;
                             var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                             if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
                             target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
@@ -600,17 +596,16 @@ elements.net_link = {
                             target.augCount[elements[newPixel.element].compType]++;
                           }
                         } else if (newPixel.element === "shield_gen") {
-                          newPixel.link = pixel.coreLoc;
-                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.shields;
-                          target.push({x: pixel.x+a,y: pixel.y.b});
+                          var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                          if (newPixel.link ? listCompare(list,newPixel.link) : true) {
+                            newPixel.link = list;
+                            var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                            target.compList.shields.push({x: pixel.x+a,y: pixel.y.b});
+                          }
                         } else if (newPixel.element === "emitter") {
-                          var check = false;
-                          if (!newPixel.link) {check = true;}
-                          else if (newPixel.link[0] != pixel.coreLoc[0]) {check = true;}
-                          else if (newPixel.link[1] != pixel.coreLoc[1]) {check = true;}
-                          else if (newPixel.link[2] != pixel.netConflict[0]) {check = true;}
-                          if (check == true) {
-                            newPixel.link = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                          var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                          if (newPixel.link ? listCompare(list,newPixel.link) : true) {
+                            newPixel.link = list;
                             var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                             target.compList.emitters.push({x: pixel.x+a,y: pixel.y+b});
                           }
@@ -1224,6 +1219,18 @@ elements.shield_config = {
   },
   category: "special",
   maxSize: 1
+};
+
+function listCompare(list1,list2) {
+    if (list1.length != list2.length) {return false;}
+    var check = false;
+    for (var i = 0; i < list1.length; i++) {
+        if (list1[i] !== list2[i]) {
+            check = true;
+            break;
+        }
+    }
+    return check;
 };
 
 function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
