@@ -371,8 +371,6 @@ elements.purplectric = {
     ignoreConduct: ["shocker"]
 };
 
-let validComps = ["emitter","shield_gen","beam_overclocker","shield_hardener"];
-
 elements.net_core = {
     color: "#ff0000",
     onSelect: function() {
@@ -467,8 +465,8 @@ elements.net_core = {
           pixel.forceUpdate = false;
         }
         if (pixel.devcheck == 1) {
-          for (let a in pixel.augList.beam_overclocker) {
-            logMessage(pixel.augList.beam_overclocker[a].x + "," + pixel.augList.beam_overclocker[a].y);
+          for (let a in pixel.augList.shield_hardener) {
+            logMessage(pixel.augList.shield_hardener[a].x + "," + pixel.augList.shield_hardener[a].y);
           }
           pixel.devcheck = 0;
         }
