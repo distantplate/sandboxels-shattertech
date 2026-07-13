@@ -449,6 +449,7 @@ elements.net_core = {
               pixel.compUpdate[store] = true;
             }
           }
+          logMessage("gets to compList");
           for (let a in pixel.compList) {
             var type = (a === "shields" ? "shield_gen" : "emitter");
             for (let b in pixel.compList[a]) {
