@@ -604,9 +604,16 @@ elements.net_link = {
                           var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.shields;
                           target.push({x: pixel.x+a,y: pixel.y.b});
                         } else if (newPixel.element === "emitter") {
-                          newPixel.link = pixel.coreLoc;
-                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.emitters;
-                          target.push({x: pixel.x+a,y: pixel.y+b});
+                          var check = false;
+                          if (!newPixel.link) {check = true;}
+                          else if (newPixel.link[0] != pixel.coreLoc[0]) {check = true;}
+                          else if (newPixel.link[1] != pxiel.coreLoc[1]) {check = true;}
+                          else if (newPixel.link[2] != pixel.netConflict[0]) {check = true;}
+                          if (check == true) {
+                            newPixel.link = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                            var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                            target.compList.emitters.push({x: pixel.x+a,y: pixel.y+b});
+                          }
                         }
                       }
                     }
