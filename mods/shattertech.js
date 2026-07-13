@@ -601,11 +601,11 @@ elements.net_link = {
                           }
                         } else if (newPixel.element === "shield_gen") {
                           newPixel.link = pixel.coreLoc;
-                          target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.shields;
+                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.shields;
                           target.push({x: pixel.x+a,y: pixel.y.b});
                         } else if (newPixel.element === "emitter") {
                           newPixel.link = pixel.coreLoc;
-                          target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.emitters;
+                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].compList.emitters;
                           target.push({x: pixel.x+a,y: pixel.y+b});
                         }
                       }
