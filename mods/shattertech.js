@@ -465,8 +465,8 @@ elements.net_core = {
           pixel.forceUpdate = false;
         }
         if (pixel.devcheck == 1) {
-          for (let a in pixel.augList.shield_hardener) {
-            logMessage(pixel.augList.shield_hardener[a].x + "," + pixel.augList.shield_hardener[a].y);
+          for (let a in pixel.compList.shields) {
+            logMessage(pixel.compList.shields[a].x + "," + pixel.compList.shields[a].y);
           }
           pixel.devcheck = 0;
         }
