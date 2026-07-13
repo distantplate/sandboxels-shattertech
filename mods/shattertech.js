@@ -456,17 +456,7 @@ elements.net_core = {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
-                if (pixel.compUpdate[a] || pixel.forceUpdate) {
-                  if (a === "emitters") {
-                    if (tempObj.augCount.beam_overclocker) {
-                      pixelMap[c.x][c.y].overclocked = true;
-                      var count = Math.ceil(100 / tempObj.augCount.beam_overclocker);
-                      if (isNaN(count)) {count = 0;}
-                      else if (count < 0) {count = 0;}
-                      pixelMap[c.x][c.y].heatup = count;
-                    }
-                  }
-                }
+                if (pixel.compUpdate[a]) {c_u_handler(a,tempObj.augCount,c.x,c.y);}
               }
             }
           }
@@ -1219,6 +1209,27 @@ elements.shield_config = {
   },
   category: "special",
   maxSize: 1
+};
+
+function c_u_handler(type,counts,x,y) {
+    var p = pixelMap[x][y];
+    if (type === "emitters") {
+        var stores = [false,0];
+        if (counts.beam_overclocker) {
+            stores[0] = true;
+            var heating = Math.ceil(100 / counts.beam_overclocker);
+            if (isNaN(heating)) {heating = 0;}
+            else if (heating < 0) {heating = 0;}
+            stores[1] = heating;
+        }
+        p.overclocked = stores[0];
+        p.heatup = stores[1];
+    } else if (type === "shields") {
+        if (counts.shield_hardener) {
+            p.threshold = 2.5 * counts.shield_hardener;
+        } else {p.threshold = 0;}
+    }
+    return;
 };
 
 function listCompare(list1,list2) {
