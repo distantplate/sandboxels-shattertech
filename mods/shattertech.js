@@ -445,8 +445,7 @@ elements.net_core = {
             if (!pixel.augCount[a] || !tempObj.augCount[a]) {
               check = true;
             }
-            if (check != false ? pixel.augCount[a] !== tempObj.augCount[a] : true) {
-              logMessage(pixel.augCount[a].toString() + ", " + tempObj.augCount[a].toString());
+            if (check == false ? pixel.augCount[a] !== tempObj.augCount[a] : true) {
               var store = elements[a].compType;
               pixel.compUpdate[store] = true;
             }
