@@ -444,6 +444,7 @@ elements.net_core = {
             var check = false;
             if (!pixel.augCount[a] || !tempObj.augCount[a]) {check = true;}
             if (check != false ? pixel.augCount[a] !== tempObj.augCount[a] : true) {
+              logMessage("problem 1");
               var store = elements[a].compType;
               pixel.compUpdate[store] = true;
             }
@@ -455,7 +456,7 @@ elements.net_core = {
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
                 if (pixel.compUpdate[a]) {
-                  logMessage("executed");
+                  logMessage("problem 2");
                   c_u_handler(a,tempObj.augCount,c.x,c.y);
                 }
               }
