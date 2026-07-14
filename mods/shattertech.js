@@ -481,10 +481,10 @@ elements.net_core = {
 };
   
 elements.net_link = {
-    color: "#660066",
-    colorOn: "#ff00ff",
+    color: "#586889",
+    colorOn: "#ffffff",
     onSelect: function() {
-        logMessage("Draw a link to connect components and a net_core to.);
+        logMessage("Draw a link to connect components and a net_core to.");
     },
     tick: function(pixel) {
         if (!pixel.detection){
@@ -586,7 +586,7 @@ elements.net_link = {
                 pixel.detection = [
                   0,0,0,
                   0,0,0,
-                  0,0,00
+                  0,0,0
                 ];
               }
         }
