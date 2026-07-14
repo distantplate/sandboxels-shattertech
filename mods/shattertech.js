@@ -298,7 +298,7 @@ elements.lance = {
                       if (elements[pixelMap[x][y].element].hardness != 1){
                         if (Math.random() >= elements[pixelMap[x][y].element].hardness || elements[pixelMap[x][y].element].hardness == null){
                           var newPixel = pixelMap[x][y];
-                          if (pixelMap[x][y].element === "net_link"){
+                          if (pixelMap[x][y].element === "nano_armor"){
                             changePixel(newPixel,"pulse");
                           } else {
                             deletePixel(x,y);
@@ -484,7 +484,7 @@ elements.net_link = {
     color: "#660066",
     colorOn: "#ff00ff",
     onSelect: function() {
-        logMessage("Draw a link to connect components and net_core to.\nThe entire link will burn out when any part is broken or gets too hot.");
+        logMessage("Draw a link to connect components and a net_core to.);
     },
     tick: function(pixel) {
         if (!pixel.detection){
@@ -493,37 +493,9 @@ elements.net_link = {
             0,0,0,
             0,0,0
           ];
-          pixel.primed = false;
           pixel.active = 0;
         }
-        if (!pixel.stage && pixelTicks-pixel.start > 60) {
-            for (var a = -1; a < 2; a++) {
-              for (var b = -1; b < 2; b++) {
-                var dexi = ((a+1) + 3*(b+1));
-                if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
-                  if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
-                    pixel.detection[dexi] = 1;
-                  }
-                }
-              }
-            }
-            pixel.stage = 1;
-        }
-        else if (pixel.stage === 1 && pixelTicks-pixel.start > 70) { //uninitialized
-            pixel.stage = 2;
-            pixel.color = "#660066";
-            for (var a = -1; a < 2; a++) {
-                for (var b = -1; b < 2; b++) {
-                    if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
-                        if (pixelMap[pixel.x+a][pixel.y+b].element === "net_link") {
-                            var dexi = ((a+1) + 3*(b+1));
-                            pixel.detection[dexi] = 1;
-                        }
-                    }
-                }
-            }
-        }
-        else if (pixel.stage === 2){
+        if (pixel.active > 0){
               if (pixel.coreLoc) {
                 if (isEmpty(pixel.coreLoc[0],pixel.coreLoc[1])) {pixel.active = 0;}
                 else if (pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].element !== "net_core") {pixel.active = 0;}
@@ -538,42 +510,37 @@ elements.net_link = {
                     if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {bypass = true;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
-                      pixel.detection[dexi] = 1;
                       if (bypass == true) {continue;}
-                      if (newPixel.stage != 2) {continue;} else {
-                        if (newPixel.active > 0) {
-                          if (newPixel.active > 1) {
-                            if (pixel.coreLoc === newPixel.coreLoc) {continue;}
-                            var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
-                            var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
-                            var c = 1;
-                            for (i = 0; i < 4; i++) {
-                              if (c == 1) {
-                                if (list1[i] > list2[i]) {c = 2;}
-                                else if (list1[i] < list2[i]) {c = 3;}
-                              }
-                            }
-                            if (c != 3) {continue;}
-                            var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
-                            if (d.fault === false) {d.fault = true;}
-                          } else {
-                            if (pixel.coreLoc[0] == newPixel.coreLoc[0] && pixel.coreLoc[1] == newPixel.coreLoc[1]) {
-                              if (pixel.netConflict[0] == newPixel.netConflict[0]) {
-                                continue;
-                              }
-                            } else {
-                              var target = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
-                              if (target.fault === false) {target.fault = true;}
-                            }
+                      if (newPixel.active > 1) {
+                        var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
+                        var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
+                        var c = 1;
+                        for (i = 0; i < 4; i++) {
+                          if (c == 1) {
+                            if (list1[i] > list2[i]) {c = 2;}
+                            else if (list1[i] < list2[i]) {c = 3;}
                           }
                         }
+                        if (c != 3) {continue;}
+                        var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
+                        if (d.fault === false) {d.fault = true;}
+                      } else {
+                        if (pixel.coreLoc[0] == newPixel.coreLoc[0] && pixel.coreLoc[1] == newPixel.coreLoc[1]) {
+                          if (pixel.netConflict[0] == newPixel.netConflict[0]) {
+                            continue;
+                          }
+                        } else {
+                          var target = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
+                          if (target.fault === false) {target.fault = true;}
+                        }
                       }
+                      pixel.detection[dexi] = (pixel.detection[dexi] > 0 ? 2 : 1);
                       newPixel.active = 4;
                       newPixel.activeStart = pixelTicks;
                       newPixel.netConflict = pixel.netConflict;
                       newPixel.coreLoc = pixel.coreLoc;
                     } else {
-                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
+                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
                       else if (bypass == false) {
                         if (elements[newPixel.element].category === "components") {
                           var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
@@ -604,6 +571,76 @@ elements.net_link = {
                         }
                       }
                     }
+                  } else if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
+                }
+              }
+              if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
+              if (pixel.detection.includes(2)) {
+                if (pixel.active > 0 && pixel.coreLoc) {
+                  var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                  if (!isEmpty(target.x,target.y,true) ? (target.element === "net_core") : false) {
+                    target.fault = true;
+                  }
+                }
+                pixel.active = 0;
+                pixel.detection = [
+                  0,0,0,
+                  0,0,0,
+                  0,0,00
+                ];
+              }
+        }
+        if (pixel.active === 3) {pixel.color = "#00ff00";}
+        else {pixel.color = "#586879";}
+        doDefaults(pixel);
+    },
+    conduct: 1,
+    category: "machines",
+    desc: "Used by a net_core to form a network and connect components.",
+    movable: false,
+    forceSaveColor: true,
+    hardness: 0.99,
+};
+
+elements.nano_armor = {
+    color: "#660066",
+    colorOn: "#ff00ff",
+    tick: function(pixel) {
+        if (!pixel.detection){
+          pixel.detection = [
+            0,0,0,
+            0,0,0,
+            0,0,0
+          ];
+          pixel.primed = false;
+          pixel.stage = 1;
+        }
+        if (pixel.stage === 1 && pixelTicks-pixel.start > 70) { //uninitialized
+            pixel.stage = 2;
+            pixel.color = "#660066";
+            for (var a = -1; a < 2; a++) {
+                for (var b = -1; b < 2; b++) {
+                    if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
+                        if (pixelMap[pixel.x+a][pixel.y+b].element === "nano_armor") {
+                            var dexi = ((a+1) + 3*(b+1));
+                            pixel.detection[dexi] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        else if (pixel.stage === 2){
+              for (var a = -1; a < 2; a++) {
+                for (var b = -1; b < 2; b++) {
+                  if (a == 0 && b == 0) {continue;} //skip if looking at self
+                  var dexi = ((a+1) + 3*(b+1));
+                  if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
+                    var newPixel = pixelMap[pixel.x+a][pixel.y+b];
+                    if (newPixel.element === "nano_armor") {
+                      pixel.detection[dexi] = 1;
+                    } else {
+                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
+                    }
                   } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
                     pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                   }
@@ -614,12 +651,6 @@ elements.net_link = {
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
                 pixel.stage = 3;
-                if (pixel.active > 0 && pixel.coreLoc) {
-                  var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
-                  if (!isEmpty(target.x,target.y,true) ? (target.element === "net_core") : false) {
-                    target.fault = true;
-                  }
-                }
                 newColor = "#360036";
               } else if (pixel.temp > 10000) {
                 newColor = "#9b00ff"
@@ -650,7 +681,7 @@ elements.net_link = {
                 var x = pixel.x+coord[0];
                 var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "net_link"){
+                  if (pixelMap[x][y].element === "nano_armor"){
                     var newPixel = pixelMap[x][y];
                     if (newPixel.stage === 2) {
                         switch (pixel.stage) {
@@ -669,7 +700,7 @@ elements.net_link = {
             shuffleArray(squareCoordsShuffle);
             if (pixel.burnt = 1){
               if ((Math.random() * 8) < 7) {
-                changePixel(pixel, "burnt_link");
+                changePixel(pixel, "broken_armor");
               } else {
                 changePixel(pixel, "pulse");
               }
@@ -682,15 +713,15 @@ elements.net_link = {
         doDefaults(pixel);
     },
     conduct: 1,
-    category: "machines",
-    desc: "Used by a net_core to form a network and connect components. " +
-    "Extremely durable, but burns out if above 10000 degrees.<br/>",
+    category: "special",
+    desc: "Extremely durable, and connects with adjacent armor pixels.<br/>" +
+    "Burns out if an adjacent armor pixel is moved/destroyed, or above 10000 degrees.<br/>",
     movable: false,
     forceSaveColor: true,
     hardness: 0.99,
 };
 
-elements.burnt_link = {
+elements.broken_armor = {
   color: "#360036",
   behavior: behaviors.WALL,
   conduct: 0,
@@ -1011,7 +1042,7 @@ elements.disintegrate = {
               var newPixel = pixelMap[x][y];
               var es = newPixel.element;
               if (Math.random() > 0.5+(pixel.decay/10)) {continue;}
-              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "hotter_plasma" && es !== "plasma" && es !== "fire" && es !== "net_link" && elements[es].hardness !== 1) {
+              if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "hotter_plasma" && es !== "plasma" && es !== "fire" && es !== "nano_armor" && elements[es].hardness !== 1) {
                 var cstore = newPixel.color;
                 var hstore = 0;
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*20);}
