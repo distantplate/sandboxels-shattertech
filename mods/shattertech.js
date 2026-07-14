@@ -524,7 +524,10 @@ elements.net_link = {
             }
         }
         else if (pixel.stage === 2){
-              if (pixel.coreLoc ? isEmpty(pixel.coreLoc[0],pixel.coreLoc[1]) : false) {pixel.active = 0;}
+              if (pixel.coreLoc) {
+                if (isEmpty(pixel.coreLoc[0],pixel.coreLoc[1])) {pixel.active = 0;}
+                else if (pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].element !== "net_core") {pixel.active = 0;}
+              }
               for (var a = -1; a < 2; a++) {
                 for (var b = -1; b < 2; b++) {
                   if (a == 0 && b == 0) {continue;} //skip if looking at self
