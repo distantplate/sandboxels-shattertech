@@ -673,7 +673,6 @@ elements.net_link = {
         }
         doDefaults(pixel);
     },
-    ignoreConduct: ["sensor","portal_in"],
     conduct: 1,
     category: "machines",
     desc: "Used by a net_core to form a network and connect components. " +
@@ -975,90 +974,24 @@ elements.barrier = {
     movable: false,
 };
 
-elements.portal_in = {
-	color: "#ff9a00",
-	tick: function(pixel) {
-		// if (Math.random() > 0.1) return;
-		if (!ticktemp.portal_out_elem) ticktemp.portal_out_elem = {};
-		if (!ticktemp.portal_out_charge) ticktemp.portal_out_charge = {};
-		let channel = parseInt(pixel.channel) || 0;
-		if (!ticktemp.portal_out_elem[channel]) {
-			ticktemp.portal_out_elem[channel] = currentPixels.filter((p) => {
-				return elements[p.element].id === elements.portal_out.id && (
-					isEmpty(p.x,p.y+1) || isEmpty(p.x,p.y-1) ||
-					isEmpty(p.x+1,p.y) || isEmpty(p.x-1,p.y)
-				) &&
-					(parseInt(p.channel) || 0) === parseInt(channel)
-			});
-		}
-		if (!ticktemp.portal_out_charge[channel]) {
-			ticktemp.portal_out_charge[channel] = currentPixels.filter((p) => {
-				return elements[p.element].id === elements.portal_out.id && 
-				(parseInt(p.channel) || 0) === parseInt(channel)
-			});
-		}
-		if (ticktemp.portal_out_charge[channel].length) {
-			if (pixel.charge) {
-				let portal_out = choose(ticktemp.portal_out_charge[channel]);
-				if (portal_out.del) return;
-				if (pixel.charge && !portal_out.charge && !portal_out.chargeCD) {
-					portal_out.charge = pixel.charge;
-				}
-			}
-		};
-		if (ticktemp.portal_out_elem[channel].length) {
-			shuffleArray(squareCoordsShuffle);
-			let r;
-			for (var i = 0; i < squareCoordsShuffle.length; i++) {
-				var coord = squareCoordsShuffle[i];
-				var x = pixel.x+coord[0];
-				var y = pixel.y+coord[1];
-				if (!isEmpty(x,y,true) && elements[pixelMap[x][y].element].movable) {
-					r = pixelMap[x][y];
-					break;
-				}
-			}
-			if (r !== undefined) {
-				let portal_out = choose(ticktemp.portal_out_elem[channel]);
-				if (portal_out.del) return;
-				if (r !== undefined) {
-					shuffleArray(squareCoordsShuffle);
-					for (var j = 0; j < squareCoordsShuffle.length; j++) {
-						var coord2 = squareCoordsShuffle[j];
-						var x2 = portal_out.x+coord2[0];
-						var y2 = portal_out.y+coord2[1];
-						if (isEmpty(x2,y2)) {
-							if (r.drag) {
-								r.drag = false;
-								tryMove(r,x2,y2);
-								r.drag = true;
-							}
-							else tryMove(r,x2,y2);
-						}
-						break;
-					}
-				}
-			}
-		}
-		doElectricity(pixel);
-	},
-	properties: { channel:0 },
-	renderer: renderPresets.BORDER,
-	hoverStat: function(pixel) { return pixel.channel },
-	grain:0,
-	category:"machines",
-	insulate:true,
-	movable:false,
-	hardness:0.75,
-	conduct:1,
-	emit:true
-};
-
 //Could this be more efficient: absolutely. Will I make this more efficient: absolutely not.
 elements.disintegrate = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
+    onShiftSelect: function(element) {
+      promptInput("How wide of an area do you want to disintegrate?", function(r) {
+        if (!r) {return;}
+        r = parseInt(r);
+        if (isNaN(r)) {return;}
+        r = Math.max(1,r);
+        currentElementProp = {decay: r};
+      }, elemTitleCase(elements[element].name || element));
+    },
     tick: function(pixel) {
-      if (!pixel.trigger && !pixel.stage) {pixel.trigger = 1; pixel.decay = 10; pixel.stage = ((pixelTicks+1) % 3)+1;}
+      if (!pixel.trigger) {
+        pixel.trigger = 1;
+        if (!pixel.decay) {pixel.decay = 10;}
+        if (!pixel.stage) {pixel.stage = ((pixelTicks+1) % 3)+1;}
+      }
       if (!(pixel.stage && pixel.stage > 0 && pixel.stage < 4)) {pixel.stage = 1;}
       if (pixelTicks % 3 === pixel.stage-1 && pixel.trigger < 3) {
         if (pixel.decay > 0) {
@@ -1622,12 +1555,6 @@ explodeAt = function(x,y,radius,fire="fire") {
         }
     }
 };
-
-elements.sensor.ignoreConduct = ["wire"];
-elements.pipe.hardness = 0;
-elements.portal_out.hardness = 0.75;
-elements.ewall.insulate = true;
-elements.fuse.movable = false;
 
 runEveryTick(function () {
     if (storageList && !storageList.tickcheck) {storageList.tickcheck = pixelTicks;}
