@@ -413,14 +413,12 @@ elements.net_core = {
         pixel.color = (pixel.fault === true ? "#ff0000" : "#00ff00");
         if (pixel.fault === true) {
             for (let a in pixel.compList.shields) {
-                for (let b in pixel.compList.shields[a]) {
-                  pixelMap[a][b].link = false;
-                }
+                var b = pixel.compList.shields[a];
+                pixelMap[b.x][b.y].link = false;
             }
             for (let a in pixel.compList.emitters) {
-                for (let b in pixel.compList.emitters[a]) {
-                  pixelMap[a][b].link = false;
-                }
+                var b = pixel.compList.emitters[a];
+                pixelMap[b.x][b.y].link = false;
             }
             pixel.compList = {shields: [],emitters: []};
             pixel.augList = {};
