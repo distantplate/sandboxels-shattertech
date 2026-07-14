@@ -1213,6 +1213,7 @@ elements.shield_config = {
 
 function c_u_handler(type,counts,x,y) {
     var p = pixelMap[x][y];
+    logMessage("executed");
     if (type === "emitters") {
         var stores = [false,0];
         if (counts.beam_overclocker) {
