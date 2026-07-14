@@ -454,7 +454,10 @@ elements.net_core = {
               var c = pixel.compList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
                 tempObj.comps[a].push({x: c.x,y: c.y});
-                if (pixel.compUpdate[a]) {c_u_handler(a,tempObj.augCount,c.x,c.y);}
+                if (pixel.compUpdate[a]) {
+                  logMessage("executed");
+                  c_u_handler(a,tempObj.augCount,c.x,c.y);
+                }
               }
             }
           }
@@ -1213,7 +1216,6 @@ elements.shield_config = {
 
 function c_u_handler(type,counts,x,y) {
     var p = pixelMap[x][y];
-    logMessage("executed");
     if (type === "emitters") {
         var stores = [false,0];
         if (counts.beam_overclocker) {
