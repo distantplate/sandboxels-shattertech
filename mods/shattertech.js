@@ -510,6 +510,7 @@ elements.net_link = {
                     if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {bypass = true;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
+                      //works until at least here
                       /*if (bypass == true) {continue;}
                       if (newPixel.active > 1) {
                         var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
