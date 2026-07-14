@@ -510,7 +510,7 @@ elements.net_link = {
                     if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {bypass = true;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
-                      if (bypass == true) {continue;}
+                      /*if (bypass == true) {continue;}
                       if (newPixel.active > 1) {
                         var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
                         var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
@@ -533,13 +533,13 @@ elements.net_link = {
                           var target = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
                           if (target.fault === false) {target.fault = true;}
                         }
-                      }
+                      }*/
                       pixel.detection[dexi] = (pixel.detection[dexi] > 0 ? 2 : 1);
                       newPixel.active = 4;
                       newPixel.activeStart = pixelTicks;
                       newPixel.netConflict = pixel.netConflict;
                       newPixel.coreLoc = pixel.coreLoc;
-                    } else {
+                    }/* else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
                       else if (bypass == false) {
                         if (elements[newPixel.element].category === "components") {
@@ -571,7 +571,7 @@ elements.net_link = {
                         }
                       }
                     }
-                  } else if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
+                  } else if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}*/
                 }
               }
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
