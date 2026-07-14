@@ -389,6 +389,7 @@ elements.net_core = {
           pixel.augList = {};
           pixel.augCount = {};
           pixel.compUpdate = {};
+          pixel.locStore = [pixel.x,pixel.y];
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -408,6 +409,10 @@ elements.net_core = {
                     }
                 }
             }
+        }
+        if (pixel.x != pixel.locStore[0] || pixel.y != pixel.locStore[1]) {
+            pixel.fault = true;
+            pixel.locStore = [pixel.x,pixel.y];
         }
         if (pixel.active > 0) {pixel.active--;}
         pixel.color = (pixel.fault === true ? "#ff0000" : "#00ff00");
@@ -1059,35 +1064,6 @@ elements.disintegrate = {
     insulate: true,
     //charge: 0.5,
     conduct: 1
-};
-
-elements.sized_disintegrate = {
-  color: ["#6f00ff","#996bd9","#6f00ff"],
-  onSelect: function(){
-    sizeVal = prompt("How wide an area do you want to disintegrate?");
-	},
-  tick: function(pixel) {
-    var store = parseInt(sizeVal);
-    var updatedVal;
-    if (!isNaN(store)) {
-      if (store > 0) {
-        updatedVal = store;
-      } else {updatedVal = 20;}
-    } else {updatedVal = 20;}
-    if (!updatedVal || typeof updatedVal !== "number") {updatedVal = 20;}
-    pixel.trigger = 1;
-    pixel.decay = updatedVal;
-    pixel.stage = ((pixelTicks+1) % 3)+1;
-    changePixel(pixel,"disintegrate");
-	},
-	temp:15000,
-  category: "energy",
-  state: "solid",
-  density: 1,
-  movable: false,
-  insulate: true,
-  //charge: 0.5,
-  conduct: 1
 };
 
 elements.shattertech_info = {
