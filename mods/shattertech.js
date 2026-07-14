@@ -511,7 +511,7 @@ elements.net_link = {
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
                       //works until at least here
-                      /*if (bypass == true) {continue;}
+                      if (bypass == true) {continue;}
                       if (newPixel.active > 1) {
                         var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
                         var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
@@ -525,7 +525,7 @@ elements.net_link = {
                         if (c != 3) {continue;}
                         var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
                         if (d.fault === false) {d.fault = true;}
-                      } else {
+                      } else if (newPixel.active == 1) {
                         if (pixel.coreLoc[0] == newPixel.coreLoc[0] && pixel.coreLoc[1] == newPixel.coreLoc[1]) {
                           if (pixel.netConflict[0] == newPixel.netConflict[0]) {
                             continue;
@@ -534,7 +534,7 @@ elements.net_link = {
                           var target = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
                           if (target.fault === false) {target.fault = true;}
                         }
-                      }*/
+                      }
                       pixel.detection[dexi] = (pixel.detection[dexi] > 0 ? 2 : 1);
                       newPixel.active = 4;
                       newPixel.activeStart = pixelTicks;
