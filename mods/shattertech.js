@@ -1407,51 +1407,61 @@ function shieldcheck(x,y,radius,doDamage) {
       var fLI = p.fociLocIn;
       if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
-          if (sc1.confirm[0] !== false) {
-            if (p.xStage < sc1.c[2] && p.yStage < sc1.c[3]) {
-              sc3.c.push({x: sc1.c[0],y: sc1.c[1],f: true});
+          if (radius <= 30) {
+            if (sc1.confirm[0] !== false) {
+              if (p.xStage < sc1.c[2] && p.yStage < sc1.c[3]) {
+                sc3.c.push({x: sc1.c[0],y: sc1.c[1],f: true});
+                sc1.c = [x1,y1,p.xStage,p.yStage];
+              }
+            } else {
               sc1.c = [x1,y1,p.xStage,p.yStage];
+              sc1.confirm[0] = true;
             }
           } else {
-            sc1.c = [x1,y1,p.xStage,p.yStage];
-            sc1.confirm[0] = true;
+            sc2.c.push({x: x1,y: y1});
           }
         }
       } else {
-        sc1.f.push({x: x1,y: y1});
-        if (p.nestObj) {
-          for (let b in p.nestObj) {
-            if (!nestList.f[p.nestObj[b].x]) {nestList.f[p.nestObj[b].x] = {};}
-            nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
+        if (radius <= 30) {
+          sc1.f.push({x: x1,y: y1});
+          if (p.nestObj) {
+            for (let b in p.nestObj) {
+              if (!nestList.f[p.nestObj[b].x]) {nestList.f[p.nestObj[b].x] = {};}
+              nestList.f[p.nestObj[b].x][p.nestObj[b].y] = true;
+            }
           }
+        } else {
+          sc2.f.push({x: x1,y: y1});
         }
       }
     }
     //stage 2 - assembles nest list for closest shield, checks for valid far shields
-    if (sc1.confirm[0] !== false) {
-      sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
-      shieldCloseCheck = true;
-      var p = pixelMap[sc1.c[0]][sc1.c[1]];
-      if (p.nestObj) {
-        var tempVal = 0;
-        for (let a in p.nestObj) {
-          if (!nestList.t[p.nestObj[a].x]) {nestList.t[p.nestObj[a].x] = {};}
-          nestList.t[p.nestObj[a].x][p.nestObj[a].y] = true;
-          tempVal++;
+    if (radius <= 30) {
+      if (sc1.confirm[0] !== false) {
+        sc2.c.push({x: sc1.c[0],y: sc1.c[1]});
+        shieldCloseCheck = true;
+        var p = pixelMap[sc1.c[0]][sc1.c[1]];
+        if (p.nestObj) {
+          var tempVal = 0;
+          for (let a in p.nestObj) {
+            if (!nestList.t[p.nestObj[a].x]) {nestList.t[p.nestObj[a].x] = {};}
+            nestList.t[p.nestObj[a].x][p.nestObj[a].y] = true;
+            tempVal++;
+          }
+          if (tempVal > 0) {sc1.confirm[1] = true;}
         }
-        if (tempVal > 0) {sc1.confirm[1] = true;}
       }
-    }
-    for (let a in sc1.f) {
-      var x1 = sc1.f[a].x;
-      var y1 = sc1.f[a].y;
-      var p = pixelMap[x1][y1];
-      if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
-        var nLCheck = [false,false];
-        if (!nestList.f[x1]) {nLCheck[0] = true;} else if (!nestList.f[x1][y1]) {nLCheck[0] = true;}
-        if (nestList.t[x1]) {if (nestList.t[x1][y1]) {nLCheck[1] = true;}}
-        if ((nLCheck[1] === true || sc1.confirm[1] === false) && nLCheck[0] === true) {
-          sc2.f.push({x: x1,y: y1});
+      for (let a in sc1.f) {
+        var x1 = sc1.f[a].x;
+        var y1 = sc1.f[a].y;
+        var p = pixelMap[x1][y1];
+        if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
+          var nLCheck = [false,false];
+          if (!nestList.f[x1]) {nLCheck[0] = true;} else if (!nestList.f[x1][y1]) {nLCheck[0] = true;}
+          if (nestList.t[x1]) {if (nestList.t[x1][y1]) {nLCheck[1] = true;}}
+          if ((nLCheck[1] === true || sc1.confirm[1] === false) && nLCheck[0] === true) {
+            sc2.f.push({x: x1,y: y1});
+          }
         }
       }
     }
@@ -1461,7 +1471,7 @@ function shieldcheck(x,y,radius,doDamage) {
       for (let b in sc2[a]) {
         var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
         var rIN = [0,0];
-        var rIloc = [];
+        var rILoc = [];
         var rOLoc = [];
         var fLI = p.fociLocIn;
         var fLO = p.fociLocOut;
