@@ -443,10 +443,10 @@ elements.net_core = {
             }
             var check = false;
             if (!pixel.augCount[a] || !tempObj.augCount[a]) {
-              logMessage("problem");
               check = true;
             }
             if (check != false ? pixel.augCount[a] !== tempObj.augCount[a] : true) {
+              logMessage(pixel.augCount[a].toString() + ", " + tempObj.augCount[a].toString());
               var store = elements[a].compType;
               pixel.compUpdate[store] = true;
             }
