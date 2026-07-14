@@ -1404,6 +1404,8 @@ function shieldcheck(x,y,radius,doDamage) {
       } else if ((p.element !== "shield_gen") || !(p.xStage && p.yStage)) {
         continue;
       }
+      if (Math.abs(x-x1) > p.xStage+p.gap.radius) {continue;}
+      if (Math.abs(y-y1) > p.yStage+p.gap+radius) {continue;}
       var fLI = p.fociLocIn;
       if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
