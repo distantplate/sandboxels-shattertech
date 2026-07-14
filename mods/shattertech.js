@@ -570,8 +570,8 @@ elements.net_link = {
                           }
                         }
                       }
-                    }
-                  } else if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}*/
+                    }*/
+                  } else if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
                 }
               }
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
