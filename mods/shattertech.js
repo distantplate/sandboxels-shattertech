@@ -397,27 +397,29 @@ elements.net_core = {
             pixel.compList = {shields: [], emitters: []};
             pixel.augList = {};
         }
-        for (var i = 0; i < squareCoords.length; i++) {
-            var coord = squareCoords[i];
-            var x = pixel.x+coord[0];
-            var y = pixel.y+coord[1];
-            var dexi = (coord[0]+1) + 3*(coord[1]+1);
-            var check = (pixel.detection[dexi] > 0 ? false : true);
-            if (!isEmpty(x,y,true)) {
-                if (pixelMap[x][y].element === "net_link" ) {
-                    if (pixel.active == 10) {
-                        if (pixel.fault === true) {pixel.fault = false;}
-                        pixel.detection[dexi] = 1;
-                        pixelMap[x][y].active = 4;
-                        pixelMap[x][y].activeStart = pixelTicks;
-                        pixelMap[x][y].netConflict = [pixelTicks,pixel.overrideVal];
-                        pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
-                    } else {
-                        if (pixelMap[x][y].active > 0) {check = true;}
+        if (pixel.fault == false) {
+            for (var i = 0; i < squareCoords.length; i++) {
+                var coord = squareCoords[i];
+                var x = pixel.x+coord[0];
+                var y = pixel.y+coord[1];
+                var dexi = (coord[0]+1) + 3*(coord[1]+1);
+                var check = (pixel.detection[dexi] > 0 ? false : true);
+                if (!isEmpty(x,y,true)) {
+                    if (pixelMap[x][y].element === "net_link" ) {
+                        if (pixel.active == 10) {
+                            if (pixel.fault === true) {pixel.fault = false;}
+                            pixel.detection[dexi] = 1;
+                            pixelMap[x][y].active = 4;
+                            pixelMap[x][y].activeStart = pixelTicks;
+                            pixelMap[x][y].netConflict = [pixelTicks,pixel.overrideVal];
+                            pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
+                        } else {
+                            if (pixelMap[x][y].active > 0) {check = true;}
+                        }
                     }
                 }
+                if (check == false && pixel.active < 10) {pixel.fault = true;}
             }
-            if (check == false && pixel.active < 10) {pixel.fault = true;}
         }
         if (pixel.x != pixel.locStore[0] || pixel.y != pixel.locStore[1]) {
             pixel.fault = true;
