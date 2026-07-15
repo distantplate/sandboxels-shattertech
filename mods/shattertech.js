@@ -481,8 +481,8 @@ elements.net_core = {
 };
   
 elements.net_link = {
-    color: "#660066",
-    colorOn: "#ff00ff",
+    color: "#586879",
+    colorOn: "#ffffff",
     onSelect: function() {
         logMessage("Draw a link to connect components and net_core to.\nThe entire link will burn out when any part is broken or gets too hot.");
     },
@@ -728,7 +728,7 @@ elements.broken_armor = {
   color: "#360036",
   behavior: behaviors.WALL,
   conduct: 0,
-  category: "machines",
+  category: "special",
 };
 
 elements.imploder = {
