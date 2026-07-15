@@ -500,7 +500,8 @@ elements.net_core = {
 };
   
 elements.net_link = {
-    color: "#414c4f",
+    color: "#006666",
+    colorOn: "#00ffff",
     onSelect: function() {
         logMessage("Draw a link to connect components and net_core to.");
     },
@@ -609,8 +610,9 @@ elements.net_link = {
               pixel.failsafe = false;
             }
         }
-        var newColor = "#414c4f";
+        var newColor = "#006666";
         if (pixel.active === 3) {newColor = "#00ff00";}
+        else if (pixel.charge) {newColor = "#00ffff";}
         pixel.color = newColor;
         doDefaults(pixel);
     },
