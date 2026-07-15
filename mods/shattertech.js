@@ -429,6 +429,7 @@ elements.net_core = {
             pixel.compList = {shields: [],emitters: []};
             pixel.augList = {};
             pixel.augCount = {};
+            pixel.detection = [0,0,0,0,0,0,0,0,0];
         } else {
           var tempObj = {
             comps: {shields: [], emitters: []},
