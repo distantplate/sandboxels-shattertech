@@ -622,26 +622,8 @@ elements.net_link = {
                   }
                 }
                 newColor = "#360036";
-              } else if (pixel.temp > 10000) {
-                newColor = "#9b00ff"
-                if (pixel.shatter < 3 && pixel.shatter >= 0) {pixel.shatter++;}
-                if (pixel.shatter == 3) {
-                  if (pixel.shattered == 1) {changePixel(pixel,"pulse");}
-                  else {pixel.shattered = 1;}
-                }
               } else {
                 if (pixel.active == 3) {newColor = "#00ff00";}
-                else {
-                  pixel.shatter = 0;
-                  pixel.shattered = 0;
-                  var colorVals = [102,0,102];
-                  if (pixel.temp >= 1000) {
-                    colorVals[2] += Math.round(153*((pixel.temp-1000)/9000));
-                    if (pixel.temp >= 7000) {colorVals[0] += Math.round(153-((pixel.temp-7000)/30));}
-                    else {colorVals[0] += Math.round(153*((pixel.temp-1000)/9000));}
-                  }
-                  newColor = "rgb("+colorVals[0]+","+colorVals[1]+","+colorVals[2]+")";
-                }
               }
               pixel.color = newColor;
         }
