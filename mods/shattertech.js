@@ -614,7 +614,6 @@ elements.net_link = {
               var newColor = "#660066";
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
-                pixel.stage = 3;
                 if (pixel.active > 0 && pixel.coreLoc) {
                   var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                   if (!isEmpty(target.x,target.y,true) ? (target.element === "net_core") : false) {
@@ -626,41 +625,6 @@ elements.net_link = {
                 if (pixel.active == 3) {newColor = "#00ff00";}
               }
               pixel.color = newColor;
-        }
-        else if (pixel.stage > 2 && pixelTicks % 3 === pixel.stage-3) { //dead
-            for (var i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x+coord[0];
-                var y = pixel.y+coord[1];
-                if (!isEmpty(x,y,true)) {
-                  if (pixelMap[x][y].element === "net_link"){
-                    var newPixel = pixelMap[x][y];
-                    if (newPixel.stage === 2) {
-                        switch (pixel.stage) {
-                            case 3: newPixel.stage = 4; break;
-                            case 4: newPixel.stage = 5; break;
-                            case 5: newPixel.stage = 3; break;
-                        }
-                        newPixel.color = pixelColorPick(newPixel,"#360036");
-                    }
-                  }
-                }
-                else if (!outOfBounds(x,y)){
-                  createPixel("purplectric",x,y);
-                }
-            }
-            shuffleArray(squareCoordsShuffle);
-            if (pixel.burnt = 1){
-              if ((Math.random() * 8) < 7) {
-                changePixel(pixel, "broken_armor");
-              } else {
-                changePixel(pixel, "pulse");
-              }
-              pixel.charge = 0;
-            }
-            else {
-              pixel.burnt = 1;
-            }
         }
         doDefaults(pixel);
     },
