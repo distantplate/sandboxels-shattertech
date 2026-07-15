@@ -115,7 +115,7 @@ elements.charged_blaster = {
 };
 
 elements.beam_overclocker = {
-    color: "#808080",
+    color: "#af6e00",
     behavior: behaviors.WALL,
     category: "components",
     desc: "Strengthens emitters in its network, but allows them to overheat. " +
@@ -636,6 +636,8 @@ elements.nano_armor = {
           ];
           pixel.primed = false;
           pixel.stage = 1;
+          pixel.shatter = 0;
+          pixel.shattered = 0;
         }
         if (pixel.stage === 1 && pixelTicks-pixel.start > 70) { //uninitialized
             pixel.stage = 2;
@@ -991,7 +993,7 @@ elements.shield_gen = {
 };
 
 elements.shield_hardener = {
-    color: "#a8a897",
+    color: "#50c8c8",
     behavior: behaviors.WALL,
     conduct: 1,
     category: "components",
