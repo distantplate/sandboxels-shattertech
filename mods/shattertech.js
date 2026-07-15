@@ -402,7 +402,7 @@ elements.net_core = {
             var x = pixel.x+coord[0];
             var y = pixel.y+coord[1];
             var dexi = (coord[0]+1) + 3*(coord[1]+1);
-            var check = false;
+            var check = (pixel.detection[dexi] > 0 ? false : true);
             if (!isEmpty(x,y,true)) {
                 if (pixelMap[x][y].element === "net_link" ) {
                     if (pixel.active == 10) {
@@ -413,7 +413,7 @@ elements.net_core = {
                         pixelMap[x][y].netConflict = [pixelTicks,pixel.overrideVal];
                         pixelMap[x][y].coreLoc = [pixel.x,pixel.y];
                     } else {
-                        if (pixel.detection[dexi] > 0 ? pixelMap[x][y].active > 0 : true) {check = true;}
+                        if (pixelMap[x][y].active > 0) {check = true;}
                     }
                 }
             }
