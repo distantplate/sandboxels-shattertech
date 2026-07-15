@@ -537,7 +537,7 @@ elements.net_link = {
                           if (target.fault === false) {target.fault = true;}
                         }
                       }
-                      pixel.detection[dexi] = (pixel.detection[dexi] > 0 ? 2 : 1);
+                      pixel.detection[dexi] = 1;
                       newPixel.active = 4;
                       newPixel.activeStart = pixelTicks;
                       newPixel.netConflict = pixel.netConflict;
