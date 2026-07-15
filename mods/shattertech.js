@@ -397,7 +397,7 @@ elements.net_core = {
             pixel.compList = {shields: [], emitters: []};
             pixel.augList = {};
         }
-        if (pixel.fault == false) {
+        if (pixel.fault == false || pixel.active == 10) {
             for (var i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x+coord[0];
