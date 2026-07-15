@@ -431,6 +431,7 @@ elements.net_core = {
             pixel.compList = {shields: [],emitters: []};
             pixel.augList = {};
             pixel.augCount = {};
+            pixel.compUpdate = {};
             pixel.detection = [0,0,0,0,0,0,0,0,0];
         } else {
           var tempObj = {
@@ -448,32 +449,38 @@ elements.net_core = {
                 tempObj.augCount[a]++;
               }
             }
-            var check = false;
-            if (!pixel.augCount[a] || !tempObj.augCount[a]) {
-              check = true;
-            }
-            if (check == false ? pixel.augCount[a] !== tempObj.augCount[a] : true) {
+            var check = 0;
+            if (pixel.augCount[a]) {
+              if (!tempObj.augCount[a]) {check = 1;}
+              else if (pixel.augCount[a] > tempObj.augCount[a]) {check = 1;}
+              else if (pixel.augCount[a] < tempObj.augCount[a]) {check = 2;}
+            } else if (tempObj.augCount[a]) {check = 2;}
+            if (check == 1) {
+              pixel.fault = true;
+              break;
+            } else if (check == 2) {
               var store = elements[a].compType;
               pixel.compUpdate[store] = true;
             }
           }
-          for (let a in pixel.compList) {
-            var type = (a === "shields" ? "shield_gen" : "emitter");
-            for (let b in pixel.compList[a]) {
-              var c = pixel.compList[a][b];
-              if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
-                tempObj.comps[a].push({x: c.x,y: c.y});
-                if (pixel.compUpdate[a]) {
-                  c_u_handler(a,tempObj.augCount,c.x,c.y);
+          if (pixel.fault == false) {
+            for (let a in pixel.compList) {
+              var type = (a === "shields" ? "shield_gen" : "emitter");
+              for (let b in pixel.compList[a]) {
+                var c = pixel.compList[a][b];
+                if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === type : false) {
+                  tempObj.comps[a].push({x: c.x,y: c.y});
+                  if (pixel.compUpdate[a]) {
+                    c_u_handler(a,tempObj.augCount,c.x,c.y);
+                  }
                 }
               }
             }
+            pixel.compList = {shields: tempObj.comps.shields,emitters: tempObj.comps.emitters};
+            pixel.augList = tempObj.augList;
+            pixel.augCount = tempObj.augCount;
+            pixel.compUpdate = {};
           }
-          pixel.compList = {shields: tempObj.comps.shields,emitters: tempObj.comps.emitters};
-          pixel.augList = tempObj.augList;
-          pixel.augCount = tempObj.augCount;
-          pixel.compUpdate = {};
-          pixel.forceUpdate = false;
         }
         if (pixel.devcheck == 1) {
           for (let a in pixel.compList.shields) {
