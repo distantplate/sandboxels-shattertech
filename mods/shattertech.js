@@ -495,7 +495,6 @@ elements.net_link = {
           ];
           pixel.primed = false;
           pixel.active = 0;
-          pixel.stage = 2;
         }
         else if (pixel.active > 0){
               if (pixel.coreLoc) {
@@ -581,8 +580,6 @@ elements.net_link = {
                   }
                 }
               }
-              if (pixel.primed === false) {pixel.primed = true;}
-              var newColor = "#660066";
               if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
               if (pixel.detection.includes(2)) {
                 if (pixel.active > 0 && pixel.coreLoc) {
@@ -591,12 +588,17 @@ elements.net_link = {
                     target.fault = true;
                   }
                 }
-                newColor = "#360036";
-              } else {
-                if (pixel.active == 3) {newColor = "#00ff00";}
+                pixel.active = 0;
+                pixel.detection = [
+                  0,0,0,
+                  0,0,0,
+                  0,0,0
+                ];
               }
-              pixel.color = newColor;
         }
+        var newColor = "#586879";
+        if (pixel.active === 3) {newColor = "#00ff00";}
+        pixel.color = newColor;
         doDefaults(pixel);
     },
     conduct: 1,
