@@ -591,8 +591,9 @@ elements.net_link = {
                 ];
               }
         }
-        if (pixel.active === 3) {pixel.color = "#00ff00";}
-        else {pixel.color = "#586879";}
+        var newColor = "#586879";
+        if (pixel.active === 3) {newColor = "#00ff00";}
+        pixel.color = newColor;
         doDefaults(pixel);
     },
     conduct: 1,
