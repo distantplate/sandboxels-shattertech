@@ -59,7 +59,7 @@ elements.barrage_spawner = {
     temp: 15000,
     category: "energy",
     state: "gas",
-    desc: "creates a barrage of plasma explosions<br/>VERY destructive",
+    desc: "Creates a barrage of plasma explosions.<br/>VERY destructive.",
     //density: 1000,
     excludeRandom: true,
     //movable: false,
@@ -105,7 +105,7 @@ elements.charged_blaster = {
     category: "weapons",
     glow: true,
     state: "solid",
-    desc: "the ultimate bunker-buster",
+    desc: "The ultimate bunker-buster.",
     density: 100000000,
     temp: 15000,
     hardness: 1,
@@ -987,7 +987,8 @@ elements.shield_gen = {
     },
     category: "machines",
     state: "solid",
-    desc: "Creates a barrier that stops most explosions. Can be overwhelmed by enough explosions, with larger ones hurting more.",
+    desc: "Creates a barrier that stops most explosions. " +
+    "Can be overwhelmed by enough explosions, with larger ones hurting more.<br/>",
     maxSize: 1,
     excludeRandom: true,
     insulate: true,
@@ -1000,7 +1001,8 @@ elements.shield_hardener = {
     hardness: 0.75,
     conduct: 1,
     category: "components",
-    desc: "WIP",
+    desc: "Halves damage to shields from smaller explosions, but doubles damage from larger ones. " +
+    "The more hardeners are connected, the higher the size threshold.<br/>",
     insulate: true,
     state: "solid",
     compType: "shields"
@@ -1470,7 +1472,8 @@ function shieldcheck(x,y,radius,doDamage) {
             if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true) {
               var sDamage = Math.pow(10,((radius/10)-1));
-              if (sDamage <= p.threshold) {sDamage = 0;}
+              if (sDamage <= p.threshold) {sDamage *= 0.5;}
+              else {sDamage *= 2;}
               if (p.health > 0) {
                 p.health -= sDamage;
               }
