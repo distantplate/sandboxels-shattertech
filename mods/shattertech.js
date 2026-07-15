@@ -508,10 +508,12 @@ elements.net_link = {
                   var dexi = ((a+1) + 3*(b+1));
                   if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
                     var bypass = false;
-                    if (pixel.active <= 3 || !pixel.coreLoc) {bypass = true;}
-                    if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {bypass = true;}
+                    if (!pixel.coreLoc) {continue;}
+                    if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
+                    if (pixel.active < 4) {bypass = true;}
                     var newPixel = pixelMap[pixel.x+a][pixel.y+b];
                     if (newPixel.element === "net_link") {
+                      if (newPixel.active == 0 && pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
                       if (bypass == true) {continue;}
                       if (newPixel.active > 1) {
                         if (pixel.coreLoc === newPixel.coreLoc) {continue;}
