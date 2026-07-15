@@ -988,7 +988,8 @@ elements.shield_gen = {
     category: "machines",
     state: "solid",
     desc: "Creates a barrier that stops most explosions. " +
-    "Can be overwhelmed by enough explosions, with larger ones hurting more.<br/>",
+    "The shield can be damaged by explosions, with larger ones hurting more. "+
+    "The shield will go offline if too damaged, and regenerates when not being damaged.<br/>",
     maxSize: 1,
     excludeRandom: true,
     insulate: true,
@@ -1002,7 +1003,7 @@ elements.shield_hardener = {
     conduct: 1,
     category: "components",
     desc: "Halves damage to shields from smaller explosions, but doubles damage from larger ones. " +
-    "The more hardeners are connected, the higher the size threshold.<br/>",
+    "The more hardeners are connected, the larger the explosions that can be resisted .<br/>",
     insulate: true,
     state: "solid",
     compType: "shields"
