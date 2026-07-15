@@ -619,8 +619,7 @@ elements.net_link = {
     },
     conduct: 1,
     category: "machines",
-    desc: "Used by a net_core to form a network and connect components. " +
-    "Extremely durable, but burns out if above 10000 degrees.<br/>",
+    desc: "Used by a net_core to form a network and connect components.",
     movable: false,
     forceSaveColor: true,
     hardness: 0.75,
@@ -844,12 +843,9 @@ elements.shield_gen = {
           }
         }
         if (pixel.health <= 0) {
-            if (pixel.threshold > 0) {changePixel(pixel,"pulse");}
-            else {
-              pixel.health = 100;
-              pixel.heat = 0;
-              pixel.timer = 60;
-            }
+            pixel.health = 100;
+            pixel.heat = 0;
+            pixel.timer = 60;
         }
         if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
         if (pixel.heat == 0 && pixel.health < 100) {
@@ -1003,7 +999,7 @@ elements.shield_hardener = {
     conduct: 1,
     category: "components",
     desc: "Halves damage to shields from smaller explosions, but doubles damage from larger ones. " +
-    "The more hardeners are connected, the larger the explosions that can be resisted .<br/>",
+    "The more hardeners are connected, the larger the explosions that can be resisted.<br/>",
     insulate: true,
     state: "solid",
     compType: "shields"
