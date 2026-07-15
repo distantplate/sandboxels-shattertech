@@ -374,7 +374,7 @@ elements.purplectric = {
 elements.net_core = {
     color: "#ff0000",
     onSelect: function() {
-        logMessage("When charged, pulls nearby net_link pixels into its network.");
+        logMessage("When charged, pulls nearby net_link pixels into its network.\nThe network will deactivate if changed.");
     },
     tick: function(pixel) {
         if (!pixel.setup) {
@@ -484,7 +484,7 @@ elements.net_link = {
     color: "#586879",
     colorOn: "#ffffff",
     onSelect: function() {
-        logMessage("Draw a link to connect components and net_core to.\nThe entire link will burn out when any part is broken or gets too hot.");
+        logMessage("Draw a link to connect components and net_core to.");
     },
     tick: function(pixel) {
         if (!pixel.failsafe){
