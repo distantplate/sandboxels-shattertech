@@ -501,7 +501,6 @@ elements.net_core = {
   
 elements.net_link = {
     color: "#414c4f",
-    colorOn: "#ffffff",
     onSelect: function() {
         logMessage("Draw a link to connect components and net_core to.");
     },
