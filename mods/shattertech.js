@@ -390,7 +390,7 @@ elements.net_core = {
           pixel.augCount = {};
           pixel.compUpdate = {};
           pixel.locStore = [pixel.x,pixel.y];
-          pixel.detection = [0,0,0,0,0,0,0,0,0]
+          pixel.detection = [0,0,0,0,0,0,0,0,0];
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
