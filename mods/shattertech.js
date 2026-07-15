@@ -122,6 +122,7 @@ elements.beam_overclocker = {
 "The more overclockers are connected, the slower the emitters will heat up.<br/>",
     insulate: true,
     state: "solid",
+    hardness: 0.75,
     conduct: 1,
     compType: "emitters"
 };
@@ -495,8 +496,8 @@ elements.net_core = {
     desc: "When charged, pulls nearby net_links into its network." +
     " Shield gens, emitters, and anything in the components category can also be pulled via net_links, but cannot be directly connected.<br/>",
     movable: false,
+    hardness: 0.75,
     forceSaveColor: true,
-    hardness: 0.6,
 };
   
 elements.net_link = {
@@ -622,7 +623,7 @@ elements.net_link = {
     "Extremely durable, but burns out if above 10000 degrees.<br/>",
     movable: false,
     forceSaveColor: true,
-    hardness: 0.99,
+    hardness: 0.75,
 };
 
 elements.nano_armor = {
@@ -996,6 +997,7 @@ elements.shield_gen = {
 elements.shield_hardener = {
     color: "#50c8c8",
     behavior: behaviors.WALL,
+    hardness: 0.75,
     conduct: 1,
     category: "components",
     desc: "WIP",
