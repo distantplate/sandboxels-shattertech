@@ -487,114 +487,109 @@ elements.net_link = {
         logMessage("Draw a link to connect components and net_core to.\nThe entire link will burn out when any part is broken or gets too hot.");
     },
     tick: function(pixel) {
-        if (!pixel.detection){
+        if (!pixel.failsafe){
           pixel.detection = [
             0,0,0,
             0,0,0,
             0,0,0
           ];
-          pixel.primed = false;
           pixel.active = 0;
+          pixel.failsafe = true;
         }
-        else if (pixel.active > 0){
-              if (pixel.coreLoc) {
-                if (isEmpty(pixel.coreLoc[0],pixel.coreLoc[1])) {pixel.active = 0;}
-                else if (pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].element !== "net_core") {pixel.active = 0;}
-              }
-              for (var a = -1; a < 2; a++) {
-                for (var b = -1; b < 2; b++) {
-                  if (a == 0 && b == 0) {continue;} //skip if looking at self
-                  var dexi = ((a+1) + 3*(b+1));
-                  if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
-                    var bypass = false;
-                    if (!pixel.coreLoc) {continue;}
-                    if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
-                    if (pixel.active < 4) {bypass = true;}
-                    var newPixel = pixelMap[pixel.x+a][pixel.y+b];
-                    if (newPixel.element === "net_link") {
-                      if (newPixel.active == 0 && pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
-                      if (bypass == true) {continue;}
-                      if (newPixel.active > 1) {
-                        if (pixel.coreLoc === newPixel.coreLoc) {continue;}
-                        var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
-                        var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
-                        var c = 1;
-                        for (i = 0; i < 4; i++) {
-                          if (c == 1) {
-                            if (list1[i] > list2[i]) {c = 2;}
-                            else if (list1[i] < list2[i]) {c = 3;}
-                          }
-                        }
-                        if (c != 3) {continue;}
-                        var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
-                        if (d.fault === false) {d.fault = true;}
-                      } else if (newPixel.active == 1) {
-                        if (pixel.coreLoc[0] == newPixel.coreLoc[0] && pixel.coreLoc[1] == newPixel.coreLoc[1]) {
-                          if (pixel.netConflict[0] == newPixel.netConflict[0]) {
-                            continue;
-                          }
-                        } else {
-                          var target = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
-                          if (target.fault === false) {target.fault = true;}
+        if (pixel.active > 0) {
+          if (!pixel.coreLoc) {pixel.failsafe = false;}
+          else if (isEmpty(pixel.coreLoc[0],pixel.coreLoc[1],true)) {pixel.failsafe = false;}
+          else if (pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]].element !== "net_core") {pixel.failsafe = false;}
+        }
+        if (pixel.active > 0 && pixel.failsafe == true) {
+            for (var a = -1; a < 2; a++) {
+              for (var b = -1; b < 2; b++) {
+                if (a == 0 && b == 0) {continue;} //skip if looking at self
+                var dexi = ((a+1) + 3*(b+1));
+                if (!isEmpty(pixel.x+a,pixel.y+b,true)) {
+                  var bypass = false;
+                  if (pixel.activeStart ? (pixel.activeStart == pixelTicks) : false) {continue;}
+                  if (pixel.active < 4) {bypass = true;}
+                  var newPixel = pixelMap[pixel.x+a][pixel.y+b];
+                  if (newPixel.element === "net_link") {
+                    if (newPixel.active == 0 && pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
+                    if (bypass == true) {continue;}
+                    if (newPixel.active > 1) {
+                      if (pixel.coreLoc === newPixel.coreLoc) {continue;}
+                      var list1 = [pixel.netConflict[0],pixel.netConflict[1],pixel.coreLoc[0],pixel.coreLoc[1]];
+                      var list2 = [newPixel.netConflict[0],newPixel.netConflict[1],newPixel.coreLoc[0],newPixel.coreLoc[1]];
+                      var c = 1;
+                      for (i = 0; i < 4; i++) {
+                        if (c == 1) {
+                          if (list1[i] > list2[i]) {c = 2;}
+                          else if (list1[i] < list2[i]) {c = 3;}
                         }
                       }
-                      pixel.detection[dexi] = 1;
-                      newPixel.active = 4;
-                      newPixel.activeStart = pixelTicks;
-                      newPixel.netConflict = pixel.netConflict;
-                      newPixel.coreLoc = pixel.coreLoc;
-                    } else {
-                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
-                      else if (bypass == false) {
-                        if (elements[newPixel.element].category === "components") {
-                          var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
-                          if (newPixel.netData ? listCompare(list,newPixel.netData) : true) {
-                            newPixel.netData = list;
-                            var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
-                            if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
-                            target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
-                            if (!target.augCount[newPixel.element]) {target.augCount[newPixel.element] = 0;}
-                            target.augCount[elements[newPixel.element].compType]++;
-                          }
-                        } else if (newPixel.element === "shield_gen") {
-                          var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
-                          if (newPixel.link ? listCompare(list,newPixel.link) : true) {
-                            newPixel.link = list;
-                            var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
-                            target.compList.shields.push({x: pixel.x+a,y: pixel.y+b});
-                            target.compUpdate.shields = true;
-                          }
-                        } else if (newPixel.element === "emitter") {
-                          var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
-                          if (newPixel.link ? listCompare(list,newPixel.link) : true) {
-                            newPixel.link = list;
-                            var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
-                            target.compList.emitters.push({x: pixel.x+a,y: pixel.y+b});
-                            target.compUpdate.emitters = true;
-                          }
+                      if (c != 3) {continue;}
+                      var d = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
+                      if (d.fault === false) {d.fault = true;}
+                    } else if (newPixel.active == 1) {
+                      if (pixel.coreLoc[0] == newPixel.coreLoc[0] && pixel.coreLoc[1] == newPixel.coreLoc[1]) {
+                        if (pixel.netConflict[0] == newPixel.netConflict[0]) {
+                          continue;
+                        }
+                      } else {
+                        var target = pixelMap[newPixel.coreLoc[0]][newPixel.coreLoc[1]];
+                        if (target.fault === false) {target.fault = true;}
+                      }
+                    }
+                    pixel.detection[dexi] = 1;
+                    newPixel.active = 4;
+                    newPixel.activeStart = pixelTicks;
+                    newPixel.netConflict = pixel.netConflict;
+                    newPixel.coreLoc = pixel.coreLoc;
+                  } else {
+                    if (bypass == false) {
+                      if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
+                      else if (elements[newPixel.element].category === "components") {
+                        var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                        if (newPixel.netData ? listCompare(list,newPixel.netData) : true) {
+                          newPixel.netData = list;
+                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                          if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
+                          target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
+                          if (!target.augCount[newPixel.element]) {target.augCount[newPixel.element] = 0;}
+                          target.augCount[elements[newPixel.element].compType]++;
+                        }
+                      } else if (newPixel.element === "shield_gen") {
+                        var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                        if (newPixel.link ? listCompare(list,newPixel.link) : true) {
+                          newPixel.link = list;
+                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                          target.compList.shields.push({x: pixel.x+a,y: pixel.y+b});
+                          target.compUpdate.shields = true;
+                        }
+                      } else if (newPixel.element === "emitter") {
+                        var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
+                        if (newPixel.link ? listCompare(list,newPixel.link) : true) {
+                          newPixel.link = list;
+                          var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                          target.compList.emitters.push({x: pixel.x+a,y: pixel.y+b});
+                          target.compUpdate.emitters = true;
                         }
                       }
                     }
-                  } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
-                    pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
                   }
+                } else if (pixel.detection[dexi] > 0) {
+                  pixel.detection[dexi] = 2;
                 }
               }
-              if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
-              if (pixel.detection.includes(2)) {
-                if (pixel.active > 0 && pixel.coreLoc) {
-                  var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
-                  if (!isEmpty(target.x,target.y,true) ? (target.element === "net_core") : false) {
-                    target.fault = true;
-                  }
+            }
+            if (pixel.active > 1 && pixel.activeStart != pixelTicks) {pixel.active--;}
+            if (pixel.detection.includes(2)) {
+              if (pixel.active > 0 && pixel.coreLoc) {
+                var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
+                if (!isEmpty(target.x,target.y,true) ? (target.element === "net_core") : false) {
+                  target.fault = true;
                 }
-                pixel.active = 0;
-                pixel.detection = [
-                  0,0,0,
-                  0,0,0,
-                  0,0,0
-                ];
               }
+              pixel.failsafe = false;
+            }
         }
         var newColor = "#586879";
         if (pixel.active === 3) {newColor = "#00ff00";}
