@@ -1005,6 +1005,21 @@ elements.shield_hardener = {
     compType: "shields"
 };
 
+elements.shield_charger = {
+    color: "#50c8c8",
+    behavior: behaviors.WALL,
+    hardness: 0.75,
+    conduct: 1,
+    category: "components",
+    desc: "Allows shields to regenerate while taking damage, but generates heat. " +
+    "Heat is spread across all augmenters in a network, and less is generated the more are connected.<br/>" +
+    "Explodes if above 6000 degrees.</br>",
+    tempHigh: 6000,
+    stateHigh: "explosion",
+    state: "solid",
+    compType: "shields"
+};
+
 elements.barrier = {
     color: ["#ff00ff","#000000","#ff00ff","#000000","#ff00ff"],
     tick: function(pixel) {
