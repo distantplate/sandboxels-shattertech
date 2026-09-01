@@ -392,6 +392,7 @@ elements.net_core = {
           pixel.compUpdate = {};
           pixel.locStore = [pixel.x,pixel.y];
           pixel.detection = [0,0,0,0,0,0,0,0,0];
+          pixel.sCHeatup = 0;
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -462,6 +463,17 @@ elements.net_core = {
             } else if (check == 2) {
               var store = elements[a].compType;
               pixel.compUpdate[store] = true;
+            }
+            if (a === "shield_charger" && tempObj.augList[a] && pixel.sCHeatup > 0) {
+                var heatGen = Math.ceil((100*pixel.sCHeatup)/(tempObj.augCount[a]));
+                if (isNaN(heatGen)) {heatGen = 0;}
+                else if (heatGen < 0) {heatGen = 0;}
+                for (let b in tempObj.augList[a]) {
+                    var p = pixelMap[tempObj.augList[a][b].x][tempObj.augList[a][b].y];
+                    p.temp += heatGen;
+                    pixelTempCheck(p);
+                }
+                pixel.sCHeatup = 0;
             }
           }
           if (pixel.fault == false) {
