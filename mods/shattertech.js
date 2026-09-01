@@ -1218,6 +1218,9 @@ function c_u_handler(type,counts,x,y) {
         if (counts.shield_hardener) {
             p.threshold = 2.5 * counts.shield_hardener;
         } else {p.threshold = 0;}
+        if (counts.shield_charger) {
+            p.boosted = true;
+        } else {p.boosted = false;}
     }
     return;
 };
