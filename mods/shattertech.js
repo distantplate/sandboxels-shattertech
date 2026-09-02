@@ -589,7 +589,10 @@ elements.net_link = {
                     newPixel.netConflict = pixel.netConflict;
                     newPixel.coreLoc = pixel.coreLoc;
                   } else {
-                    if (bypass == false) {
+                    if (pixel.detection[dexi] > 0) {
+                        pixel.detection[dexi] = 2;
+                        pixel.failsafe = false;
+                    } else if (bypass == false) {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = 2;}
                       else if (elements[newPixel.element].category === "components") {
                         var list = [pixel.coreLoc[0],pixel.coreLoc[1],pixel.netConflict[0]];
