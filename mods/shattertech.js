@@ -282,6 +282,15 @@ elements.lance = {
                 if (pixel.link) {
                     if (pixelMap[x][y].element === "barrier") {
                         if (pixel.link === pixelMap[x][y].link) { continue }
+                        else if (focused == 900) {
+                            var p1 = pixelMap[x][y];
+                            var p2 = pixelMap[p1.emitX][p1.emitY];
+                            var genCheck = true;
+                            if (isEmpty(p2.x,p2.y,true)) {genCheck = false;}
+                            else if (p2.element !== "shield_gen") {genCheck = false;}
+                            else if (p2.health <= 0 || p2.timer > 1 || p2.syncCheck != 10) {genCheck = false;}
+                            if (genCheck == true) {p2.health--;}
+                        }
                     }
                 }
                 if (elements[pixelMap[x][y].element].id === elements.lance.id) {
