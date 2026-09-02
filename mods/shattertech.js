@@ -1058,6 +1058,9 @@ elements.barrier = {
                         changePixel(pixel,"purplectric");
                     } else if (pixelMap[pixel.emitX][pixel.emitY].timer > 0) {
                         changePixel(pixel,"purplectric");
+                    } else {
+                        var b = 255*(pixelMap[pixel.emitX][pixel.emitY].health / 100);
+                        pixel.color = "rgb(255,255,"+b+")";
                     }
                 }
             }
