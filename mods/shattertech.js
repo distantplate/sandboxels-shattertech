@@ -643,6 +643,7 @@ elements.net_link = {
         doDefaults(pixel);
     },
     conduct: 1,
+    ignoreConduct: ["portal_in"],
     category: "machines",
     desc: "Used by a net_core to form a network and connect components.",
     movable: false,
