@@ -1211,6 +1211,11 @@ elements.shield_config = {
   maxSize: 1
 };
 
+elements.explosion.tick = function(pixel){
+    explodeAt(pixel.x, pixel.y, pixel.radius || 10, "fire");
+    deletePixel(pixel.x, pixel.y);
+}
+
 function c_u_handler(type,counts,x,y) {
     var p = pixelMap[x][y];
     if (type === "emitters") {
