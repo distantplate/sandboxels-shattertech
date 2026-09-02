@@ -643,7 +643,6 @@ elements.net_link = {
         doDefaults(pixel);
     },
     conduct: 1,
-    ignoreConduct: ["portal_in"],
     category: "machines",
     desc: "Used by a net_core to form a network and connect components.",
     movable: false,
@@ -1226,10 +1225,11 @@ elements.shield_config = {
   maxSize: 1
 };
 
+elements.wire.ignoreConduct: ["portal_in"];
 elements.explosion.tick = function(pixel){
     explodeAt(pixel.x, pixel.y, pixel.radius || 10, "fire");
     deletePixel(pixel.x, pixel.y);
-}
+};
 
 function c_u_handler(type,counts,x,y) {
     var p = pixelMap[x][y];
