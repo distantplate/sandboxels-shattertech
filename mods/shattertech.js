@@ -832,6 +832,7 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.nestObj = [];
             pixel.threshold = 0;
+            pixel.boosted = false;
             pixel.link = false;
         }
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
@@ -852,6 +853,7 @@ elements.shield_gen = {
           if (check == true) {
             pixel.link = false;
             pixel.threshold = 0;
+            pixel.boosted = false;
           }
         }
         if (pixel.health <= 0) {
@@ -860,6 +862,10 @@ elements.shield_gen = {
             pixel.timer = 60;
         }
         if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
+        if (pixel.boosted == true && pixel.link != false && pixel.health < 100) {
+            pixel.health += 1;
+            pixelMap[pixel.link[0]][pixel.link[1]].sCHeatup += 1;
+        }
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
                 pixel.health = 100;
