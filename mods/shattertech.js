@@ -392,7 +392,6 @@ elements.net_core = {
           pixel.compUpdate = {};
           pixel.locStore = [pixel.x,pixel.y];
           pixel.detection = [0,0,0,0,0,0,0,0,0];
-          pixel.sCHeatup = 0;
         }
         if (pixel.charge && pixel.active === 0) {pixel.active = 10;}
         if (pixel.active === 10) {
@@ -463,18 +462,6 @@ elements.net_core = {
             } else if (check == 2) {
               var store = elements[a].compType;
               pixel.compUpdate[store] = true;
-            }
-            if (a === "shield_charger" && tempObj.augList[a] && pixel.sCHeatup > 0) {
-                var heatGen = (100*pixel.sCHeatup*Math.pow(0.8,(tempObj.augCount[a]-1)));
-                heatGen = Math.ceil(heatGen/tempObj.augCount[a]);
-                if (isNaN(heatGen)) {heatGen = 0;}
-                else if (heatGen < 0) {heatGen = 0;}
-                for (let b in tempObj.augList[a]) {
-                    var p = pixelMap[tempObj.augList[a][b].x][tempObj.augList[a][b].y];
-                    p.temp += heatGen;
-                    pixelTempCheck(p);
-                }
-                pixel.sCHeatup = 0;
             }
           }
           if (pixel.fault == false) {
@@ -833,7 +820,6 @@ elements.shield_gen = {
             pixel.syncCheck = 0;
             pixel.nestObj = [];
             pixel.threshold = 0;
-            pixel.boosted = false;
             pixel.link = false;
         }
         if ((!pixel.gap) || (pixel.gap < 0) || (pixel.gap > 5)){
@@ -854,22 +840,14 @@ elements.shield_gen = {
           if (check == true) {
             pixel.link = false;
             pixel.threshold = 0;
-            pixel.boosted = false;
           }
         }
-        logMessage(pixel.health);
         if (pixel.health <= 0) {
             pixel.health = 100;
             pixel.heat = 0;
             pixel.timer = 60;
         }
         if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
-        if (pixel.boosted == true && pixel.link != false && pixel.health < 100) {
-            var regVal = 5;
-            if (pixel.health > 95) {regVal = 100 - pixel.health;}
-            pixel.health += regVal;
-            pixelMap[pixel.link[0]][pixel.link[1]].sCHeatup += regVal;
-        }
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
                 pixel.health = 100;
@@ -1023,21 +1001,6 @@ elements.shield_hardener = {
     desc: "Halves damage to shields from smaller explosions, but doubles damage from larger ones. " +
     "The more hardeners are connected, the larger the explosions that can be resisted.<br/>",
     insulate: true,
-    state: "solid",
-    compType: "shields"
-};
-
-elements.shield_charger = {
-    color: "#50c8c8",
-    behavior: behaviors.WALL,
-    hardness: 0.75,
-    conduct: 1,
-    category: "components",
-    desc: "Allows shields to regenerate while taking damage, but generates heat. " +
-    "Heat is spread across all augmenters in a network, and less is generated the more are connected.<br/>" +
-    "Explodes if above 6000 degrees.</br>",
-    tempHigh: 6000,
-    stateHigh: "explosion",
     state: "solid",
     compType: "shields"
 };
@@ -1228,9 +1191,6 @@ function c_u_handler(type,counts,x,y) {
         if (counts.shield_hardener) {
             p.threshold = 2.5 * counts.shield_hardener;
         } else {p.threshold = 0;}
-        if (counts.shield_charger) {
-            p.boosted = true;
-        } else {p.boosted = false;}
     }
     return;
 };
