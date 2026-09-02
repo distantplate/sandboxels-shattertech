@@ -863,8 +863,10 @@ elements.shield_gen = {
         }
         if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
         if (pixel.boosted == true && pixel.link != false && pixel.health < 100) {
-            pixel.health += 1;
-            pixelMap[pixel.link[0]][pixel.link[1]].sCHeatup += 1;
+            var regVal = 5;
+            if (pixel.health > 95) {regVal = 100 - pixel.health;}
+            pixel.health += regVal;
+            pixelMap[pixel.link[0]][pixel.link[1]].sCHeatup += regVal;
         }
         if (pixel.heat == 0 && pixel.health < 100) {
             if ((pixel.health + 5) > 100) {
