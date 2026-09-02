@@ -857,6 +857,7 @@ elements.shield_gen = {
             pixel.boosted = false;
           }
         }
+        logMessage(pixel.health);
         if (pixel.health <= 0) {
             pixel.health = 100;
             pixel.heat = 0;
