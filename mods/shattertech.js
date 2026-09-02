@@ -465,7 +465,8 @@ elements.net_core = {
               pixel.compUpdate[store] = true;
             }
             if (a === "shield_charger" && tempObj.augList[a] && pixel.sCHeatup > 0) {
-                var heatGen = Math.ceil((100*pixel.sCHeatup)/(tempObj.augCount[a]));
+                var heatGen = (100*pixel.sCHeatup*Math.pow(0.8,(tempObj.augCount[a]-1)));
+                heatGen = Math.ceil(heatGen/tempObj.augCount[a]);
                 if (isNaN(heatGen)) {heatGen = 0;}
                 else if (heatGen < 0) {heatGen = 0;}
                 for (let b in tempObj.augList[a]) {
