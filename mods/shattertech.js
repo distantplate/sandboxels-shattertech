@@ -1225,7 +1225,7 @@ elements.shield_config = {
   maxSize: 1
 };
 
-elements.wire.ignoreConduct: ["portal_in"];
+elements.wire.ignoreConduct = ["portal_in"];
 elements.explosion.tick = function(pixel){
     explodeAt(pixel.x, pixel.y, pixel.radius || 10, "fire");
     deletePixel(pixel.x, pixel.y);
