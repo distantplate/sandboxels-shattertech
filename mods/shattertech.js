@@ -283,14 +283,16 @@ elements.lance = {
                     if (pixel.link ? pixel.link === pixelMap[x][y].link : false) { continue }
                     else if (focused == 900) {
                         var p1 = pixelMap[x][y];
-                        var p2 = pixelMap[p1.emitX][p1.emitY];
                         var genCheck = true;
-                        if (isEmpty(p2.x,p2.y,true)) {genCheck = false;}
-                        else if (p2.element !== "shield_gen") {genCheck = false;}
-                        else if (p2.health <= 0 || p2.timer > 1 || p2.syncCheck != 10) {genCheck = false;}
-                        if (genCheck == true) {
-                            p2.health--;
-                            p2.heat = 60;    
+                        if (p1.emitX && p1.emitY) {
+                            var p2 = pixelMap[p1.emitX][p1.emitY];
+                            if (isEmpty(p2.x,p2.y,true)) {genCheck = false;}
+                            else if (p2.element !== "shield_gen") {genCheck = false;}
+                            else if (p2.health <= 0 || p2.timer > 1 || p2.syncCheck != 10) {genCheck = false;}
+                            if (genCheck == true) {
+                                p2.health--;
+                                p2.heat = 60;    
+                            }
                         }
                    }
                 }
