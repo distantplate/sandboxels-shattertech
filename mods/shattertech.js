@@ -898,7 +898,6 @@ elements.shield_gen = {
             var tempVal = {x: pixel.x,y: pixel.y};
             if (pixel.x == 0 || pixel.y == 0) {
               tempVal.onBorder = true;
-              logMessage("failsafe triggered");
             }
             var templength = 0;
             if (isObjValDupe(storageList.shield_gen,tempVal) == false) {
@@ -1596,6 +1595,7 @@ runEveryTick(function () {
         exclude = false;
         var ts = storageList.shield_gen[z];
         for (let h in ts) {if (h != "x" && h != "y" && h != "onBorder") {exclude = true;}}
+        if (ts.onBorder) {logMessage("failsafe triggered")};
         var x1;
         var y1;
         if (!ts.onBorder && ((!ts.x) || (!ts.y))) {
