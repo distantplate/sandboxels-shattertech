@@ -894,18 +894,6 @@ elements.shield_gen = {
             pixel.heat -= 1;
         }
         if (pixel.syncCheck == 9) {
-            pixel.fociLocIn = [0,0,0,0,0];
-            pixel.fociLocOut = [0,0,0,0,0];
-            var s = findFoci(pixel.x,pixel.y,pixel.xStage,pixel.yStage,pixel.gap);
-            var x = pixel.x;
-            var y = pixel.y;
-            if (s[4] == 1) {
-                pixel.fociLocIn = [(x+s[0]),y,(x-s[0]),y,s[1],"x"];
-                pixel.fociLocOut = [(x+s[2]),y,(x-s[2]),y,s[3],"x"];
-            } else {
-                pixel.fociLocIn = [x,(y+s[0]),x,(y-s[0]),s[1],"y"];
-                pixel.fociLocOut = [x,(y+s[2]),x,(y-s[2]),s[3],"y"];
-            }
             if (!storageList.shield_gen) {storageList.shield_gen = {};}
             var tempVal = {x: pixel.x,y: pixel.y};
             var templength = 0;
@@ -929,8 +917,8 @@ elements.shield_gen = {
                 }
                 if ((targetloc.xStage + targetloc.gap) <= pixel.xStage) {
                     if ((targetloc.yStage + targetloc.gap) <= pixel.yStage) {
-                        var C = pixel.fociLocIn;
-                        if (findFociDistance(storageList.shield_gen[A].x,C[0],C[2],storageList.shield_gen[A].y,C[1],C[3]) <= C[4]) {
+                        var p = pixelMap[storageList.shield_gen[a].x][storageList.shield_gen[a].x];
+                        if (Math.pow((p.x-pixel.x)/pixel.xStage,2)+Math.pow((p.y-pixel.y)/pixel.yStage,2) <= 1) {
                           inList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
                         }
                     }
@@ -939,10 +927,9 @@ elements.shield_gen = {
             pixel.nestObj = inList;
             for (let B in outList) {
                 var targetloc = pixelMap[outList[B].x][outList[B].y];
-                if (!targetloc.fociLocIn) {continue;}
+                if (!targetloc.xStage || !targetloc.yStage) {continue;}
                 if (!targetloc.nestObj) {targetloc.nestObj = [];}
-                var C = targetloc.fociLocIn;
-                if (findFociDistance(pixel.x,C[0],C[2],pixel.y,C[1],C[3]) <= C[4]) {
+                if (Math.pow((pixel.x-targetloc.x)/targetloc.xStage,2)+Math.pow((pixel.y-targetloc.y)/targetloc.yStage,2) <= 1) {
                     targetloc.nestObj.push({x: pixel.x,y: pixel.y});
                 }
             }
@@ -988,9 +975,8 @@ elements.shield_gen = {
                                 var p2 = pixelMap[p.emitX][p.emitY];
                                 if (!outOfBounds(p2.x,p2.y) && !isEmpty(p2.x,p2.y)) {
                                     if (p2.element === "shield_gen" && p2.syncCheck == 10) {
-                                        var f = p2.fociLocOut;
                                         var resonate = false;
-                                        if (findFociDistance(p.x,f[0],f[2],p.y,f[1],f[3]) <= f[4]) {
+                                        if (Math.pow((p.x-p2.x)/(p2.xStage+p2.gap),2)+Math.pow((p.x-p2.x)/(p2.xStage+p2.gap),2)) {
                                             resonate = true;
                                         }
                                         if (resonate == true) {
@@ -1309,41 +1295,6 @@ function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
         }
       }
     }
-}
-
-function findFoci(x,y,width,height,gap) {
-    //for index 4 of the returned list, 1 means horizontal and 2 means vertical
-    var f;
-    var d;
-    var dex;
-    var foci = [0,0,0,0,0];
-    if (width >= height) {
-        for(let i = 0; i <= gap; i += gap) {
-            f = Math.pow((Math.pow((width + i), 2) - Math.pow((height + i), 2)), (1/2));
-            d = (2*width)+(2*i);
-            dex = 2*(i/gap);
-            foci[dex] = f;
-            foci[dex+1] = d;
-        }
-        foci[4] = 1;
-    } else {
-        for(let i = 0; i <= gap; i += gap) {
-            f = Math.pow((Math.pow((height + i), 2) - Math.pow((width + i), 2)), (1/2));
-            d = (2*height)+(2*i);
-            dex = 2*(i/gap);
-            foci[dex] = f;
-            foci[dex+1] = d;
-        }
-        foci[4] = 2;
-    }
-    return foci;
-};
-
-function findFociDistance(x1,x2,x3,y1,y2,y3) {
-    var distance1 = Math.pow((Math.pow((x2-x1), 2) + Math.pow((y2-y1), 2)), (1/2));
-    var distance2 = Math.pow((Math.pow((x3-x1), 2) + Math.pow((y3-y1), 2)), (1/2));
-    var totalDistance = distance1+distance2;
-    return totalDistance;
 };
 
 function ovalCoords(x,y,xRadius,yRadius) {
@@ -1429,7 +1380,6 @@ function shieldcheck(x,y,radius,doDamage) {
       }
       if (Math.abs(x-x1) > p.xStage+p.gap.radius) {continue;}
       if (Math.abs(y-y1) > p.yStage+p.gap+radius) {continue;}
-      var fLI = p.fociLocIn;
       if(Math.pow((x-x1)/p.xStage,2)+Math.pow((y-y1)/p.yStage,2) <= 1) {
       //if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
