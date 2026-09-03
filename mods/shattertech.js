@@ -1006,8 +1006,6 @@ elements.shield_gen = {
                 }
             }
         })
-        
-        //find the foci for the shield, to be used by other stuff
         if (pixel.syncCheck < 10 && pixel.syncCheck >= 0) {
             pixel.syncCheck++;
         } else if (pixel.syncCheck > 10) {
@@ -1291,15 +1289,14 @@ function barrage(x,y,r1,r2,fire1="fire",fire2="fire"){
                 bypass = true;
               } else if (!checks.sCC[z].f) {
                 var tSCC = checks.sCC[z];
-                if (findFociDistance(tempCoords[i].x,tSCC.fx1,tSCC.fx2,tempCoords[i].y,tSCC.fy1,tSCC.fy2) > tSCC.d) {bypass = true;}
+                if (Math.pow((tempCoords[i].x-tSCC.x)/tSCC.xs,2)+Math.pow((tempCoords[i].y-tSCC.y)/tSCC.ys,2) > 1) {bypass = true;}
               }
             }
           }
           if (checks.sFVal == true) {
             for (let z in checks.sFC) {
-              var tSFC = [];
-              for (let Z in checks.sFC[z]) {tSFC.push(checks.sFC[z][Z]);}
-              if (findFociDistance(tempCoords[i].x,tSFC[2],tSFC[4],tempCoords[i].y,tSFC[3],tSFC[5]) <= tSFC[6]) {bypass = true;}
+              var tSFC = checks.sFC[z];
+              if (Math.pow((tempCoords[i].x-tSFC.x)/tSFC.xs,2)+Math.pow((tempCoords[i].y-tSFC.y)/tSFC.ys,2) <= 1) {bypass = true;}
             }
           }
           if (bypass == false) {coords.push(tempCoords[i]);}
