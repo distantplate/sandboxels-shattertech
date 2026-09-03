@@ -907,7 +907,9 @@ elements.shield_gen = {
             var outList = [];
             var inList = [];
             for (let A in storageList.shield_gen) {
-                if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {continue;}
+                if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {
+                  if (!storageList.shield_gen[A].onBorder) {continue;}
+                }
                 if (isEmpty(storageList.shield_gen[A].x,storageList.shield_gen[A].y)) {continue;}
                 var targetloc = pixelMap[storageList.shield_gen[A].x][storageList.shield_gen[A].y];
                 if (targetloc.element !== "shield_gen") {continue;}
