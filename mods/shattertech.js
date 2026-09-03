@@ -896,6 +896,7 @@ elements.shield_gen = {
         if (pixel.syncCheck == 9) {
             if (!storageList.shield_gen) {storageList.shield_gen = {};}
             var tempVal = {x: pixel.x,y: pixel.y};
+            if (pixel.x == 0 || pixel.y == 0) {tempVal.onBorder = true;}
             var templength = 0;
             if (isObjValDupe(storageList.shield_gen,tempVal) == false) {
                 for (let z in storageList.shield_gen) {
@@ -1589,17 +1590,20 @@ runEveryTick(function () {
       var exclude = false;
       for (let z in storageList.shield_gen) {
         exclude = false;
-        for (let h in storageList.shield_gen[z]) {if (h != "x" && h != "y") {exclude = true;}}
+        var ts = storageList.shield_gen[z];
+        for (let h in ts) {if (h != "x" && h != "y" && h != "onBorder") {exclude = true;}}
         var x1;
         var y1;
-        if ((!storageList.shield_gen[z].x) || (!storageList.shield_gen[z].y)) {exclude = true;} else {
-          x1 = storageList.shield_gen[z].x;
-          y1 = storageList.shield_gen[z].y;
+        if (!ts.onBorder && ((!ts.x) || (!ts.y))) {
+          exclude = true;
+        } else {
+          x1 = ts.x;
+          y1 = ts.y;
           if (isEmpty(x1,y1)) {exclude = true;}
           else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
         }
         if (exclude == false) {
-          placehold.push({x: storageList.shield_gen[z].x,y: storageList.shield_gen[z].y});
+          placehold.push({x: ts.x,y: ts.y});
         }
       }
       storageList.shield_gen = {};
