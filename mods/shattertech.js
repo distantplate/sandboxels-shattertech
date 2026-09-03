@@ -910,7 +910,10 @@ elements.shield_gen = {
                 if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {
                   if (!storageList.shield_gen[A].onBorder) {continue;}
                 }
-                if (isEmpty(storageList.shield_gen[A].x,storageList.shield_gen[A].y)) {continue;}
+                if (isEmpty(storageList.shield_gen[A].x,storageList.shield_gen[A].y)) {
+                  logMessage("reads as empty");
+                  continue;
+                }
                 var targetloc = pixelMap[storageList.shield_gen[A].x][storageList.shield_gen[A].y];
                 if (targetloc.element !== "shield_gen") {continue;}
                 if ((pixel.xStage + pixel.gap) <= targetloc.xStage) {
@@ -1374,7 +1377,6 @@ function shieldcheck(x,y,radius,doDamage) {
       var x1 = storageList.shield_gen[a].x;
       var y1 = storageList.shield_gen[a].y;
       var p = pixelMap[x1][y1];
-      logMessage(p.x+", "+p.y);
       if (isEmpty(x1,y1)) {
         continue;
       } else if ((p.element !== "shield_gen") || !(p.xStage && p.yStage)) {
@@ -1385,7 +1387,6 @@ function shieldcheck(x,y,radius,doDamage) {
       if(Math.pow((x-x1)/p.xStage,2)+Math.pow((y-y1)/p.yStage,2) <= 1) {
       //if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
-          logMessage(p.x+", "+p.y);
           if (radius <= 30) {
             if (sc1.confirm[0] !== false) {
               if (p.xStage < sc1.c[2] && p.yStage < sc1.c[3]) {
