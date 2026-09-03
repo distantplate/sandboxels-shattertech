@@ -1606,6 +1606,8 @@ runEveryTick(function () {
         }
         if (exclude == false) {
           placehold.push({x: ts.x,y: ts.y});
+        } else {
+          logMessage("removed from list");
         }
       }
       storageList.shield_gen = {};
