@@ -1600,7 +1600,7 @@ runEveryTick(function () {
         }}
         var x1;
         var y1;
-        if (!ts.onBorder && ((!ts.x) || (!ts.y))) {
+        if (((!ts.x) || (!ts.y)) && !ts.onBorder) {
           exclude = true;
           logMessage("failure 2");
         } else {
