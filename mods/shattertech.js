@@ -902,6 +902,7 @@ elements.shield_gen = {
                 for (let z in storageList.shield_gen) {
                     templength++;
                 }
+                logMessage("added to list");
                 storageList.shield_gen[templength] = tempVal;
             }
             var outList = [];
@@ -910,10 +911,7 @@ elements.shield_gen = {
                 if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {
                   if (!storageList.shield_gen[A].onBorder) {continue;}
                 }
-                if (isEmpty(storageList.shield_gen[A].x,storageList.shield_gen[A].y)) {
-                  logMessage("reads as empty");
-                  continue;
-                }
+                if (isEmpty(storageList.shield_gen[A].x,storageList.shield_gen[A].y)) {continue;}
                 var targetloc = pixelMap[storageList.shield_gen[A].x][storageList.shield_gen[A].y];
                 if (targetloc.element !== "shield_gen") {continue;}
                 if ((pixel.xStage + pixel.gap) <= targetloc.xStage) {
