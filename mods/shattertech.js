@@ -915,14 +915,15 @@ elements.shield_gen = {
                         outList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
                     }
                 }
+                logMessage("check 1");
                 if ((targetloc.xStage + targetloc.gap) <= pixel.xStage) {
                     if ((targetloc.yStage + targetloc.gap) <= pixel.yStage) {
-                        var p = pixelMap[storageList.shield_gen[a].x][storageList.shield_gen[a].y];
-                        if (Math.pow((p.x-pixel.x)/pixel.xStage,2)+Math.pow((p.y-pixel.y)/pixel.yStage,2) <= 1) {
+                        if (Math.pow((targetloc.x-pixel.x)/pixel.xStage,2)+Math.pow((targetloc.y-pixel.y)/pixel.yStage,2) <= 1) {
                           inList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
                         }
                     }
                 }
+                logMessage("check 2");
             }
             pixel.nestObj = inList;
             for (let B in outList) {
@@ -1652,4 +1653,4 @@ runAfterReset(function() {
 
 runAfterLoad(function() {
     storageList = {};
-});
+}); 
