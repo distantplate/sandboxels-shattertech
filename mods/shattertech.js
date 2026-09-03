@@ -1594,14 +1594,12 @@ runEveryTick(function () {
       for (let z in storageList.shield_gen) {
         exclude = false;
         var ts = storageList.shield_gen[z];
-        var checkStore = false;
         for (let h in ts) {if (h != "x" && h != "y" && h != "onBorder") {exclude = true;}}
-        if (ts.onBorder) {logMessage("condition set"); checkStore = true;}
+        if (ts.onBorder == undefined) {ts.onBorder = false;}
         var x1;
         var y1;
         if (((!ts.x) || (!ts.y)) && !ts.onBorder) {
           exclude = true;
-          logMessage("failure");
         } else {
           x1 = ts.x;
           y1 = ts.y;
@@ -1609,7 +1607,7 @@ runEveryTick(function () {
           else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
         }
         if (exclude == false) {
-          placehold.push({x: ts.x,y: ts.y,onBorder: checkStore});
+          placehold.push({x: ts.x,y: ts.y,onBorder: ts.onBorder});
         }
       }
       storageList.shield_gen = {};
