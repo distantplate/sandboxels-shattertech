@@ -915,7 +915,6 @@ elements.shield_gen = {
                         outList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
                     }
                 }
-                logMessage("check 1");
                 if ((targetloc.xStage + targetloc.gap) <= pixel.xStage) {
                     if ((targetloc.yStage + targetloc.gap) <= pixel.yStage) {
                         if (Math.pow((targetloc.x-pixel.x)/pixel.xStage,2)+Math.pow((targetloc.y-pixel.y)/pixel.yStage,2) <= 1) {
@@ -923,7 +922,6 @@ elements.shield_gen = {
                         }
                     }
                 }
-                logMessage("check 2");
             }
             pixel.nestObj = inList;
             for (let B in outList) {
@@ -1653,4 +1651,4 @@ runAfterReset(function() {
 
 runAfterLoad(function() {
     storageList = {};
-}); 
+});
