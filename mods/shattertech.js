@@ -1334,7 +1334,6 @@ function isObjValDupe(obj,vals) {
     var temp = [];
     var tempcon = true;
     var con = false;
-    var message;
     for (let x in vals) {
         s.push(x);
     }
@@ -1385,6 +1384,7 @@ function shieldcheck(x,y,radius,doDamage) {
       if(Math.pow((x-x1)/p.xStage,2)+Math.pow((y-y1)/p.yStage,2) <= 1) {
       //if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
+          logMessage(p.x+", "+p.y);
           if (radius <= 30) {
             if (sc1.confirm[0] !== false) {
               if (p.xStage < sc1.c[2] && p.yStage < sc1.c[3]) {
