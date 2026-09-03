@@ -1433,7 +1433,8 @@ function shieldcheck(x,y,radius,doDamage) {
       if (Math.abs(x-x1) > p.xStage+p.gap.radius) {continue;}
       if (Math.abs(y-y1) > p.yStage+p.gap+radius) {continue;}
       var fLI = p.fociLocIn;
-      if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
+      if(Math.pow((x-x1)/p.xStage,2)+Math.pow((y-y1)/p.yStage,2) <= 1) {
+      //if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
         if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
           if (radius <= 30) {
             if (sc1.confirm[0] !== false) {
@@ -1498,37 +1499,15 @@ function shieldcheck(x,y,radius,doDamage) {
     for (let a in sc2) {
       for (let b in sc2[a]) {
         var p = pixelMap[sc2[a][b].x][sc2[a][b].y];
-        var rIN = [0,0];
-        var rILoc = [];
-        var rOLoc = [];
-        var fLI = p.fociLocIn;
-        var fLO = p.fociLocOut;
-        var smallRad;
-        var largeRad;
-        if (fLO[5] === "y") {
-          smallRad = p.xStage;
-          largeRad = p.yStage;
-        } else {
-          smallRad = p.yStage;
-          largeRad = p.xStage;
+        var inrange = [false,false];
+        if (Math.pow((x-p.x)/(p.xStage+radius),2)+Math.pow((y-p.y)/(p.yStage+radius),2) <= 1) {
+          inrange[0] = true;
+          if (radius >= p.xStage || radius >= p.yStage) {inrange[1] = true;}
+          else if (Math.pow((x-p.x)/(p.xStage-radius),2)+Math.pow((y-p.y)/(p.yStage-radius),2) >= 1) {inrange[1] = true;}
         }
-        for (i = 0; i < 2; i++) {
-          var j = i*2*radius;
-          var k = (i*p.gap)+(j-radius);
-          rIN[i] = Math.pow((Math.pow((largeRad+k),2) - Math.pow((smallRad+k),2)), (1/2));
-        }
-        if (fLO[5] === "y") {
-          rILoc = [p.x,(p.y+rIN[0]),p.x,(p.y-rIN[0])];
-          rOLoc = [p.x,(p.y+rIN[1]),p.x,(p.y-rIN[1])];
-        } else {
-          rILoc = [(p.x+rIN[0]),p.y,(p.x-rIN[0]),p.y];
-          rOLoc = [(p.x+rIN[1]),p.y,(p.x-rIN[1]),p.y];
-        }
-        var fOD = findFociDistance(x,rOLoc[0],rOLoc[2],y,rOLoc[1],rOLoc[3]);
-        var fID = findFociDistance(x,rILoc[0],rILoc[2],y,rILoc[1],rILoc[3]);
-        if (fOD < (fLO[4] + (2*radius))) {
-          if (fID > (fLI[4] - (2*radius)) || (radius > smallRad)) {
-            sc3[a].push({x: sc2[a][b].x,y: sc2[a][b].y,fx1: fLI[0],fy1: fLI[1],fx2: fLI[2],fy2: fLI[3],d: fLI[4]});
+        if (inrange[0] == true) {
+          if (inrange[1] == true) {
+            sc3[a].push({x: p.x,y: p.y,xs: p.xStage,ys: p.yStage});
             if (a === "f") {shieldFarCheck = true;}
             if (doDamage === true) {
               var sDamage = Math.pow(10,((radius/10)-1));
@@ -1569,7 +1548,7 @@ explodeAt = function(x,y,radius,fire="fire") {
                         bypass = true;
                     } else if (!checks.sCC[z].f) {
                         var tSCC = checks.sCC[z];
-                        if (findFociDistance(coords[i].x,tSCC.fx1,tSCC.fx2,coords[i].y,tSCC.fy1,tSCC.fy2) > tSCC.d){
+                        if (Math.pow((coords[i].x-tSCC.x)/tSCC.xs,2)+Math.pow((coords[i].y-tSCC.y)/tSCC.ys,2) > 1){
                             bypass = true;
                         }
                     }
@@ -1577,9 +1556,8 @@ explodeAt = function(x,y,radius,fire="fire") {
             }
             if (checks.sFVal == true) {
                 for (let z in checks.sFC){
-                    var tempsFC = [];
-                    for (let Z in checks.sFC[z]) {tempsFC.push(checks.sFC[z][Z]);}
-                    if (findFociDistance(coords[i].x,tempsFC[2],tempsFC[4],coords[i].y,tempsFC[3],tempsFC[5]) <= tempsFC[6]){
+                    var tSFC = checks.sFC[z];
+                    if (Math.pow((coords[i].x-tSFC.x)/tSFC.xs,2)+Math.pow((coords[i].y-tSFC.y)/tSFC.ys,2) <= 1){
                         bypass = true;
                     }
                 }
