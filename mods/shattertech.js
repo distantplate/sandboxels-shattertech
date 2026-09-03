@@ -1594,20 +1594,18 @@ runEveryTick(function () {
       for (let z in storageList.shield_gen) {
         exclude = false;
         var ts = storageList.shield_gen[z];
-        for (let h in ts) {if (h != "x" && h != "y" && h != "onBorder") {
-          exclude = true;
-          logMessage("failure 1");
-        }}
+        for (let h in ts) {if (h != "x" && h != "y" && h != "onBorder") {exclude = true;}}
+        if (ts.onBorder) {logMessage("condition set");}
         var x1;
         var y1;
         if (((!ts.x) || (!ts.y)) && !ts.onBorder) {
           exclude = true;
-          logMessage("failure 2");
+          logMessage("failure");
         } else {
           x1 = ts.x;
           y1 = ts.y;
-          if (isEmpty(x1,y1)) {exclude = true; logMessage("failure 3");}
-          else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true; logMessage("failure 4");}
+          if (isEmpty(x1,y1)) {exclude = true;}
+          else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
         }
         if (exclude == false) {
           placehold.push({x: ts.x,y: ts.y});
