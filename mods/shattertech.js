@@ -896,13 +896,15 @@ elements.shield_gen = {
         if (pixel.syncCheck == 9) {
             if (!storageList.shield_gen) {storageList.shield_gen = {};}
             var tempVal = {x: pixel.x,y: pixel.y};
-            if (pixel.x == 0 || pixel.y == 0) {tempVal.onBorder = true;}
+            if (pixel.x == 0 || pixel.y == 0) {
+              tempVal.onBorder = true;
+              logMessage("failsafe triggered");
+            }
             var templength = 0;
             if (isObjValDupe(storageList.shield_gen,tempVal) == false) {
                 for (let z in storageList.shield_gen) {
                     templength++;
                 }
-                logMessage("added to list");
                 storageList.shield_gen[templength] = tempVal;
             }
             var outList = [];
@@ -1606,8 +1608,6 @@ runEveryTick(function () {
         }
         if (exclude == false) {
           placehold.push({x: ts.x,y: ts.y});
-        } else {
-          logMessage("removed from list");
         }
       }
       storageList.shield_gen = {};
