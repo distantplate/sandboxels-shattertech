@@ -46,7 +46,7 @@ elements.barrage_spawner = {
         if (pixel.delay) {
             pixel.alpha = 1-(Math.max(0,1-(pixelTicks - pixel.start)/pixel.delay))
         }
-        if (pixel.alpha >= 1) {
+        if (pixel.alpha >= 1 || !pixel.delay) {
             barrage(pixel.x,pixel.y,20,10,"hotter_plasma","hotter_plasma");
             deletePixel(pixel.x,pixel.y);
         }
@@ -1110,7 +1110,7 @@ elements.disintegrate = {
               if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "hotter_plasma" && es !== "plasma" && es !== "fire" && es !== "nano_armor" && elements[es].hardness !== 1) {
                 var cstore = newPixel.color;
                 var hstore = 0;
-                if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*20);}
+                if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*10);}
                 changePixel(newPixel,"disintegrate");
                 newPixel.trigger = 2;
                 newPixel.baseColor = newPixel.color;
