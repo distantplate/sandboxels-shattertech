@@ -1217,6 +1217,8 @@ elements.shield_config = {
 };
 
 elements.wire.ignoreConduct = ["net_link"];
+elements.portal_in.hardness = 0.75;
+elements.portal_out.hardness = 0.75;
 elements.explosion.tick = function(pixel){
     explodeAt(pixel.x, pixel.y, pixel.radius || 10, "fire");
     deletePixel(pixel.x, pixel.y);
