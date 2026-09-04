@@ -38,20 +38,17 @@ elements.plasma_burst = {
 elements.barrage_spawner = {
     color: ["#6a00aa","#7a48aa","#6a00aa"],
     tick: function(pixel) {
-        var done = true;
         if (pixel.delay) {
-            var delayR = pixel.delay % 1;
-            var delay = pixel.delay - delayR;
-            if (!(pixelTicks - pixel.start > (pixel.delay||1) && Math.random() < 1-delayR)) {
+            if (pixelTicks - pixel.start <= (pixel.delay)) {
                 done = false;
             }
         }
-        if ((Math.random() < 0.75 && done) || pixel.alpha >= 1) {
-            barrage(pixel.x,pixel.y,20,10,"hotter_plasma","hotter_plasma");
-            deletePixel(pixel.x,pixel.y);
-        }
         if (pixel.delay) {
             pixel.alpha = 1-(Math.max(0,1-(pixelTicks - pixel.start)/pixel.delay))
+        }
+        if (pixel.alpha >= 1) {
+            barrage(pixel.x,pixel.y,20,10,"hotter_plasma","hotter_plasma");
+            deletePixel(pixel.x,pixel.y);
         }
         doHeat(pixel);
     },
