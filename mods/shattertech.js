@@ -281,7 +281,7 @@ elements.lance = {
                     else if (focused == 900) {
                         var p1 = pixelMap[x][y];
                         var genCheck = true;
-                        if (p1.emitX && p1.emitY) {
+                        if (p1.emitX && p1.emitY ? !isEmpty(p1.emitX,p1.emitY,true) : false) {
                             var p2 = pixelMap[p1.emitX][p1.emitY];
                             if (isEmpty(p2.x,p2.y,true)) {genCheck = false;}
                             else if (p2.element !== "shield_gen") {genCheck = false;}
