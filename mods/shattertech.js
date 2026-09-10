@@ -2,6 +2,8 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
+//TEMP VERSION - currently at about line 1430
+
 elements.hotter_plasma = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     behavior: behaviors.DGAS,
@@ -80,7 +82,7 @@ elements.charged_blaster = {
                     if (!elements[p.element].movable && !det1) {det1 = 1;}
                     if (!elements[p.element].movable && det2) {det2 = 0;}
                 } else if (p.element === "barrier") {
-                    if (p.emitted == 1) {
+                    if (p.emitted == 1 ? !isEmpty(p.emitX,p.emitY,true) : false) {
                         var s = pixelMap[p.emitX][p.emitY];
                         if (s.element === "shield_gen") {
                             s.health = 0;
@@ -281,15 +283,13 @@ elements.lance = {
                     else if (focused == 900) {
                         var p1 = pixelMap[x][y];
                         var genCheck = true;
-                        if (typeof p1.emitX != "undefined" && typeof p1.emitY != "undefined") {
-                            if (!isEmpty(p1.emitX,p1.emitY,true)) {
-                                var p2 = pixelMap[p1.emitX][p1.emitY];
-                                if (p2.element !== "shield_gen") {genCheck = false;}
-                                else if (p2.health <= 0 || p2.timer > 1 || p2.syncCheck != 10) {genCheck = false;}
-                                if (genCheck == true) {
-                                    p2.health--;
-                                    p2.heat = 60;    
-                                }
+                        if (p1.emitted ? !isEmpty(p1.emitX,p1.emitY,true) : false) {
+                            var p2 = pixelMap[p1.emitX][p1.emitY];
+                            if (p2.element !== "shield_gen") {genCheck = false;}
+                            else if (p2.health <= 0 || p2.timer > 1 || p2.syncCheck != 10) {genCheck = false;}
+                            if (genCheck == true) {
+                                p2.health--;
+                                p2.heat = 60;    
                             }
                         }
                    }
@@ -456,7 +456,7 @@ elements.net_core = {
               var c = pixel.augList[a][b];
               if (!isEmpty(c.x,c.y,true) ? pixelMap[c.x][c.y].element === a : false) {
                 if (!tempObj.augList[a]) {tempObj.augList[a] = [];}
-                if (!tempObj.augCount[a]) {tempObj.augCount[a] = 0;}
+                if (typeof tempObj.augCount[a] == "undefined") {tempObj.augCount[a] = 0;}
                 tempObj.augList[a].push({x: c.x,y: c.y});
                 tempObj.augCount[a]++;
               }
@@ -599,7 +599,7 @@ elements.net_link = {
                           var target = pixelMap[pixel.coreLoc[0]][pixel.coreLoc[1]];
                           if (!target.augList[newPixel.element]) {target.augList[newPixel.element] = [];}
                           target.augList[newPixel.element].push({x: pixel.x+a,y: pixel.y+b});
-                          if (!target.augCount[newPixel.element]) {target.augCount[newPixel.element] = 0;}
+                          if (typeof target.augCount[newPixel.element] == "undefined") {target.augCount[newPixel.element] = 0;}
                           target.augCount[elements[newPixel.element].compType]++;
                         }
                       } else if (newPixel.element === "shield_gen") {
@@ -894,9 +894,6 @@ elements.shield_gen = {
         if (pixel.syncCheck == 9) {
             if (!storageList.shield_gen) {storageList.shield_gen = {};}
             var tempVal = {x: pixel.x,y: pixel.y};
-            if (pixel.x == 0 || pixel.y == 0) {
-              tempVal.onBorder = true;
-            }
             var templength = 0;
             if (isObjValDupe(storageList.shield_gen,tempVal) == false) {
                 for (let z in storageList.shield_gen) {
@@ -907,21 +904,20 @@ elements.shield_gen = {
             var outList = [];
             var inList = [];
             for (let A in storageList.shield_gen) {
-                if (!storageList.shield_gen[A].x || !storageList.shield_gen[A].y) {
-                  if (!storageList.shield_gen[A].onBorder) {continue;}
-                }
-                if (isEmpty(storageList.shield_gen[A].x,storageList.shield_gen[A].y)) {continue;}
-                var targetloc = pixelMap[storageList.shield_gen[A].x][storageList.shield_gen[A].y];
+                var T = storageList.shield_gen[A];
+                if (typeof T.x == "undefined" || typeof T.y == "undefined") {continue;}
+                if (isEmpty(T.x,T.y)) {continue;}
+                var targetloc = pixelMap[T.x][T.y];
                 if (targetloc.element !== "shield_gen") {continue;}
                 if ((pixel.xStage + pixel.gap) <= targetloc.xStage) {
                     if ((pixel.yStage + pixel.gap) <= targetloc.yStage) {
-                        outList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
+                        outList.push({x: T.x,y: T.y});
                     }
                 }
                 if ((targetloc.xStage + targetloc.gap) <= pixel.xStage) {
                     if ((targetloc.yStage + targetloc.gap) <= pixel.yStage) {
                         if (Math.pow((targetloc.x-pixel.x)/pixel.xStage,2)+Math.pow((targetloc.y-pixel.y)/pixel.yStage,2) <= 1) {
-                          inList.push({x: storageList.shield_gen[A].x,y: storageList.shield_gen[A].y});
+                          inList.push({x: T.x,y: T.y});
                         }
                     }
                 }
@@ -1376,11 +1372,9 @@ function shieldcheck(x,y,radius,doDamage) {
       var x1 = storageList.shield_gen[a].x;
       var y1 = storageList.shield_gen[a].y;
       var p = pixelMap[x1][y1];
-      if (isEmpty(x1,y1)) {
-        continue;
-      } else if ((p.element !== "shield_gen") || !(p.xStage && p.yStage)) {
-        continue;
-      }
+      if (isEmpty(x1,y1)) {continue;}
+      else if (p.element !== "shield_gen") {continue;}
+      else if (typeof p.xStage == "undefined" || typeof p.yStage == "undefined") {continue;}
       if (Math.abs(x-x1) > p.xStage+p.gap.radius) {continue;}
       if (Math.abs(y-y1) > p.yStage+p.gap+radius) {continue;}
       if(Math.pow((x-x1)/p.xStage,2)+Math.pow((y-y1)/p.yStage,2) <= 1) {
