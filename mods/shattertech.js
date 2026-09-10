@@ -1392,7 +1392,7 @@ function shieldcheck(x,y,radius,doDamage) {
             sc2.c.push({x: x1,y: y1});
           }
         }
-      } else {
+      } else if (p.health > 0 && p.timer == 0 && p.syncCheck == 10) {
         if (radius <= 30) {
           sc1.f.push({x: x1,y: y1});
           if (p.nestObj) {
