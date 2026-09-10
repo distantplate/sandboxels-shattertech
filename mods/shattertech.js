@@ -2,8 +2,6 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
-//TEMP VERSION - currently at about line 1430
-
 elements.hotter_plasma = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     behavior: behaviors.DGAS,
@@ -1588,20 +1586,19 @@ runEveryTick(function () {
       for (let z in storageList.shield_gen) {
         exclude = false;
         var ts = storageList.shield_gen[z];
-        for (let h in ts) {if (h != "x" && h != "y" && h != "onBorder") {exclude = true;}}
-        if (ts.onBorder == undefined) {ts.onBorder = false;}
+        for (let h in ts) {if (h != "x" && h != "y") {exclude = true;}}
         var x1;
         var y1;
-        if (((!ts.x) || (!ts.y)) && !ts.onBorder) {
+        if (typeof ts.x == "undefined" || typeof ts.y == "undefined") {
           exclude = true;
         } else {
           x1 = ts.x;
           y1 = ts.y;
-          if (isEmpty(x1,y1)) {exclude = true;}
+          if (isEmpty(x1,y1,true)) {exclude = true;}
           else if (pixelMap[x1][y1].element !== "shield_gen") {exclude = true;}
         }
         if (exclude == false) {
-          placehold.push({x: ts.x,y: ts.y,onBorder: ts.onBorder});
+          placehold.push({x: ts.x,y: ts.y});
         }
       }
       storageList.shield_gen = {};
