@@ -1123,7 +1123,7 @@ elements.disintegrate = {
             } 
           }
         }
-        if (pixel.trigger == 2 && pixel.baseColor && pixel.timerMax) {
+        if (pixel.trigger == 2 && pixel.newColor && pixel.timerMax) {
             pixel.trigger = 3;
             for (let A in pixel.newColor) {
                 var T = pixel.newColor[A];
