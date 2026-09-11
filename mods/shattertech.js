@@ -639,7 +639,6 @@ elements.net_link = {
         if (pixel.active === 3) {newColor = "#00ff00";}
         else if (pixel.charge) {newColor = "#00ffff";}
         pixel.color = newColor;
-        logMessage(pixel.color);
         doDefaults(pixel);
     },
     conduct: 1,
@@ -1131,7 +1130,7 @@ elements.disintegrate = {
                     var r = T.slice(T.indexOf("(")+1,T.indexOf(","));
                     var g = T.slice(T.indexOf(",")+1,T.lastIndexOf(","));
                     var b = T.slice(T.lastIndexOf(",")+1,T.indexOf(")"));
-                    pixel.newColor[A] = [r,g,b];
+                    pixel.newColor[A] = [parseInt(r),parseInt(g),parseInt(b)];
                 } else {
                     var r = parseInt(T.slice(1,3),16);
                     var g = parseInt(T.slice(3,5),16);
