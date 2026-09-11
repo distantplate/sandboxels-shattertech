@@ -639,6 +639,7 @@ elements.net_link = {
         if (pixel.active === 3) {newColor = "#00ff00";}
         else if (pixel.charge) {newColor = "#00ffff";}
         pixel.color = newColor;
+        logMessage(pixel.color);
         doDefaults(pixel);
     },
     conduct: 1,
