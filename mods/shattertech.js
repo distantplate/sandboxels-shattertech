@@ -1135,7 +1135,7 @@ elements.disintegrate = {
                 } else {
                     var r = parseInt(T.slice(1,3),16);
                     var g = parseInt(T.slice(3,5),16);
-                    var r = parseInt(T.slice(5,7),16);
+                    var b = parseInt(T.slice(5,7),16);
                     pixel.newColor[A] = [r,g,b];
                 }
             }
@@ -1146,13 +1146,13 @@ elements.disintegrate = {
       }
       if (pixel.trigger == 3) {
         if (pixel.timer > 0) {
-            logMessage(pixel.newColor[0][0]);
           var s1 = 1-pixel.timer/pixel.timerMax;
           var A = pixel.newColor;
           var r = A[0][0]+s1*(A[1][0]-A[0][0]);
           var g = A[0][1]+s1*(A[1][1]-A[0][1]);
           var b = A[0][2]+s1*(A[1][2]-A[0][2]);
           pixel.color = "rgb("+r+","+g+","+b+")";
+          logMessage("rgb("+r+","+g+","+b+")");
           pixel.timer--;
         } else {
           changePixel(pixel, "hotter_plasma");
