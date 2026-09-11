@@ -1105,7 +1105,7 @@ elements.disintegrate = {
               var es = newPixel.element;
               if (Math.random() > 0.5+(pixel.decay/10)) {continue;}
               if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "hotter_plasma" && es !== "plasma" && es !== "fire" && es !== "nano_armor" && elements[es].hardness !== 1) {
-                newPixel.newColor ={0: newPixel.color};
+                newPixel.newColor = {0: newPixel.color};
                 var hstore = 0;
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*10);}
                 changePixel(newPixel,"disintegrate");
@@ -1146,6 +1146,7 @@ elements.disintegrate = {
       }
       if (pixel.trigger == 3) {
         if (pixel.timer > 0) {
+            logMessage(pixel.newColor[0][0]);
           var s1 = 1-pixel.timer/pixel.timerMax;
           var A = pixel.newColor;
           var r = A[0][0]+s1*(A[1][0]-A[0][0]);
