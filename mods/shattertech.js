@@ -1076,7 +1076,7 @@ elements.barrier = {
 
 //Could this be more efficient: absolutely. Will I make this more efficient: absolutely not.
 
-/*elements.disintegrate = {
+elements.disintegrate = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     onShiftSelect: function(element) {
       promptInput("How wide of an area do you want to disintegrate?", function(r) {
@@ -1105,13 +1105,13 @@ elements.barrier = {
               var es = newPixel.element;
               if (Math.random() > 0.5+(pixel.decay/10)) {continue;}
               if (es !== "disintegrate" && es !== "barrage_spawner" && es !== "hotter_plasma" && es !== "plasma" && es !== "fire" && es !== "nano_armor" && elements[es].hardness !== 1) {
-                var cstore = newPixel.color;
+                newPixel.newColor ={0: newPixel.color};
                 var hstore = 0;
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*10);}
                 changePixel(newPixel,"disintegrate");
                 newPixel.trigger = 2;
-                newPixel.baseColor = newPixel.color;
-                newPixel.color = cstore;
+                newPixel.newColor[1] = newPixel.color;
+                newPixel.color = newPixel.newColor[0];
                 newPixel.timerMax = 10+hstore;
                 newPixel.decay = pixel.decay-1;
                 switch (pixel.stage) {
@@ -1125,16 +1125,19 @@ elements.barrier = {
         }
         if (pixel.trigger == 2 && pixel.baseColor && pixel.timerMax) {
             pixel.trigger = 3;
-            if (pixel.color[0] === "r") {
-                var r = pixel.color.slice(pixel.indexOf("(")+1,pixel.indexOf(","));
-                var g = pixel.color.slice(pixel.indexOf(",")+1,pixel.lastIndexOf(","));
-                var b = pixel.color.slice(pixel.lastIndexOf(",")+1,pixel.indexOf(")"));
-                pixel.oldColor = [r,g,b];
-            } else {
-                var r = parseInt(pixel.color.slice(1,3),16);
-                var g = parseInt(pixel.color.slice(3,5),16);
-                var r = parseInt(pixel.color.slice(5,7),16);
-                pixel.oldColor = [r,g,b];
+            for (let A in pixel.newColor) {
+                var T = pixel.newColor[A];
+                if (T[0] === "r") {
+                    var r = T.slice(T.indexOf("(")+1,T.indexOf(","));
+                    var g = T.slice(T.indexOf(",")+1,T.lastIndexOf(","));
+                    var b = T.slice(T.lastIndexOf(",")+1,T.indexOf(")"));
+                    pixel.newColor[A] = [r,g,b];
+                } else {
+                    var r = parseInt(T.slice(1,3),16);
+                    var g = parseInt(T.slice(3,5),16);
+                    var r = parseInt(T.slice(5,7),16);
+                    pixel.newColor[A] = [r,g,b];
+                }
             }
             pixel.timer = pixel.timerMax;
         } else if (pixelTicks-pixel.start>=3) {
@@ -1143,17 +1146,12 @@ elements.barrier = {
       }
       if (pixel.trigger == 3) {
         if (pixel.timer > 0) {
-          var s1 = pixel.timer/pixel.timerMax;
-          var s2 = 1-s1;
-          var oL = [pixel.oldColor.indexOf(","),pixel.oldColor.lastIndexOf(","),pixel.oldColor.indexOf(")")];
-          var bL = [pixel.baseColor.indexOf(","),pixel.baseColor.lastIndexOf(","),pixel.baseColor.indexOf(")")];
-          var oV = [pixel.oldColor.slice(4,oL[0]),pixel.oldColor.slice(oL[0]+1,oL[1]),pixel.oldColor.slice(oL[1]+1,oL[2])];
-          var bV = [pixel.baseColor.slice(4,bL[0]),pixel.baseColor.slice(bL[0]+1,bL[1]),pixel.baseColor.slice(bL[1]+1,bL[2])];
-          var fC = [((s1*oV[0])+(s2*bV[0])),((s1*oV[1])+(s2*bV[1])),((s1*oV[2])+(s2*bV[2])),];
-          //fC[0] = Math.round(fC[0]);
-          //fC[1] = Math.round(fC[1]);
-          //fC[2] = Math.round(fC[2]);
-          pixel.color = "rgb("+fC[0]+","+fC[1]+","+fC[2]+")";
+          var s1 = 1-pixel.timer/pixel.timerMax;
+          var A = pixel.newColor;
+          var r = A[0][0]+s1*(A[1][0]-A[0][0]);
+          var g = A[0][1]+s1*(A[1][1]-A[0][1]);
+          var b = A[0][2]+s1*(A[1][2]-A[0][2]);
+          pixel.color = "rgb("+r+","+g+","+b+")";
           pixel.timer--;
         } else {
           changePixel(pixel, "hotter_plasma");
@@ -1170,7 +1168,7 @@ elements.barrier = {
     insulate: true,
     //charge: 0.5,
     conduct: 1
-};*/
+};
 
 elements.shattertech_info = {
   color: ["#6f00ff","#996bd9","#6f00ff"],
