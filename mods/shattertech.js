@@ -1151,7 +1151,6 @@ elements.disintegrate = {
           var g = A[0][1]+s1*(A[1][1]-A[0][1]);
           var b = A[0][2]+s1*(A[1][2]-A[0][2]);
           pixel.color = "rgb("+r+","+g+","+b+")";
-          logMessage("rgb("+r+","+g+","+b+")");
           pixel.timer--;
         } else {
           changePixel(pixel, "hotter_plasma");
