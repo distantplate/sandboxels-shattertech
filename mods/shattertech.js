@@ -1075,7 +1075,8 @@ elements.barrier = {
 };
 
 //Could this be more efficient: absolutely. Will I make this more efficient: absolutely not.
-elements.disintegrate = {
+
+/*elements.disintegrate = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     onShiftSelect: function(element) {
       promptInput("How wide of an area do you want to disintegrate?", function(r) {
@@ -1123,9 +1124,19 @@ elements.disintegrate = {
           }
         }
         if (pixel.trigger == 2 && pixel.baseColor && pixel.timerMax) {
-          pixel.trigger = 3;
-          pixel.oldColor = pixel.color;
-          pixel.timer = pixel.timerMax;
+            pixel.trigger = 3;
+            if (pixel.color[0] === "r") {
+                var r = pixel.color.slice(pixel.indexOf("(")+1,pixel.indexOf(","));
+                var g = pixel.color.slice(pixel.indexOf(",")+1,pixel.lastIndexOf(","));
+                var b = pixel.color.slice(pixel.lastIndexOf(",")+1,pixel.indexOf(")"));
+                pixel.oldColor = [r,g,b];
+            } else {
+                var r = parseInt(pixel.color.slice(1,3),16);
+                var g = parseInt(pixel.color.slice(3,5),16);
+                var r = parseInt(pixel.color.slice(5,7),16);
+                pixel.oldColor = [r,g,b];
+            }
+            pixel.timer = pixel.timerMax;
         } else if (pixelTicks-pixel.start>=3) {
           changePixel(pixel, "hotter_plasma");
         }
@@ -1139,9 +1150,9 @@ elements.disintegrate = {
           var oV = [pixel.oldColor.slice(4,oL[0]),pixel.oldColor.slice(oL[0]+1,oL[1]),pixel.oldColor.slice(oL[1]+1,oL[2])];
           var bV = [pixel.baseColor.slice(4,bL[0]),pixel.baseColor.slice(bL[0]+1,bL[1]),pixel.baseColor.slice(bL[1]+1,bL[2])];
           var fC = [((s1*oV[0])+(s2*bV[0])),((s1*oV[1])+(s2*bV[1])),((s1*oV[2])+(s2*bV[2])),];
-          /*fC[0] = Math.round(fC[0]);
-          fC[1] = Math.round(fC[1]);
-          fC[2] = Math.round(fC[2]);*/
+          //fC[0] = Math.round(fC[0]);
+          //fC[1] = Math.round(fC[1]);
+          //fC[2] = Math.round(fC[2]);
           pixel.color = "rgb("+fC[0]+","+fC[1]+","+fC[2]+")";
           pixel.timer--;
         } else {
@@ -1159,7 +1170,7 @@ elements.disintegrate = {
     insulate: true,
     //charge: 0.5,
     conduct: 1
-};
+};*/
 
 elements.shattertech_info = {
   color: ["#6f00ff","#996bd9","#6f00ff"],
