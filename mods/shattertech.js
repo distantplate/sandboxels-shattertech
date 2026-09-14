@@ -118,8 +118,8 @@ elements.melt_bomb = {
         if (!tryMove(pixel,pixel.x,pixel.y) && pixel.stage == 0) {pixel.stage = 1;}
         if (pixel.stage == 1) {
             var coords = circleCoords(pixel.x,pixel.y,30);
-            /*coords.forEach(function(coord) {
-                var x = coord.x;
+            coords.forEach(function(coord){
+                /*var x = coord.x;
                 var y = coord.y;
                 if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
@@ -136,8 +136,8 @@ elements.melt_bomb = {
                     if (!tryMove(p,p.x+dir,p.y)) {
                         tryMove(p,p.x-dir,p.y);
                     }
-                }
-            })*/
+                }*/
+            })
         }
         doDefaults(pixel);
     },
