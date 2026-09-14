@@ -111,7 +111,7 @@ elements.charged_blaster = {
     excludeRandom: true,
 };
 
-elements.melt_bomb = {
+/*elements.melt_bomb = {
     color: "#524c41",
     tick: function(pixel){
         if (typeof pixel.stage === "undefined") {pixel.stage = 0;}
@@ -146,7 +146,7 @@ elements.melt_bomb = {
     density: 1300,
     hardness: 1,
     cooldown: defaultCooldown
-};
+};*/
 
 elements.beam_overclocker = {
     color: "#af6e00",
