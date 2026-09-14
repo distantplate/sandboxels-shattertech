@@ -125,13 +125,13 @@ elements.melt_bomb = {
                 var p = pixelMap[x][y];
                 if (p.stage === "liquid") {continue;}
                 else if (p.hardness ? p.hardness == 1 : false) {continue;}
-                var spots = [-1,0,1];
+                /*var spots = [-1,0,1];
                 var moved = false;
                 shuffleArray(spots);
                 for (i = 0; i < spots.length; i++) {
                     if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
                 }
-                /*if (moved != true) {
+                if (moved != true) {
                     var dir = Math.random() < 0.5 ? 1 : -1;
                     if (!tryMove(p,p.x+dir,p.y)) {
                         tryMove(p,p.x-dir,p.y);
