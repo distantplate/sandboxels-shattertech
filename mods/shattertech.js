@@ -111,14 +111,14 @@ elements.charged_blaster = {
     excludeRandom: true,
 };
 
-/*elements.melt_bomb = {
+elements.melt_bomb = {
     color: "#524c41",
-    tick: function(pixel){
+    tick: function(pixel) {
         if (typeof pixel.stage === "undefined") {pixel.stage = 0;}
         if (!tryMove(pixel,pixel.x,pixel.y) && pixel.stage == 0) {pixel.stage = 1;}
         if (pixel.stage == 1) {
             var coords = circleCoords(pixel.x,pixel.y,30);
-            coords.forEach(function(coord) {
+            /*coords.forEach(function(coord) {
                 var x = coord.x;
                 var y = coord.y;
                 if (isEmpty(x,y,true)) {continue;}
@@ -137,7 +137,7 @@ elements.charged_blaster = {
                         tryMove(p,p.x-dir,p.y);
                     }
                 }
-            })
+            })*/
         }
         doDefaults(pixel);
     },
@@ -146,7 +146,7 @@ elements.charged_blaster = {
     density: 1300,
     hardness: 1,
     cooldown: defaultCooldown
-};*/
+};
 
 elements.beam_overclocker = {
     color: "#af6e00",
