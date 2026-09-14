@@ -121,9 +121,9 @@ elements.melt_bomb = {
             coords.forEach(function(coord){
                 var x = coord.x;
                 var y = coord.y;
-                /*if (isEmpty(x,y,true)) {continue;}
+                if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
-                if (p.stage === "liquid") {continue;}
+                /*if (p.state === "liquid") {continue;}
                 else if (p.hardness ? p.hardness == 1 : false) {continue;}
                 var spots = [-1,0,1];
                 var moved = false;
