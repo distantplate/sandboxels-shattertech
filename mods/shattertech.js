@@ -132,7 +132,7 @@ elements.melt_bomb = {
                     if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
                 }
                 if (moved != true) {
-                    var dir = Math.random < 0.5 ? 1 : -1;
+                    var dir = Math.random() < 0.5 ? 1 : -1;
                     if (!tryMove(p,p.x+dir,p.y)) {
                         tryMove(p,p.x-dir,p.y);
                     }
