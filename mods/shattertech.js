@@ -119,10 +119,10 @@ elements.melt_bomb = {
         if (pixel.stage == 1) {
             var coords = circleCoords(pixel.x,pixel.y,30);
             coords.forEach(function(coord) {
-                var x = coord.x
-                var y = coord.y
+                var x = coord.x;
+                var y = coord.y;
                 if (isEmpty(x,y,true)) {continue;}
-                var p = pixelMap[x][y]
+                var p = pixelMap[x][y];
                 if (p.stage === "liquid") {continue;}
                 else if (p.hardness ? p.hardness == 1 : false) {continue;}
                 var spots = [-1,0,1];
