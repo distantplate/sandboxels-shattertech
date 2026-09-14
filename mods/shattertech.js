@@ -1145,6 +1145,20 @@ elements.disintegrate = {
       }
       if (pixel.trigger == 3) {
         if (pixel.timer > 0) {
+          if (pixel.timer <= 5) {
+            var spots = [-1,0,1];
+            var moved = false;
+            shuffleArray(spots);
+            for (var i = 0; i < spots.length; i++) {
+                if (tryMove(pixel,pixel.x+spots[i],pixel.y+1)) {moved = true;}
+            }
+            if (moved !== true) {
+                var dir = Math.random() < 0.5 ? 1 : -1;
+                if (!tryMove(pixel,pixel.x+dir,pixel.y)) {
+                    tryMove(pixel,pixel.x-dir,pixel.y);
+                }
+            }
+          }
           var s1 = 1-pixel.timer/pixel.timerMax;
           var A = pixel.newColor;
           var r = A[0][0]+s1*(A[1][0]-A[0][0]);
@@ -1163,7 +1177,6 @@ elements.disintegrate = {
     category: "energy",
     state: "solid",
     density: 1,
-    movable: false,
     insulate: true,
     //charge: 0.5,
     conduct: 1
@@ -1219,6 +1232,7 @@ elements.shield_config = {
 
 elements.wire.ignoreConduct = ["net_link"];
 elements.portal_in.hardness = 0.75;
+elements.portal_in.ignore = ["fuse","disintegrate"];
 elements.portal_out.hardness = 0.75;
 elements.explosion.tick = function(pixel){
     explodeAt(pixel.x, pixel.y, pixel.radius || 10, "fire");
