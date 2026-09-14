@@ -121,7 +121,10 @@ elements.melt_bomb = {
             coords.forEach(function(coord){
                 var x = coord.x;
                 var y = coord.y;
-                if (1 == 2) {continue;}
+                if (1 == 2) {
+                    logMessage("test1");
+                }
+                //if (isEmpty(x,y,true)) {continue;}
                 /*var p = pixelMap[x][y];
                 if (p.state === "liquid") {continue;}
                 else if (p.hardness ? p.hardness == 1 : false) {continue;}
