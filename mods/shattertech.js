@@ -121,7 +121,7 @@ elements.melt_bomb = {
             coords.forEach(function(coord){
                 var x = coord.x;
                 var y = coord.y;
-                if (1 == 2) {
+                if (isEmpty(x,y,true)) {
                     logMessage("test1");
                 }
                 //if (isEmpty(x,y,true)) {continue;}
