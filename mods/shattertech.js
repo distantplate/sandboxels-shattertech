@@ -139,10 +139,12 @@ elements.melt_bomb = {
                 }
             })
         }
+        doDefaults(pixel);
     },
     category: "weapons",
-    state: solid,
+    state: "solid",
     density: 1300,
+    hardness: 1,
     cooldown: defaultCooldown
 };
 
