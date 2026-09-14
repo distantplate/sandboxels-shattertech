@@ -1149,10 +1149,8 @@ elements.disintegrate = {
             var spots = [-1,0,1];
             var moved = false;
             shuffleArray(spots);
-            if (moved !== true) {
-                for (var i = 0; i < spots.length; i++) {
-                    if (tryMove(pixel,pixel.x+spots[i],pixel.y+1)) {moved = true;}
-                }
+            for (var i = 0; i < spots.length; i++) {
+                if (tryMove(pixel,pixel.x+spots[i],pixel.y+1)) {moved = true; break;}
             }
             if (moved !== true) {
                 var dir = Math.random() < 0.5 ? 1 : -1;
