@@ -1145,23 +1145,6 @@ elements.disintegrate = {
       }
       if (pixel.trigger == 3) {
         if (pixel.timer > 0) {
-          if (pixel.timer <= 5) {
-            var spots = [-1,0,1];
-            var moved = false;
-            shuffleArray(spots);
-            if (Math.random < 0.5) {moved = true;}
-            if (moved !== true) {
-                for (var i = 0; i < spots.length; i++) {
-                    if (tryMove(pixel,pixel.x+spots[i],pixel.y+1)) {moved = true; break;}
-                }
-            }
-            if (moved !== true) {
-                var dir = Math.random() < 0.5 ? 1 : -1;
-                if (!tryMove(pixel,pixel.x+dir,pixel.y)) {
-                    tryMove(pixel,pixel.x-dir,pixel.y);
-                }
-            }
-          }
           var s1 = 1-pixel.timer/pixel.timerMax;
           var A = pixel.newColor;
           var r = A[0][0]+s1*(A[1][0]-A[0][0]);
