@@ -121,10 +121,9 @@ elements.melt_bomb = {
             coords.forEach(function(coord){
                 var x = coord.x;
                 var y = coord.y;
-                if (!isEmpty(x,y,true)) {
-                    continue;
-                }
-                /*var p = pixelMap[x][y];
+                if (isEmpty(x,y,true)) {return;}
+                if (x == pixel.x && y == pixel.y) {return;}
+                var p = pixelMap[x][y];
                 if (p.state === "liquid") {continue;}
                 else if (p.hardness ? p.hardness == 1 : false) {continue;}
                 var spots = [-1,0,1];
@@ -138,7 +137,7 @@ elements.melt_bomb = {
                     if (!tryMove(p,p.x+dir,p.y)) {
                         tryMove(p,p.x-dir,p.y);
                     }
-                }*/
+                }
             })
         }
         doDefaults(pixel);
