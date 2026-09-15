@@ -114,32 +114,34 @@ elements.charged_blaster = {
 elements.melt_bomb = {
     color: "#524c41",
     tick: function(pixel) {
-        if (typeof pixel.stage === "undefined") {pixel.stage = 0;}
-        if (!tryMove(pixel,pixel.x,pixel.y) && pixel.stage == 0) {pixel.stage = 1;}
-        if (pixel.stage == 1) {
-            var coords = circleCoords(pixel.x,pixel.y,30);
-            coords.forEach(function(coord){
-                var x = coord.x;
-                var y = coord.y;
-                if (isEmpty(x,y,true)) {return;}
-                if (x == pixel.x && y == pixel.y) {return;}
-                var p = pixelMap[x][y];
-                if (p.state === "liquid") {return;}
-                else if (p.hardness ? p.hardness == 1 : false) {return;}
-                var spots = [-1,0,1];
-                var moved = false;
-                shuffleArray(spots);
-                for (i = 0; i < spots.length; i++) {
-                    if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
-                }
-                if (moved != true) {
-                    var dir = Math.random() < 0.5 ? 1 : -1;
-                    if (!tryMove(p,p.x+dir,p.y)) {
-                        tryMove(p,p.x-dir,p.y);
+        if (pixel.stage) {
+            var done = false;
+            if (done == false) {
+                var coords = circleCoords(pixel.x,pixel.y,30);
+                coords.forEach(function(coord){
+                    var x = coord.x;
+                    var y = coord.y;
+                    if (isEmpty(x,y,true)) {return;}
+                    if (x == pixel.x && y == pixel.y) {return;}
+                    var p = pixelMap[x][y];
+                    if (p.state === "liquid") {return;}
+                    else if (p.hardness ? p.hardness == 1 : false) {return;}
+                    var spots = [-1,0,1];
+                    var moved = false;
+                    shuffleArray(spots);
+                    for (i = 0; i < spots.length; i++) {
+                        if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
                     }
-                }
-            })
-        }
+                    if (moved != true) {
+                        var dir = Math.random() < 0.5 ? 1 : -1;
+                        if (!tryMove(p,p.x+dir,p.y)) {
+                            tryMove(p,p.x-dir,p.y);
+                        }
+                    }
+                })
+                done = true;
+            }
+        } else if (!tryMove(pixel,pixel.x,pixel.y+1)) {pixel.stage = 1;}
         doDefaults(pixel);
     },
     category: "weapons",
@@ -1687,6 +1689,12 @@ runEveryTick(function () {
         for (let z in placehold) {
           storageList.barrages[z] = placehold[z];
         }
+    }
+    if (storageList.melt_bomb) {
+        var a = 0;
+        for (let b in storageList.melt_bomb) {a++;}
+        logMessage(a);
+        storageList.melt_bomb = {};
     }
     return;
 });
