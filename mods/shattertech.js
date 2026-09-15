@@ -124,8 +124,8 @@ elements.melt_bomb = {
                 if (isEmpty(x,y,true)) {return;}
                 if (x == pixel.x && y == pixel.y) {return;}
                 var p = pixelMap[x][y];
-                if (p.state === "liquid") {continue;}
-                else if (p.hardness ? p.hardness == 1 : false) {continue;}
+                if (p.state === "liquid") {return;}
+                else if (p.hardness ? p.hardness == 1 : false) {return;}
                 var spots = [-1,0,1];
                 var moved = false;
                 shuffleArray(spots);
