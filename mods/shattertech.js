@@ -122,7 +122,7 @@ elements.melt_bomb = {
                 var x = coord.x;
                 var y = coord.y;
                 if (!isEmpty(x,y,true)) {
-                    logMessage("test");
+                    continue;
                 }
                 /*var p = pixelMap[x][y];
                 if (p.state === "liquid") {continue;}
