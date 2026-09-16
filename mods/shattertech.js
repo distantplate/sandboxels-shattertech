@@ -141,10 +141,13 @@ elements.melt_bomb = {
                 })
                 done = true;
             }*/
-            if (!isEmpty(pixel.x,pixel.y-1,true)) {
-                var p = pixelMap[pixel.x][pixel.y-1];
-                p.y = pixel.y-2;
-                p.color = "#ff0000";
+            var spots = [-1,0,1]
+            for (var i = 0; i < spots.length; i++) {
+                if (!isEmpty(pixel.x+spots[i],pixel.y-1,true)) {
+                    var p = pixelMap[pixel.x+spots[i]][pixel.y-1];
+                    p.y = pixel.y-2;
+                    //p.color = "#ff0000";
+                }
             }
         } else if (!tryMove(pixel,pixel.x,pixel.y+1)) {pixel.stage = 1;}
         doDefaults(pixel);
@@ -1699,7 +1702,7 @@ runEveryTick(function () {
         var a = 0;
         for (let b in storageList.melt_bomb) {a++;}
         logMessage(a);
-        storageList.melt_bomb = {};
+        storageList.melt_bomb = [];
     }
     return;
 });
