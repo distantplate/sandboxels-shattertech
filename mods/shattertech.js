@@ -1696,11 +1696,11 @@ runEveryTick(function () {
         for (let a in storageList.melt_bomb) {
             var p1 = storageList.melt_bomb[a];
             var p2 = elements[pixelMap[p1.x][p1.y].element];
-            logMessage(p2.behavior);
             var check = [true,true];
             if (p2.behavior) {
+                logMessage("test");
                 var b = p2.behavior;
-                if (typeof b === "function") {check = [false,false]; logMessage("test");}
+                if (typeof b === "function") {check = [false,false];}
                 else {
                     if (b[1][0] == "M") {check[0] = false;}
                     else if (b[1][b[1].lastIndexOf("|")+1] == "M") {check[0] = false;}
