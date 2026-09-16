@@ -1841,20 +1841,16 @@ runEveryTick(function () {
     if (storageList.melt_bomb) {
         for (let a in storageList.melt_bomb) {
             var p1 = storageList.melt_bomb[a];
-            var p2 = elements[pixelMap[p1.x][p1.y].element];
+            var p2 = elements[p1.element];
             var check = [true,true];
             if (p2.behavior) {
-                logMessage(p2.behavior);
                 var b = p2.behavior;
-                if (typeof b === "function") {check = [false,false];}
-                else {
-                    if (b[1][0] == "M") {check[0] = false;}
-                    else if (b[1][b[1].lastIndexOf("|")+1] == "M") {check[0] = false;}
-                    if (b[2][0] == "M") {check[1] = false;}
-                    else if (b[2][b[2].indexOf("|")+1] == "M") {check[1] = false;}
-                    else if (b[2][b[2].lastIndexOf("|")+1] == "M") {check[1] = false;}
-                }
-            }
+                if (b[1][0] == "M") {check[0] = false;}
+                else if (b[1][b[1].lastIndexOf("|")+1] == "M") {check[0] = false;}
+                if (b[2][0] == "M") {check[1] = false;}
+                else if (b[2][b[2].indexOf("|")+1] == "M") {check[1] = false;}
+                else if (b[2][b[2].lastIndexOf("|")+1] == "M") {check[1] = false;}
+            } else if (p2.oldBehavior ? p2.oldBehavior !== behaviors.WALL : false) {check = [false,false];}
             var moved = false;
             if (check[1] == true) {
                 var spots = [-1,0,1];
