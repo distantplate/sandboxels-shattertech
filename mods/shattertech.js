@@ -127,6 +127,8 @@ elements.melt_bomb = {
                     var p2 = elements[p1.element];
                     if (p2.state === "liquid") {return;}
                     else if (p2.hardness ? p2.hardness == 1 : false) {return;}
+                    if (pixel.devcheck == 1) {logMessage(typeof p2.behavior);}
+                    if (pixel.devcheck == 2) {logMessage(typeof p1.behavior);}
                     storageList.melt_bomb.push(p1);
                     /*var spots = [-1,0,1];
                     var moved = false;
