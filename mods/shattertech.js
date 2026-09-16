@@ -1696,7 +1696,7 @@ runEveryTick(function () {
         for (let a in storageList.melt_bomb) {
             var p1 = storageList.melt_bomb[a];
             var p2 = elements[p1.element];
-            logMessage(typeof p2.behavior);
+            logMessage(p2.behavior);
             var check = [true,true];
             if (p2.behavior) {
                 var b = p2.behavior;
