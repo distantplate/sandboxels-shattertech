@@ -146,7 +146,7 @@ elements.melt_bomb = {
                 if (!isEmpty(pixel.x+spots[i],pixel.y-1,true)) {
                     var p = pixelMap[pixel.x+spots[i]][pixel.y-1];
                     tryMove(p,p.x,p.y-1);
-                    //p.color = "#ff0000";
+                    p.color = "#ff0000";
                 }
             }
         } else if (!tryMove(pixel,pixel.x,pixel.y+1)) {pixel.stage = 1;}
