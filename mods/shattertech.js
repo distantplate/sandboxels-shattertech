@@ -115,7 +115,7 @@ elements.melt_bomb = {
     color: "#524c41",
     tick: function(pixel) {
         if (pixel.stage) {
-            /*var done = false;
+            var done = false;
             if (done == false) {
                 var coords = circleCoords(pixel.x,pixel.y,30);
                 coords.forEach(function(coord){
@@ -126,7 +126,8 @@ elements.melt_bomb = {
                     var p = pixelMap[x][y];
                     if (p.state === "liquid") {return;}
                     else if (p.hardness ? p.hardness == 1 : false) {return;}
-                    var spots = [-1,0,1];
+
+                    /*var spots = [-1,0,1];
                     var moved = false;
                     shuffleArray(spots);
                     for (i = 0; i < spots.length; i++) {
@@ -137,17 +138,9 @@ elements.melt_bomb = {
                         if (!tryMove(p,p.x+dir,p.y)) {
                             tryMove(p,p.x-dir,p.y);
                         }
-                    }
+                    }*/
                 })
                 done = true;
-            }*/
-            var spots = [-1,0,1]
-            for (var i = 0; i < spots.length; i++) {
-                if (!isEmpty(pixel.x+spots[i],pixel.y-1,true)) {
-                    var p = pixelMap[pixel.x+spots[i]][pixel.y-1];
-                    tryMove(p,p.x,p.y-1);
-                    p.color = "#ff0000";
-                }
             }
         } else if (!tryMove(pixel,pixel.x,pixel.y+1)) {pixel.stage = 1;}
         doDefaults(pixel);
@@ -1699,11 +1692,12 @@ runEveryTick(function () {
         }
     }
     if (storageList.melt_bomb) {
-        var a = 0;
-        for (let b in storageList.melt_bomb) {a++;}
+        for (let a in storageList.melt_bomb) {
+            
+        }
         logMessage(a);
         storageList.melt_bomb = [];
-    }
+    } else {storageList.melt_bomb = [];}
     return;
 });
 
