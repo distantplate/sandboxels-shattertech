@@ -1697,10 +1697,9 @@ runEveryTick(function () {
             var check = [true,true];
             if (p.behavior) {
                 var b = p.behavior;
-                if (typeof b === "function" && b != behaviors.WALL) {check = false;}
+                if (typeof b === "function" && b != behaviors.WALL) {check = [false,false];}
                 else {
                     if (b[1][0] == "M") {check[0] = false;}
-                    else if (b[1][b[1].indexOf("|")+1] == "M") {check[0] = false;}
                     else if (b[1][b[1].lastIndexOf("|")+1] == "M") {check[0] = false;}
                     if (b[2][0] == "M") {check[1] = false;}
                     else if (b[2][b[2].indexOf("|")+1] == "M") {check[1] = false;}
