@@ -1631,6 +1631,150 @@ explodeAt = function(x,y,radius,fire="fire") {
     }
 };
 
+finalizeElementAfter = function(key) {
+	elements[key].id = nextElemID;
+	nextElemID++;
+
+	// Language Loader Part 2
+	if (lang[key] !== undefined) {
+		elements[key].name = lang[key]
+	}
+
+	// If the element has no behavior, set it to behaviors.WALL
+	if (!elements[key].behavior) {
+		if (!elements[key].tick) {elements[key].tick = function(pixel) {};}
+        elements[key].oldBehavior = behaviors.WALL;
+	}
+	// If the behavior is a function, delete it and set tick to it instead
+	if (typeof elements[key].behavior === "function") {
+		if (elements[key].tick) {
+			elements[key].tick1 = elements[key].tick;
+			elements[key].tick2 = elements[key].behavior;
+			elements[key].tick = function(pixel) {
+				if (pixel.start === pixelTicks) {return}
+				var id = elements[pixel.element].id;
+				elements[pixel.element].tick1(pixel);
+				if (!pixel.del && id === elements[pixel.element].id) {
+					elements[pixel.element].tick2(pixel);
+				}
+			}
+		}
+		else {
+			elements[key].tick = elements[key].behavior;
+		}
+        elements[key].oldBehavior = elements[key].behavior;
+		delete elements[key].behavior;
+	}
+	// If the element has no color, set it to white
+	if (elements[key].color === undefined) {
+		elements[key].color = "rgb(255,255,255)";
+		elements[key].colorObject = {r:255,g:255,b:255};
+	}
+	if (elements[key].movable === false) { delete elements[key].movable }
+	else if (elements[key].movable === undefined) {
+		// If the element's behavior is an array and contains M1 or M2, set its movable to true
+		if (elements[key].behavior && typeof elements[key].behavior[0] === "object") {
+			var bstring = JSON.stringify(elements[key].behavior);
+			if (bstring.indexOf("M1")!==-1 || bstring.indexOf("M2")!==-1) { elements[key].movable = true; }
+		}
+		if (elements[key].tick) { elements[key].movable = true; }
+	}
+	if (elements[key].behavior) {
+		var behavior = elements[key].behavior;
+		var behaviorCenterY = behavior[Math.floor(behavior.length/2)]
+		var behaviorCenter = behaviorCenterY[Math.floor(behaviorCenterY.length/2)]
+		// If the element's behavior[1][1] includes "FX", set it's flippableX to true
+		if (behaviorCenter.indexOf("FX") !== -1) {
+			elements[key].flippableX = true;
+		}
+		// If the element's behavior[1][1] includes "FY", set it's flippableY to true
+		if (behaviorCenter.indexOf("FY") !== -1) {
+			elements[key].flippableY = true;
+		}
+		// If the element's behavior[1][1] includes "RT", set it's rotatable to "true"
+		if (behaviorCenter.indexOf("RT") !== -1) {
+			elements[key].rotatable = true;
+		}
+
+		// If the element's behavior stringified includes "BO", loop through the behavior
+		if (elements[key].behavior.toString().indexOf("BO") !== -1 && !elements[key].rotatable) {
+			for (var i = 0; i < elements[key].behavior.length; i++) {
+				// Loop through each array in the behavior
+				for (var j = 0; j < elements[key].behavior[i].length; j++) {
+					// If the behavior includes "BO", set the behaviorOn to the behavior
+					if (elements[key].behavior[i][j].indexOf("BO") !== -1) {
+						if ((i==0 && j==0) || (i==0 && j==2) || (i==2 && j==0) && (i==2 && j==2)) {
+							elements[key].flippableX = true;
+							elements[key].flippableY = true;
+						}
+						else if (i==0 || i==2) {
+							elements[key].flippableY = true;
+						}
+						else if (j==0 || j==2) {
+							elements[key].flippableX = true;
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	if (elements[key].state === undefined && elements[key].density !== undefined) elements[key].state = "solid";
+
+	// If the element's state is "gas", isGas = true
+	if (elements[key].state === "gas") {
+		elements[key].isGas = true;
+		if (elements[key].grain === undefined) elements[key].grain = 0.1;
+	}
+	else if (elements[key].state !== "liquid") {
+		// Else if the state is not "solid" or "liquid", delete it
+		if (elements[key].state !== "solid" && elements[key].state !== undefined) {
+			delete elements[key].state;
+		}
+		// add heat glow to solid if applicable
+		else if (elements[key].tempHigh > 400 && elements[key].renderer === undefined && elements[elements[key].stateHigh] && elements[elements[key].stateHigh].state === "liquid") {
+			elements[key].renderer = renderPresets.HEATGLOW;
+		}
+	}
+	else {
+		// add molten renderer to hot molten liquids
+		if (elements[key].stateLow && elements[key].temp > 500 && elements[key].renderer === undefined) {
+			elements[key].renderer = renderPresets.MOLTEN;
+		}
+		if (elements[key].grain === undefined) elements[key].grain = 0.5;
+	}
+
+	if (elements[key].colorPattern) {
+		if (!elements[key].colorKey) {
+			delete elements[key].colorPattern;
+		}
+		else {
+		var newPattern = [];
+		for (var i = 0; i < elements[key].colorPattern.length; i++) {
+			newPattern.push([]);
+			var line = elements[key].colorPattern[i];
+			// loop through each character in the line
+			for (var j = 0; j < line.length; j++) {
+				var char = line[j];
+				if (elements[key].colorKey[char]) {
+					// if (elements[key].colorKey[char].startsWith("#")) {
+					//	 var rgb = hexToRGB(elements[key].colorKey[char]);
+					//	 elements[key].colorKey[char] = "rgb("+rgb.r+","+rgb.g+","+rgb.b+")";
+					// }
+					newPattern[i].push(elements[key].colorKey[char]);
+				}
+				else {
+					newPattern[i].push("#ffffff");
+				}
+			}
+		}
+		elements[key].colorPattern = newPattern;
+		delete elements[key].colorKey;
+		}
+	}
+};
+
 runEveryTick(function () {
     if (storageList && !storageList.tickcheck) {storageList.tickcheck = pixelTicks;}
     if (storageList.shield_gen) {
