@@ -1692,10 +1692,25 @@ runEveryTick(function () {
         }
     }
     if (storageList.melt_bomb) {
-        for (let a in storageList.melt_bomb) {
-            
-        }
-        logMessage(a);
+        /*for (let a in storageList.melt_bomb) {
+            var p = storageList.melt_bomb[a];
+            var check = true;
+            if (p.behavior) {
+                if (typeof p.behavior === "function") {check = false;}
+                else {
+                    var b = p.behavior[2];
+                    var c = ["M1","M2"];
+                    for (var i = 0; i < c.length; i++) {
+                        if (b.slice(0,b.indexOf("|")) == c[i]) {check = false;}
+                        else if (b.slice(b.indexOf("|")+1,b.lastIndexOf("|")) == c[i]) {check = false;}
+                        else if (b.slice(b.lastIndexOf("|")+1,b.length) == c[i]) {check = false;}
+                    }
+                }
+            }
+            if (check == true) {
+
+            }
+        }*/
         storageList.melt_bomb = [];
     } else {storageList.melt_bomb = [];}
     return;
