@@ -1695,7 +1695,7 @@ runEveryTick(function () {
     if (storageList.melt_bomb) {
         for (let a in storageList.melt_bomb) {
             var p1 = storageList.melt_bomb[a];
-            var p2 = elements[p1.element];
+            var p2 = elements[pixelMap[p1.x][p1.y].element];
             logMessage(p2.behavior);
             var check = [true,true];
             if (p2.behavior) {
