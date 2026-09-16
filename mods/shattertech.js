@@ -125,7 +125,7 @@ elements.melt_bomb = {
                     if (x == pixel.x && y == pixel.y) {return;}
                     var p = pixelMap[x][y];
                     if (p.state === "liquid") {return;}
-                    else if (p.hardness ? p.hardness == 1 : false) {return;}
+                    else if (p.hardness ? p.hardness == 1 : false) {logMessage("test"); return;}
                     storageList.melt_bomb.push(p);
                     /*var spots = [-1,0,1];
                     var moved = false;
