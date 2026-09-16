@@ -126,7 +126,7 @@ elements.melt_bomb = {
                     var p = pixelMap[x][y];
                     if (p.state === "liquid") {return;}
                     else if (p.hardness ? p.hardness == 1 : false) {return;}
-
+                    storageList.melt_bomb.push(p);
                     /*var spots = [-1,0,1];
                     var moved = false;
                     shuffleArray(spots);
@@ -1707,11 +1707,19 @@ runEveryTick(function () {
                     else if (b[2][b[2].lastIndexOf("|")+1] == "M") {check[1] = false;}
                 }
             }
-            if (check[0] == true) {
-
-            }
+            var moved = false;
             if (check[1] == true) {
-                
+                var spots = [-1,0,1];
+                shuffleArray(spots);
+                for (var i = 0; i < spots.length; i++) {
+                    if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
+                }
+            }
+            if (check[0] == true && moved == false) {
+                var dir =  Math.random() < 0.5 ? 1 : -1;
+                if (!tryMove(p,p.x+dir,p.y)) {
+                    tryMove(p,p.x-dir,p.y);
+                }
             }
         }
         storageList.melt_bomb = [];
