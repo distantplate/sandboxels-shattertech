@@ -115,7 +115,7 @@ elements.melt_bomb = {
     color: "#524c41",
     tick: function(pixel) {
         if (pixel.stage) {
-            var done = false;
+            /*var done = false;
             if (done == false) {
                 var coords = circleCoords(pixel.x,pixel.y,30);
                 coords.forEach(function(coord){
@@ -140,6 +140,11 @@ elements.melt_bomb = {
                     }
                 })
                 done = true;
+            }*/
+            if (!isEmpty(pixel.x,pixel.y-1,true)) {
+                var p = pixelMap[pixel.x][pixel.y-1];
+                p.y = pixel.y-2;
+                p.color = "#ff0000";
             }
         } else if (!tryMove(pixel,pixel.x,pixel.y+1)) {pixel.stage = 1;}
         doDefaults(pixel);
