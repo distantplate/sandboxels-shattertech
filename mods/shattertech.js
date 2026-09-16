@@ -1699,7 +1699,8 @@ runEveryTick(function () {
             var check = [true,true];
             if (p2.behavior) {
                 var b = p2.behavior;
-                if (typeof b === "function") {check = [false,false]; logMessage("test");}
+                logMessage(typeof b);
+                if (typeof b === "function") {check = [false,false];}
                 else {
                     if (b[1][0] == "M") {check[0] = false;}
                     else if (b[1][b[1].lastIndexOf("|")+1] == "M") {check[0] = false;}
