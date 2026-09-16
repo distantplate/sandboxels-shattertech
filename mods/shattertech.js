@@ -1696,10 +1696,10 @@ runEveryTick(function () {
         for (let a in storageList.melt_bomb) {
             var p1 = storageList.melt_bomb[a];
             var p2 = elements[p1.element];
+            logMessage(typeof p2.behavior);
             var check = [true,true];
             if (p2.behavior) {
                 var b = p2.behavior;
-                logMessage(typeof b);
                 if (typeof b === "function") {check = [false,false];}
                 else {
                     if (b[1][0] == "M") {check[0] = false;}
