@@ -1698,7 +1698,7 @@ runEveryTick(function () {
             var p2 = elements[pixelMap[p1.x][p1.y].element];
             var check = [true,true];
             if (p2.behavior) {
-                logMessage("test");
+                logMessage(p2.behavior);
                 var b = p2.behavior;
                 if (typeof b === "function") {check = [false,false];}
                 else {
