@@ -123,10 +123,11 @@ elements.melt_bomb = {
                     var y = coord.y;
                     if (isEmpty(x,y,true)) {return;}
                     if (x == pixel.x && y == pixel.y) {return;}
-                    var p = pixelMap[x][y];
-                    if (p.state === "liquid") {return;}
-                    else if (p.hardness ? p.hardness == 1 : false) {logMessage("test"); return;}
-                    storageList.melt_bomb.push(p);
+                    var p1 = pixelMap[x][y];
+                    var p2 = elements[p1.element];
+                    if (p2.state === "liquid") {return;}
+                    else if (p2.hardness ? p2.hardness == 1 : false) {logMessage("test"); return;}
+                    storageList.melt_bomb.push(p1);
                     /*var spots = [-1,0,1];
                     var moved = false;
                     shuffleArray(spots);
