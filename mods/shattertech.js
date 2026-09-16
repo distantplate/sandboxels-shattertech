@@ -126,7 +126,7 @@ elements.melt_bomb = {
                     var p1 = pixelMap[x][y];
                     var p2 = elements[p1.element];
                     if (p2.state === "liquid") {return;}
-                    else if (p2.hardness ? p2.hardness == 1 : false) {logMessage("test"); return;}
+                    else if (p2.hardness ? p2.hardness == 1 : false) {return;}
                     storageList.melt_bomb.push(p1);
                     /*var spots = [-1,0,1];
                     var moved = false;
@@ -1694,10 +1694,11 @@ runEveryTick(function () {
     }
     if (storageList.melt_bomb) {
         for (let a in storageList.melt_bomb) {
-            var p = storageList.melt_bomb[a];
+            var p1 = storageList.melt_bomb[a];
+            var p2 = elements[p1.element];
             var check = [true,true];
-            if (p.behavior) {
-                var b = p.behavior;
+            if (p2.behavior) {
+                var b = p2.behavior;
                 if (typeof b === "function" && b != behaviors.WALL) {check = [false,false];}
                 else {
                     if (b[1][0] == "M") {check[0] = false;}
@@ -1712,13 +1713,13 @@ runEveryTick(function () {
                 var spots = [-1,0,1];
                 shuffleArray(spots);
                 for (var i = 0; i < spots.length; i++) {
-                    if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
+                    if (tryMove(p1,p1.x+spots[i],p1.y+1)) {moved = true; break;}
                 }
             }
             if (check[0] == true && moved == false) {
                 var dir =  Math.random() < 0.5 ? 1 : -1;
-                if (!tryMove(p,p.x+dir,p.y)) {
-                    tryMove(p,p.x-dir,p.y);
+                if (!tryMove(p1,p1.x+dir,p1.y)) {
+                    tryMove(p1,p1.x-dir,p1.y);
                 }
             }
         }
