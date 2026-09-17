@@ -133,21 +133,11 @@ elements.melt_bomb = {
                     if (p1._r !== undefined) {removeFromRelation(p1);}
                     if (typeof storageList.melt_bomb[x] === "undefined") {storageList.melt_bomb[x] = [];}
                     if (typeof storageList.melt_bomb[x][y] === "undefined") {storageList.melt_bomb[x][y] = p1;}
-                    /*var spots = [-1,0,1];
-                    var moved = false;
-                    shuffleArray(spots);
-                    for (i = 0; i < spots.length; i++) {
-                        if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
-                    }
-                    if (moved != true) {
-                        var dir = Math.random() < 0.5 ? 1 : -1;
-                        if (!tryMove(p,p.x+dir,p.y)) {
-                            tryMove(p,p.x-dir,p.y);
-                        }
-                    }*/
                 })
                 done = true;
             }
+            if (pixel.stage >= 10) {deletePixel(pixel.x,pixel.y); return;}
+            else {pixel.stage++;}
         } else if (!tryMove(pixel,pixel.x,pixel.y+1)) {pixel.stage = 1;}
         doDefaults(pixel);
     },
