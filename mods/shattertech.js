@@ -1850,7 +1850,11 @@ runEveryTick(function () {
                 if (b[2][0] == "M") {check[1] = false;}
                 else if (b[2][b[2].indexOf("|")+1] == "M") {check[1] = false;}
                 else if (b[2][b[2].lastIndexOf("|")+1] == "M") {check[1] = false;}
-            } else if (p2.oldBehavior ? p2.oldBehavior !== behaviors.WALL : false) {check = [false,false];}
+            } else if (p2.oldBehavior ? p2.oldBehavior !== behaviors.WALL : false) {
+                if (p2.oldBehavior === behaviors.POWDER) {check[1] = false;}
+                else if (p2.oldBehavior === behaviors.STURDYPOWDER) {check[1] = false;}
+                else {check = [false,false];}
+            }
             var moved = false;
             if (check[1] == true) {
                 var spots = [-1,0,1];
