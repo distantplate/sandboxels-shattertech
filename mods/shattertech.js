@@ -129,7 +129,8 @@ elements.melt_bomb = {
                     else if (p2.hardness ? p2.hardness == 1 : false) {return;}
                     if (pixel.devcheck == 1) {logMessage(typeof p2.behavior);}
                     if (pixel.devcheck == 2) {logMessage(typeof p1.behavior);}
-                    storageList.melt_bomb.push(p1);
+                    if (typeof storageList.melt_bomb[x] === "undefined") {storageList.melt_bomb[x] = [];}
+                    if (typeof storageList.melt_bomb[x][y] === "undefined") {storageList.melt_bomb[x][y] = p1;}
                     /*var spots = [-1,0,1];
                     var moved = false;
                     shuffleArray(spots);
@@ -1839,41 +1840,43 @@ runEveryTick(function () {
         }
     }
     if (storageList.melt_bomb) {
-        for (let a in storageList.melt_bomb) {
-            var p1 = storageList.melt_bomb[a];
-            var p2 = elements[p1.element];
-            var check = [true,true];
-            if (p2.behavior) {
-                var b = p2.behavior;
-                if (b[1][0] == "M") {check[0] = false;}
-                else if (b[1][b[1].lastIndexOf("|")+1] == "M") {check[0] = false;}
-                if (b[2][0] == "M") {check[1] = false;}
-                else if (b[2][b[2].indexOf("|")+1] == "M") {check[1] = false;}
-                else if (b[2][b[2].lastIndexOf("|")+1] == "M") {check[1] = false;}
-            } else if (p2.oldBehavior ? p2.oldBehavior !== behaviors.WALL : false) {
-                if (p2.oldBehavior === behaviors.POWDER) {check[1] = false;}
-                else if (p2.oldBehavior === behaviors.STURDYPOWDER) {check[1] = false;}
-                else {check = [false,false];}
-            }
-            var moved = false;
-            if (Math.random() < 0.5) {
-                if (check[1] == true) {
-                    var spots = [-1,0,1];
-                    shuffleArray(spots);
-                    for (var i = 0; i < spots.length; i++) {
-                        if (tryMove(p1,p1.x+spots[i],p1.y+1)) {moved = true; break;}
-                    }
+        for (let x in storageList.melt_bomb) {
+            for (let y in storageList.melt_bomb[x]) {
+                var p1 = storageList.melt_bomb[x][y];
+                var p2 = elements[p1.element];
+                var check = [true,true];
+                if (p2.behavior) {
+                    var b = p2.behavior;
+                    if (b[1][0] == "M") {check[0] = false;}
+                    else if (b[1][b[1].lastIndexOf("|")+1] == "M") {check[0] = false;}
+                    if (b[2][0] == "M") {check[1] = false;}
+                    else if (b[2][b[2].indexOf("|")+1] == "M") {check[1] = false;}
+                    else if (b[2][b[2].lastIndexOf("|")+1] == "M") {check[1] = false;}
+                } else if (p2.oldBehavior ? p2.oldBehavior !== behaviors.WALL : false) {
+                    if (p2.oldBehavior === behaviors.POWDER) {check[1] = false;}
+                    else if (p2.oldBehavior === behaviors.STURDYPOWDER) {check[1] = false;}
+                    else {check = [false,false];}
                 }
-                if (check[0] == true && moved == false) {
-                    var dir =  Math.random() < 0.5 ? 1 : -1;
-                    if (!tryMove(p1,p1.x+dir,p1.y)) {
-                        tryMove(p1,p1.x-dir,p1.y);
+                var moved = false;
+                if (Math.random() < 0.5) {
+                    if (check[1] == true) {
+                        var spots = [-1,0,1];
+                        shuffleArray(spots);
+                        for (var i = 0; i < spots.length; i++) {
+                            if (tryMove(p1,p1.x+spots[i],p1.y+1)) {moved = true; break;}
+                        }
+                    }
+                    if (check[0] == true && moved == false) {
+                        var dir =  Math.random() < 0.5 ? 1 : -1;
+                        if (!tryMove(p1,p1.x+dir,p1.y)) {
+                            tryMove(p1,p1.x-dir,p1.y);
+                        }
                     }
                 }
             }
         }
-        storageList.melt_bomb = [];
-    } else {storageList.melt_bomb = [];}
+        storageList.melt_bomb = {};
+    } else {storageList.melt_bomb = {};}
     return;
 });
 
