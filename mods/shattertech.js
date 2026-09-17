@@ -1872,6 +1872,7 @@ runEveryTick(function () {
         }
         storageList.melt_bomb = [];
     } else {storageList.melt_bomb = [];}
+    logMessage(elements["water"].viscosity);
     return;
 });
 
