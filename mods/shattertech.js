@@ -124,6 +124,7 @@ elements.melt_bomb = {
                     if (isEmpty(x,y,true)) {return;}
                     if (x == pixel.x && y == pixel.y) {return;}
                     var p1 = pixelMap[x][y];
+                    if (p1.element === "melt_bomb") {deletePixel(x,y); return;}
                     var p2 = elements[p1.element];
                     if (p2.state === "liquid") {return;}
                     else if (p2.hardness ? p2.hardness == 1 : false) {return;}
