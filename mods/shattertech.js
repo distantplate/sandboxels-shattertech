@@ -87,6 +87,7 @@ elements.charged_blaster = {
                         }
                     }
                     deletePixel(p.x,p.y);
+                    if (det2) {det2 = 0;}
                 }
             } else if (!outOfBounds(pixel.x,pixel.y+1) && det1 == 1) {det1 = 2;}
             if (!outOfBounds(pixel.x,pixel.y+1) && det1 == 2) {
