@@ -130,6 +130,7 @@ elements.melt_bomb = {
                     else if (p2.hardness ? p2.hardness == 1 : false) {return;}
                     if (pixel.devcheck == 1) {logMessage(typeof p2.behavior);}
                     if (pixel.devcheck == 2) {logMessage(typeof p1.behavior);}
+                    if (p1._r !== undefined) {removeFromRelation(pixel);}
                     if (typeof storageList.melt_bomb[x] === "undefined") {storageList.melt_bomb[x] = [];}
                     if (typeof storageList.melt_bomb[x][y] === "undefined") {storageList.melt_bomb[x][y] = p1;}
                     /*var spots = [-1,0,1];
