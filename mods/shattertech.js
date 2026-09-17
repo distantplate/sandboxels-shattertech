@@ -1856,23 +1856,24 @@ runEveryTick(function () {
                 else {check = [false,false];}
             }
             var moved = false;
-            if (check[1] == true) {
-                var spots = [-1,0,1];
-                shuffleArray(spots);
-                for (var i = 0; i < spots.length; i++) {
-                    if (tryMove(p1,p1.x+spots[i],p1.y+1)) {moved = true; break;}
+            if (Math.random() < 0.5) {
+                if (check[1] == true) {
+                    var spots = [-1,0,1];
+                    shuffleArray(spots);
+                    for (var i = 0; i < spots.length; i++) {
+                        if (tryMove(p1,p1.x+spots[i],p1.y+1)) {moved = true; break;}
+                    }
                 }
-            }
-            if (check[0] == true && moved == false) {
-                var dir =  Math.random() < 0.5 ? 1 : -1;
-                if (!tryMove(p1,p1.x+dir,p1.y)) {
-                    tryMove(p1,p1.x-dir,p1.y);
+                if (check[0] == true && moved == false) {
+                    var dir =  Math.random() < 0.5 ? 1 : -1;
+                    if (!tryMove(p1,p1.x+dir,p1.y)) {
+                        tryMove(p1,p1.x-dir,p1.y);
+                    }
                 }
             }
         }
         storageList.melt_bomb = [];
     } else {storageList.melt_bomb = [];}
-    logMessage(elements["water"].viscosity);
     return;
 });
 
