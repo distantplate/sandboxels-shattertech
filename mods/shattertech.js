@@ -134,7 +134,7 @@ elements.melt_bomb = {
                     if (p1._r !== undefined) {removeFromRelation(p1);}
                     if (typeof storageList.melt_bomb[x] === "undefined") {storageList.melt_bomb[x] = [];}
                     if (typeof storageList.melt_bomb[x][y] === "undefined") {storageList.melt_bomb[x][y] = p1;}
-                    p1.meltTime = 30;
+                    p1.meltTime = 60;
                 })
                 done = true;
             }
