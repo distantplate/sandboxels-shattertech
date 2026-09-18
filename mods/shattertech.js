@@ -2,7 +2,7 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
-elements.beam_overclocker = {
+elements.test_machine = {
     color: "#af6e00",
     behavior: behaviors.WALL,
     tick: function(pixel) {
