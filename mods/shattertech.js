@@ -1864,14 +1864,14 @@ runEveryTick(function () {
             var p = pixelMap[tempStore[a].x][tempStore[a].y];
             var check = [tempStore[a].c0,tempStore[a].c1];
             var moved = false;
-            if (check[1] == true) {
-                var spots = [-1,0,1];
-                shuffleArray(spots);
-                for (var i = 0; i < spots.length; i++) {
-                    if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
-                }
-            }
             if (Math.random() < 0.5) {
+                if (check[1] == true) {
+                    var spots = [-1,0,1];
+                    shuffleArray(spots);
+                    for (var i = 0; i < spots.length; i++) {
+                        if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
+                    }
+                }
                 if (check[0] == true && moved == false) {
                     var dir =  Math.random() < 0.5 ? 1 : -1;
                     if (!tryMove(p,p.x+dir,p.y)) {
