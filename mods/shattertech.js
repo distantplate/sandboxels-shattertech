@@ -2,6 +2,23 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
+elements.beam_overclocker = {
+    color: "#af6e00",
+    behavior: behaviors.WALL,
+    tick: function(pixel) {
+        if (!isEmpty(pixel.x,pixel.y+1,true)) {
+            var p = pixelMap[pixel.x][pixel.y+1];
+            if (p.hardness ? p.hardness != 1 : true) {
+                tryMove(p,p.x,p.y+1);
+                logMessage(p.y);
+            }
+        }
+    },
+    category: "machines",
+    insulate: true,
+    state: "solid"
+};
+
 elements.hotter_plasma = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     behavior: behaviors.DGAS,
