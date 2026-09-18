@@ -2,23 +2,6 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
-elements.test_machine = {
-    color: "#af6e00",
-    behavior: behaviors.WALL,
-    tick: function(pixel) {
-        if (!isEmpty(pixel.x,pixel.y+1,true)) {
-            var p = pixelMap[pixel.x][pixel.y+1];
-            if (p.hardness ? p.hardness != 1 : true) {
-                tryMove(p,p.x,p.y+1);
-                logMessage(p.y);
-            }
-        }
-    },
-    category: "machines",
-    insulate: true,
-    state: "solid"
-};
-
 elements.hotter_plasma = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     behavior: behaviors.DGAS,
@@ -1852,13 +1835,13 @@ runEveryTick(function () {
         }
     }
     if (storageList.melt_bomb) {
-        var tempStore = [];
+        var tempStore = {};
         for (let x in storageList.melt_bomb) {
             for (let y in storageList.melt_bomb[x]) {
                 var p1 = storageList.melt_bomb[x][y];
+                if (!p1.meltTime) {continue;}
                 var p2 = elements[p1.element];
                 var check = [true,true];
-                var changeLoc = [0,0];
                 if (p2.behavior) {
                     var b = p2.behavior;
                     if (b[1][0] == "M") {check[0] = false;}
@@ -1879,7 +1862,6 @@ runEveryTick(function () {
                         for (var i = 0; i < spots.length; i++) {
                             if (tryMove(p1,p1.x+spots[i],p1.y+1)) {
                                 moved = true;
-                                changeLoc = [spots[i],1];
                                 break;
                             }
                         }
@@ -1887,13 +1869,16 @@ runEveryTick(function () {
                     if (check[0] == true && moved == false) {
                         var dir =  Math.random() < 0.5 ? 1 : -1;
                         if (!tryMove(p1,p1.x+dir,p1.y)) {
-                            if (tryMove(p1,p1.x-dir,p1.y)) {changeLoc = [-dir,0];}
-                        } else {changeLoc = [dir,0];}
+                            tryMove(p1,p1.x-dir,p1.y)
+                        }
                     }
                 }
+                p1.meltTime--;
+                if (!tempStore[x]) {tempStore[x] = {};}
+                if (!tempStore[x][y]) {tempStore[x][y] = p1;}
             }
         }
-        storageList.melt_bomb = {};
+        storageList.melt_bomb = tempStore;
     } else {storageList.melt_bomb = {};}
     return;
 });
