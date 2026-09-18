@@ -134,11 +134,13 @@ elements.melt_bomb = {
                     if (p1._r !== undefined) {removeFromRelation(p1);}
                     if (typeof storageList.melt_bomb[x] === "undefined") {storageList.melt_bomb[x] = [];}
                     if (typeof storageList.melt_bomb[x][y] === "undefined") {storageList.melt_bomb[x][y] = p1;}
+                    p1.meltTime = 30;
                 })
                 done = true;
             }
-            if (pixel.stage >= 10) {deletePixel(pixel.x,pixel.y); return;}
-            else {pixel.stage++;}
+            /*if (pixel.stage >= 10) {deletePixel(pixel.x,pixel.y); return;}
+            else {pixel.stage++;}*/
+            if (done == true) {deletePixel(pixel.x,pixel.y); return;}
         } else if (!tryMove(pixel,pixel.x,pixel.y+1)) {pixel.stage = 1;}
         doDefaults(pixel);
     },
@@ -1833,11 +1835,13 @@ runEveryTick(function () {
         }
     }
     if (storageList.melt_bomb) {
+        var tempStore = [];
         for (let x in storageList.melt_bomb) {
             for (let y in storageList.melt_bomb[x]) {
                 var p1 = storageList.melt_bomb[x][y];
                 var p2 = elements[p1.element];
                 var check = [true,true];
+                var changeLoc = [0,0];
                 if (p2.behavior) {
                     var b = p2.behavior;
                     if (b[1][0] == "M") {check[0] = false;}
@@ -1848,7 +1852,7 @@ runEveryTick(function () {
                 } else if (p2.oldBehavior ? p2.oldBehavior !== behaviors.WALL : false) {
                     if (p2.oldBehavior === behaviors.POWDER) {check[1] = false;}
                     else if (p2.oldBehavior === behaviors.STURDYPOWDER) {check[1] = false;}
-                    else {check = [false,false];}
+                    else {continue;}
                 }
                 var moved = false;
                 if (Math.random() < 0.5) {
@@ -1856,14 +1860,18 @@ runEveryTick(function () {
                         var spots = [-1,0,1];
                         shuffleArray(spots);
                         for (var i = 0; i < spots.length; i++) {
-                            if (tryMove(p1,p1.x+spots[i],p1.y+1)) {moved = true; break;}
+                            if (tryMove(p1,p1.x+spots[i],p1.y+1)) {
+                                moved = true;
+                                changeLoc = [spots[i],1];
+                                break;
+                            }
                         }
                     }
                     if (check[0] == true && moved == false) {
                         var dir =  Math.random() < 0.5 ? 1 : -1;
                         if (!tryMove(p1,p1.x+dir,p1.y)) {
-                            tryMove(p1,p1.x-dir,p1.y);
-                        }
+                            if (tryMove(p1,p1.x-dir,p1.y)) {changeLoc = [-dir,0];}
+                        } else {changeLoc = [dir,0];}
                     }
                 }
             }
