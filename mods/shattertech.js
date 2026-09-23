@@ -1855,13 +1855,13 @@ runEveryTick(function () {
                     else {continue;}
                 }
                 p1.meltTime--;
-                tempStore.push({x: x,y: y,c0: check[0],c1: check[1]});
+                tempStore.push({p: p1,c0: check[0],c1: check[1]});
             }
         }
         storageList.melt_bomb = {};
         shuffleArray(tempStore);
         for (let a in tempStore) {
-            var p = pixelMap[tempStore[a].x][tempStore[a].y];
+            var p1 = tempStore[a].p;
             var check = [tempStore[a].c0,tempStore[a].c1];
             var moved = false;
             if (Math.random() < 0.5) {
@@ -1869,18 +1869,18 @@ runEveryTick(function () {
                     var spots = [-1,0,1];
                     shuffleArray(spots);
                     for (var i = 0; i < spots.length; i++) {
-                        if (tryMove(p,p.x+spots[i],p.y+1)) {moved = true; break;}
+                        if (tryMove(p1,p1.x+spots[i],p1.y+1)) {moved = true; break;}
                     }
                 }
                 if (check[0] == true && moved == false) {
                     var dir =  Math.random() < 0.5 ? 1 : -1;
-                    if (!tryMove(p,p.x+dir,p.y)) {
-                        tryMove(p,p.x-dir,p.y)
+                    if (!tryMove(p1,p1.x+dir,p1.y)) {
+                        tryMove(p1,p1.x-dir,p1.y)
                     }
                 }
             }
-            if (!storageList.melt_bomb[p.x]) {storageList.melt_bomb[p.x] = {};}
-            if (!storageList.melt_bomb[p.x][p.y]) {storageList.melt_bomb[p.x][p.y] = p;}
+            if (!storageList.melt_bomb[p1.x]) {storageList.melt_bomb[p1.x] = {};}
+            if (!storageList.melt_bomb[p1.x][p1.y]) {storageList.melt_bomb[p1.x][p1.y] = p1;}
         }
     } else {storageList.melt_bomb = {};}
     return;
