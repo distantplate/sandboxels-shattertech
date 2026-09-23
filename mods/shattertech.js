@@ -1264,6 +1264,7 @@ elements.explosion.tick = function(pixel){
     explodeAt(pixel.x, pixel.y, pixel.radius || 10, "fire");
     deletePixel(pixel.x, pixel.y);
 };
+elements.virus.ignore.push("hotter_plasma");
 
 function c_u_handler(type,counts,x,y) {
     var p = pixelMap[x][y];
