@@ -1037,6 +1037,9 @@ elements.shield_gen = {
             pixel.timer--;
         }
     },
+    reactions: {
+        "soul":{attr1:{soulfused:true},elem2:null}
+    },
     category: "machines",
     state: "solid",
     desc: "Creates a barrier that stops most explosions. " +
@@ -1265,9 +1268,6 @@ elements.explosion.tick = function(pixel){
     deletePixel(pixel.x, pixel.y);
 };
 //elements.virus.ignore.push("hotter_plasma");
-if (enabledMods.includes("mods/souls.js")) {
-    elements.soul.reactions.shield_gen = {elem1:null, attr2:{soulfused: true}}
-}
 
 function c_u_handler(type,counts,x,y) {
     var p = pixelMap[x][y];
