@@ -2,6 +2,21 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
+elements.tester = {
+    color: "#af6e00",
+    behavior: behaviors.WALL,
+    tick: function(pixel) {
+        if (enabledMods.includes("mods/souls.js")) {
+            logMessage("true");
+        }
+    },
+    category: "special",
+    insulate: true,
+    state: "solid",
+    hardness: 0.75,
+    conduct: 1,
+};
+
 elements.hotter_plasma = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     behavior: behaviors.DGAS,
