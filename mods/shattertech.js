@@ -1013,6 +1013,7 @@ elements.shield_gen = {
                 if (pixel.syncCheck == 10 && pixel.timer == 0) {
                     if (isEmpty(x,y)) {
                         createPixel("barrier",x,y);
+                        if (pixel.soulfused) {pixelMap[x][y].alt = true;}
                     } else if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
                         if (pixel.timer == 0) {
                             p.emitted = 1;
