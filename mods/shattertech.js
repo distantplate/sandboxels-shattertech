@@ -1123,7 +1123,7 @@ elements.barrier = {
         if (pixel.emitted == 1) {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
-                    var p = pixeMap[pixel.emitX][pixel.emitY];
+                    var p = pixelMap[pixel.emitX][pixel.emitY];
                     if (p.element !== "shield_gen") {
                         changePixel(pixel,mode[1]);
                     } else if (p.timer > 0) {
