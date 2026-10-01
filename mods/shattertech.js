@@ -421,22 +421,14 @@ elements.purplectric = {
 };
 
 if (elements.soul) {
-    elements.soulectric = {
-    color: "#2fff9b",
-        behavior: [
-            "CL%2.5|CL%2.5 AND SH|CL%2.5",
-            "CL%2.5 AND SH|SH%5 AND DL%25|CL%2.5 AND SH",
-            "M1%15 AND CL%3|M1%50 AND CL%7.5 AND SH|M1%15 AND CL%3",
-        ],
-        charge: 3,
-        category: "energy",
-        state: "gas",
-        density: 2.1,
-        insulate: true,
-        ignoreAir: true,
-        ignore: ["shocker"],
-        ignoreConduct: ["shocker"]
-    };
+    elements.soulectric = {};
+    for (let f in elements.purplectric) {
+        elements.soulectric[f] = elements.purplectric[f];
+    }
+    elements.soulectric.color = "#2fff9b";
+    function soulYoink(p1) {
+        return false;
+    }
 }
 
 elements.net_core = {
