@@ -1266,7 +1266,7 @@ elements.explosion.tick = function(pixel){
 };
 //elements.virus.ignore.push("hotter_plasma");
 if (enabledMods.includes("mods/souls.js")) {
-    elements.soul.reactions.push({"shield_gen": {elem1:null, attr2:{soulfused: true}}});
+    elements.soul.reactions.shield_gen = {elem1:null, attr2:{soulfused: true}}
 }
 
 function c_u_handler(type,counts,x,y) {
