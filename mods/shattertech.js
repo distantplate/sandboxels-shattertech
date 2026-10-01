@@ -441,7 +441,7 @@ if (elements.soul) {
             }
         }
         return;
-    }
+    };
 }
 
 elements.net_core = {
