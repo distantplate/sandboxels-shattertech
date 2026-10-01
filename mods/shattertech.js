@@ -1542,16 +1542,20 @@ function shieldcheck(x,y,radius,doDamage) {
           if (inrange[1] == true) {
             sc3[a].push({x: p.x,y: p.y,xs: p.xStage,ys: p.yStage});
             if (a === "f") {shieldFarCheck = true;}
-            if (doDamage === true) {
-              var sDamage = Math.pow(10,((radius/10)-1));
-              if (p.threshold > 0) {
-                if (sDamage <= p.threshold) {sDamage *= 0.5;}
-                else {sDamage *= 2;}
+            if (doDamage === true) {  
+              if (radius <= 30) {
+                var sDamage = Math.pow(10,((radius/10)-1));
+                if (p.threshold > 0) {
+                  if (sDamage <= p.threshold) {sDamage *= 0.5;}
+                  else {sDamage *= 2;}
+                }
+                if (p.health > 0) {
+                  p.health -= sDamage;
+                }
+                if (sDamage > 0) {p.heat = 60;}
+              } else {
+                p.health = 0;
               }
-              if (p.health > 0) {
-                p.health -= sDamage;
-              }
-              if (sDamage > 0) {p.heat = 60;}
             }
           } else if (a === "c") {sc3.c.push({x: sc2[a][b].x,y: sc2[a][b].y,f: true});}
         }
