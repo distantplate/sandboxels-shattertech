@@ -1023,7 +1023,7 @@ elements.shield_gen = {
                             if (pixel.link != false) {
                               p.link = pixel.link[0].toString() + "." + pixel.link[1].toString();
                             } else {p.link = false;}
-                            if ((!pixel.soulfused) == (!p.alt)) {p.alt = !p.alt;}
+                            if ((!pixel.soulfused) != (!p.alt)) {p.alt = !p.alt;}
                         }
                     }
                 } else if (pixel.syncCheck == 9) {
