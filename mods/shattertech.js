@@ -2,21 +2,6 @@
 
 //In all seriousness, I am really, truly sorry for anyone trying to understand or modify this
 
-elements.tester = {
-    color: "#af6e00",
-    behavior: behaviors.WALL,
-    tick: function(pixel) {
-        if (elements.soul) {
-            logMessage("true");
-        }
-    },
-    category: "special",
-    insulate: true,
-    state: "solid",
-    hardness: 0.75,
-    conduct: 1,
-};
-
 elements.hotter_plasma = {
     color: ["#6f00ff","#996bd9","#6f00ff"],
     behavior: behaviors.DGAS,
@@ -434,6 +419,25 @@ elements.purplectric = {
     ignore: ["shocker"],
     ignoreConduct: ["shocker"]
 };
+
+if (elements.soul) {
+    elements.soulectric = {
+    color: "#2fff9b",
+        behavior: [
+            "CL%2.5|CL%2.5 AND SH|CL%2.5",
+            "CL%2.5 AND SH|SH%5 AND DL%25|CL%2.5 AND SH",
+            "M1%15 AND CL%3|M1%50 AND CL%7.5 AND SH|M1%15 AND CL%3",
+        ],
+        charge: 3,
+        category: "energy",
+        state: "gas",
+        density: 2.1,
+        insulate: true,
+        ignoreAir: true,
+        ignore: ["shocker"],
+        ignoreConduct: ["shocker"]
+    };
+}
 
 elements.net_core = {
     color: "#ff0000",
