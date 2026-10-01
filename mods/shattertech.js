@@ -1102,8 +1102,8 @@ elements.barrier = {
     color: ["#ff00ff","#000000","#ff00ff","#000000","#ff00ff"],
     tick: function(pixel) {
         var mode = (pixel.alt) ?
-            ["#ff00ff","purplectric"] :
-            ["#2fff9b","soulectric"];
+            ["#2fff9b","soulectric"] :
+            ["#ff00ff","purplectric"];
         if (pixel.start === pixelTicks) {
             pixel.color = pixelColorPick(pixel, mode[0]);
             pixel.timer = 5;
