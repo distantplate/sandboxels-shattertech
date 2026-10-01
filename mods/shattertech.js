@@ -1101,8 +1101,11 @@ elements.shield_charger = {
 elements.barrier = {
     color: ["#ff00ff","#000000","#ff00ff","#000000","#ff00ff"],
     tick: function(pixel) {
+        var mode = (pixel.alt) ?
+            ["#ff00ff","purplectric"] :
+            ["#2fff9b","soulectric"];
         if (pixel.start === pixelTicks) {
-            pixel.color = pixelColorPick(pixel,"#ff00ff");
+            pixel.color = pixelColorPick(pixel, mode[0]);
             pixel.timer = 5;
         }
         var t = pixelTicks/2+pixel.x+pixel.y;
@@ -1112,12 +1115,19 @@ elements.barrier = {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
                     if (pixelMap[pixel.emitX][pixel.emitY].element !== "shield_gen") {
-                        changePixel(pixel,"purplectric");
+                        changePixel(pixel,mode[1]);
                     } else if (pixelMap[pixel.emitX][pixel.emitY].timer > 0) {
-                        changePixel(pixel,"purplectric");
+                        changePixel(pixel,mode[1]);
                     } else {
-                        var b = 255*(pixelMap[pixel.emitX][pixel.emitY].health / 100);
-                        pixel.color = "rgb(255,0,"+b+")";
+                        var c;
+                        var scale = pixelMap[pixel.emitX][pixel.emitY].health / 100;
+                        if (pixel.alt) {
+                            c = [47*scale,255,155*scale];
+                        } else {
+                            c = [255,0,255*scale];
+                        }
+                        //var b = 255*(pixelMap[pixel.emitX][pixel.emitY].health / 100);
+                        pixel.color = "rgb("+c[0]+","+c[1]+","+c[2]+")";
                     }
                 }
             }
