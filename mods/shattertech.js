@@ -934,6 +934,7 @@ elements.shield_gen = {
           }
         }
         if (pixel.soulfused && !elements.soul) {pixel.soulfused = false;}
+        if (elements.soul) {soulYoink(pixel);}
         var mh = (pixel.soulfused) ? 200 : 100;
         if (pixel.maxHealth != mh) {pixel.maxHealth = mh;}
         if (pixel.health <= 0) {
@@ -1069,9 +1070,6 @@ elements.shield_gen = {
         if (pixel.timer > 0) {
             pixel.timer--;
         }
-    },
-    reactions: {
-        "soul":{attr1:{soulfused:true},elem2:null}
     },
     category: "machines",
     state: "solid",
