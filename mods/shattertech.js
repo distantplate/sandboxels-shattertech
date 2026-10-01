@@ -426,8 +426,21 @@ if (elements.soul) {
         elements.soulectric[f] = elements.purplectric[f];
     }
     elements.soulectric.color = "#2fff9b";
-    function soulYoink(p1) {
-        return false;
+    function soulYoink(pixel) {
+        if (pixel.soulfused) {return;}
+        for (i = 0; i < squareCoords.length; i++) {
+            var coord = squareCoords[i];
+            var x = pixel.x+coord[0];
+            var y = pixel.y+coord[1];
+            if (!isEmpty(x,y,true)) {
+                if (pixelMap[x][y].element === "soul") {
+                    deletePixel(x,y);
+                    pixel.soulfused = true;
+                    break;
+                }
+            }
+        }
+        return;
     }
 }
 
