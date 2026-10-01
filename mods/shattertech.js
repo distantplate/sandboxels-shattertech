@@ -326,7 +326,7 @@ elements.lance = {
                             if (p2.element !== "shield_gen") {genCheck = false;}
                             else if (p2.health <= 0 || p2.timer > 1 || p2.syncCheck != 10) {genCheck = false;}
                             if (genCheck == true) {
-                                p2.health-= (p2.soulfused) ? 0.5 : 1;
+                                p2.health--;
                                 p2.heat = 60;    
                             }
                         }
@@ -898,6 +898,7 @@ elements.shield_gen = {
         if (!pixel.trigger){
             pixel.trigger = 1;
             pixel.health = 100;
+            pixel.maxHealth = 100;
             pixel.timer = 0;
             pixel.heat = 0;
             pixel.syncCheck = 0;
@@ -928,21 +929,23 @@ elements.shield_gen = {
           }
         }
         if (pixel.soulfused && !elements.soul) {pixel.soulfused = false;}
+        var mh = (pixel.soulfused) ? 200 : 100;
+        if (pixel.maxHealth != mh) {pixel.maxHealth = mh;}
         if (pixel.health <= 0) {
-            pixel.health = 100;
+            pixel.health = mh;
             pixel.heat = 0;
             pixel.timer = 60;
         }
-        if (pixel.health < 100 && pixel.timer > 0) {pixel.health = 100;}
-        if (pixel.boosted == true && pixel.link != false && pixel.health < 100) {
+        if (pixel.health < mh && pixel.timer > 0) {pixel.health = mh;}
+        if (pixel.boosted == true && pixel.link != false && pixel.health < mh) {
             var regVal = 5;
-            if (pixel.health > 95) {regVal = 100 - pixel.health;}
+            if (pixel.health > mh - 5) {regVal = mh - pixel.health;}
             pixel.health += regVal;
             pixelMap[pixel.link[0]][pixel.link[1]].sCHeatup += regVal;
         }
-        if (pixel.heat == 0 && pixel.health < 100) {
-            if ((pixel.health + 5) > 100) {
-                pixel.health = 100;
+        if (pixel.heat == 0 && pixel.health < mh) {
+            if ((pixel.health + 5) > mh) {
+                pixel.health = mh;
             } else {
                 pixel.health += 5;
             }
@@ -1120,19 +1123,19 @@ elements.barrier = {
         if (pixel.emitted == 1) {
             if (pixel.timer > 0) {
                 if ((!outOfBounds(pixel.emitX,pixel.emitY)) && (!isEmpty(pixel.emitX,pixel.emitY))) {
-                    if (pixelMap[pixel.emitX][pixel.emitY].element !== "shield_gen") {
+                    var p = pixeMap[pixel.emitX][pixel.emitY];
+                    if (p.element !== "shield_gen") {
                         changePixel(pixel,mode[1]);
-                    } else if (pixelMap[pixel.emitX][pixel.emitY].timer > 0) {
+                    } else if (p.timer > 0) {
                         changePixel(pixel,mode[1]);
                     } else {
                         var c;
-                        var scale = pixelMap[pixel.emitX][pixel.emitY].health / 100;
+                        var scale = p.health / p.maxHealth;
                         if (pixel.alt) {
                             c = [47*scale,255,155*scale];
                         } else {
                             c = [255,0,255*scale];
                         }
-                        //var b = 255*(pixelMap[pixel.emitX][pixel.emitY].health / 100);
                         pixel.color = "rgb("+c[0]+","+c[1]+","+c[2]+")";
                     }
                 }
@@ -1544,7 +1547,6 @@ function shieldcheck(x,y,radius,doDamage) {
               if (p.threshold > 0) {
                 if (sDamage <= p.threshold) {sDamage *= 0.5;}
                 else {sDamage *= 2;}
-                if (p.soulfused) {sDamage *= 0.5;}
               }
               if (p.health > 0) {
                 p.health -= sDamage;
