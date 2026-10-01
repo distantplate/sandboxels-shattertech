@@ -6,7 +6,7 @@ elements.tester = {
     color: "#af6e00",
     behavior: behaviors.WALL,
     tick: function(pixel) {
-        if (enabledMods.includes("mods/souls.js")) {
+        if (elements.soul) {
             logMessage("true");
         }
     },
