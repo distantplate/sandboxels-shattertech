@@ -944,8 +944,8 @@ elements.shield_gen = {
         }
         if (pixel.health < mh && pixel.timer > 0) {pixel.health = mh;}
         if (pixel.boosted == true && pixel.link != false && pixel.health < mh) {
-            var regVal = 5;
-            if (pixel.health > mh - 5) {regVal = mh - pixel.health;}
+            var regVal = mh * 0.05;
+            if (pixel.health > mh * 0.95) {regVal = mh - pixel.health;}
             pixel.health += regVal;
             pixelMap[pixel.link[0]][pixel.link[1]].sCHeatup += regVal;
         }
