@@ -326,7 +326,7 @@ elements.lance = {
                             if (p2.element !== "shield_gen") {genCheck = false;}
                             else if (p2.health <= 0 || p2.timer > 1 || p2.syncCheck != 10) {genCheck = false;}
                             if (genCheck == true) {
-                                p2.health--;
+                                p2.health-= (p2.soulfused) ? 0.5 : 1;
                                 p2.heat = 60;    
                             }
                         }
@@ -927,6 +927,7 @@ elements.shield_gen = {
             pixel.boosted = false;
           }
         }
+        if (pixel.soulfused && !elements.soul) {pixel.soulfused = false;}
         if (pixel.health <= 0) {
             pixel.health = 100;
             pixel.heat = 0;
@@ -1012,6 +1013,7 @@ elements.shield_gen = {
                 if (pixel.syncCheck == 10 && pixel.timer == 0) {
                     if (isEmpty(x,y)) {
                         createPixel("barrier",x,y);
+                        if (pixel.soulfused) {p.alt = true;}
                     } else if ((!isEmpty(x,y)) && pixelMap[x][y].element === "barrier") {
                         if (pixel.timer == 0) {
                             p.emitted = 1;
@@ -1021,6 +1023,7 @@ elements.shield_gen = {
                             if (pixel.link != false) {
                               p.link = pixel.link[0].toString() + "." + pixel.link[1].toString();
                             } else {p.link = false;}
+                            if ((!pixel.soulfused) == (!p.alt)) {p.alt = !p.alt;}
                         }
                     }
                 } else if (pixel.syncCheck == 9) {
@@ -1538,6 +1541,7 @@ function shieldcheck(x,y,radius,doDamage) {
               if (p.threshold > 0) {
                 if (sDamage <= p.threshold) {sDamage *= 0.5;}
                 else {sDamage *= 2;}
+                if (p.soulfused) {sDamage *= 0.5;}
               }
               if (p.health > 0) {
                 p.health -= sDamage;
