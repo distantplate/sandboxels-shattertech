@@ -1245,7 +1245,7 @@ elements.disintegrate = {
             }
         }
       }
-      if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "hotter_plasma");}
+      if (pixelTicks-pixel.start >= 30 && !pixel.hold) {changePixel(pixel, "hotter_plasma");}
       doDefaults(pixel);
     },
     temp:15000,
