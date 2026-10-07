@@ -1164,9 +1164,9 @@ elements.disintegrate = {
     onShiftSelect: function(element) {
       promptInput("How wide of an area do you want to disintegrate?", function(r) {
         if (!r) {return;}
-        if (r[r.length-1] == "f") {
+        if (r[r.length-1] == "t") {
             currentElementProp = {hold: true};
-            r = r.substring(0,r.length);
+            r = r.substring(0,r.length-1);
         }
         r = parseInt(r);
         if (isNaN(r)) {return;}
