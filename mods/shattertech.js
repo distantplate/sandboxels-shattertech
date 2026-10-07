@@ -1229,8 +1229,8 @@ elements.disintegrate = {
         }
       }
       if (pixel.trigger == 3) {
-        if (pixel.hold && pixel.charge) {
-            pixel.hold = false;
+        if (pixel.hold) {
+            if (pixel.charge) {pixel.hold = false;}
         } else {
             if (pixel.timer > 0) {
               var s1 = 1-pixel.timer/pixel.timerMax;
