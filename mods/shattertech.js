@@ -1193,6 +1193,7 @@ elements.disintegrate = {
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*10);}
                 changePixel(newPixel,"disintegrate");
                 newPixel.trigger = 2;
+                if (pixel.hold) {newPixel.hold = 1;}
                 newPixel.newColor[1] = newPixel.color;
                 newPixel.color = newPixel.newColor[0];
                 newPixel.timerMax = 10+hstore;
@@ -1228,16 +1229,20 @@ elements.disintegrate = {
         }
       }
       if (pixel.trigger == 3) {
-        if (pixel.timer > 0) {
-          var s1 = 1-pixel.timer/pixel.timerMax;
-          var A = pixel.newColor;
-          var r = A[0][0]+s1*(A[1][0]-A[0][0]);
-          var g = A[0][1]+s1*(A[1][1]-A[0][1]);
-          var b = A[0][2]+s1*(A[1][2]-A[0][2]);
-          pixel.color = "rgb("+r+","+g+","+b+")";
-          pixel.timer--;
+        if (pixel.hold && pixel.charge) {
+            pixel.hold = false;
         } else {
-          changePixel(pixel, "hotter_plasma");
+            if (pixel.timer > 0) {
+              var s1 = 1-pixel.timer/pixel.timerMax;
+              var A = pixel.newColor;
+              var r = A[0][0]+s1*(A[1][0]-A[0][0]);
+              var g = A[0][1]+s1*(A[1][1]-A[0][1]);
+              var b = A[0][2]+s1*(A[1][2]-A[0][2]);
+              pixel.color = "rgb("+r+","+g+","+b+")";
+              pixel.timer--;
+            } else {
+              changePixel(pixel, "hotter_plasma");
+            }
         }
       }
       if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "hotter_plasma");}
