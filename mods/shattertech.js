@@ -1167,8 +1167,7 @@ elements.disintegrate = {
         r = parseInt(r);
         if (isNaN(r)) {return;}
         r = Math.max(1,r);
-        currentElementProp = {decay: r};
-        currentElementProp = {hold: r};
+        currentElementProp = {decay: r,hold: 1};
       }, elemTitleCase(elements[element].name || element));
     },
     tick: function(pixel) {
