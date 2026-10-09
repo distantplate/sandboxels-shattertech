@@ -744,13 +744,17 @@ elements.nanites = {
                         } else {detect[dex] = 2;}
                     }
                 }
-                if (detect[0]) {
+                if (detect[0] == 1) {
                     if (detect[2] == 1 && !detect[1]) {store.push({x:0,y:-1});}
                     if (detect[6] == 1 && !detect[3]) {store.push({x:-1,y:0});}
                 }
-                if (detect[8]) {
+                if (detect[8] == 1) {
                     if (detect[2] == 1 && !detect[5]) {store.push({x:1,y:0});}
                     if (detect[6] == 1 && !detect[7]) {store.push({x:0,y:1});}
+                }
+                for (let a in store) {
+                    createPixel("nanites",pixel.x+store[a].x,pixel.y+store[a].y);
+                    pixelMap[pixel.x+store[a].x][pixel.y+store[a].y].harden = true;
                 }
             }
             doDefaults(pixel);
