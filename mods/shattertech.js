@@ -721,17 +721,34 @@ elements.nanites = {
                 changePixel(pixel,"nano_armor");
                 pixel.initTrigger = true;
             } else {
+                var detect = [
+                    0,0,0,
+                    0,0,0,
+                    0,0,0
+                ];
+                var store = [];
                 for (var i = 0; i < squareCoords.length; i++) {
                     var coords = squareCoords[i];
                     var x = pixel.x + coords[0];
                     var y = pixel.y + coords[1];
+                    if (x == pixel.x && y == pixel.y) {continue;}
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
                         if (newPixel.element === "steel") {
                             changePixel(newPixel,"nanites");
                             newPixel.harden = true;
+                        } else if (newPixel.element === "nanites") {
+                            if (newPixel.harden) {detect[(coords[0]+1)+3*(coords[1]+1)] = 1;}
                         }
                     }
+                }
+                if (detect[0]) {
+                    if (detect[2] && !detect[1]) {store.push({x:0,y:-1});}
+                    if (detect[6] && !detect[3]) {store.push({x:-1,y:0});}
+                }
+                if (detect[8]) {
+                    if (detect[2] && !detect[5]) {store.push({x:1,y:0});}
+                    if (detect[6] && !detect[7]) {store.push({x:0,y:1});}
                 }
             }
             doDefaults(pixel);
