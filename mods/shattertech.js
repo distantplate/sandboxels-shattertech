@@ -761,6 +761,7 @@ elements.nanites = {
 elements.nanomaterial = {
     color: "#b300b3",
     colorOn: "#ff00ff",
+    behavior: behaviors.WALL,
     tick: function(pixel) {
         if (!pixel.detection) {
             pixel.detection = [
@@ -787,7 +788,13 @@ elements.nanomaterial = {
                 if (detection[a] == 2) {pixel.stage = 2; break;}
             }
         } else {changePixel(pixel,"nanites");}
-    }
+        doDefaults(pixel);
+    },
+    category: "special",
+    conduct: 1,
+    hardness: 0.75,
+    insulate: true,
+    movable: false
 };
 
 elements.nano_armor = {
