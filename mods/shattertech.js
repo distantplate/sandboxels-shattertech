@@ -735,7 +735,7 @@ elements.nanites = {
                     var dex = (coords[0]+1)+3*(coords[1]+1);
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
-                        if (newPixel.element === "steel" || newPixel.element === "burnt_armor") {
+                        if (newPixel.element === "steel" || newPixel.element === "broken_armor") {
                             changePixel(newPixel,"nanites");
                             newPixel.harden = true;
                             detect[dex] = 1;
