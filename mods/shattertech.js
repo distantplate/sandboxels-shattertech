@@ -818,9 +818,8 @@ elements.nano_armor = {
                       pixel.detection[dexi] = 1;
                     } else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
-                      else if (newPixel.element === "nanites") {
-                        changePixel(newPixel,"nano_armor");
-                        newPixel.initTrigger = true;
+                      else if (newPixel.element === "nanites" && !newPixel.harden) {
+                        newPixel.harden
                       }
                     }
                   } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
