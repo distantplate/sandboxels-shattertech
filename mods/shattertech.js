@@ -713,6 +713,22 @@ elements.net_link = {
     hardness: 0.75,
 };
 
+elements.nanites = {
+    color: "#990099",
+    behavior: behaviors.LIQUID,
+    viscosity: 10000,
+    density: 7065,
+    category: "special",
+    state: "liquid",
+    conduct: 1,
+    reactions: {
+        "steel": {elem2: "nano_armor"},
+        "broken_armor": {elem2: "nano_armor"},
+        "malware": {elem1: "malware"},
+        "radiation": {elem1: "gray_goo"}
+    }
+};
+
 elements.nano_armor = {
     color: "#660066",
     colorOn: "#ff00ff",
@@ -1167,7 +1183,7 @@ elements.disintegrate = {
         r = parseInt(r);
         if (isNaN(r)) {return;}
         r = Math.max(1,r);
-        currentElementProp = {decay: r,hold: 1};
+        currentElementProp = {decay: r};
       }, elemTitleCase(elements[element].name || element));
     },
     tick: function(pixel) {
@@ -1193,7 +1209,6 @@ elements.disintegrate = {
                 if (elements[newPixel.element].hardness) {hstore = Math.round((elements[newPixel.element].hardness)*10);}
                 changePixel(newPixel,"disintegrate");
                 newPixel.trigger = 2;
-                if (pixel.hold) {newPixel.hold = 1;}
                 newPixel.newColor[1] = newPixel.color;
                 newPixel.color = newPixel.newColor[0];
                 newPixel.timerMax = 10+hstore;
@@ -1229,23 +1244,19 @@ elements.disintegrate = {
         }
       }
       if (pixel.trigger == 3) {
-        if (pixel.hold) {
-            if (pixel.charge) {pixel.hold = false;}
+        if (pixel.timer > 0) {
+          var s1 = 1-pixel.timer/pixel.timerMax;
+          var A = pixel.newColor;
+          var r = A[0][0]+s1*(A[1][0]-A[0][0]);
+          var g = A[0][1]+s1*(A[1][1]-A[0][1]);
+          var b = A[0][2]+s1*(A[1][2]-A[0][2]);
+          pixel.color = "rgb("+r+","+g+","+b+")";
+          pixel.timer--;
         } else {
-            if (pixel.timer > 0) {
-              var s1 = 1-pixel.timer/pixel.timerMax;
-              var A = pixel.newColor;
-              var r = A[0][0]+s1*(A[1][0]-A[0][0]);
-              var g = A[0][1]+s1*(A[1][1]-A[0][1]);
-              var b = A[0][2]+s1*(A[1][2]-A[0][2]);
-              pixel.color = "rgb("+r+","+g+","+b+")";
-              pixel.timer--;
-            } else {
-              changePixel(pixel, "hotter_plasma");
-            }
+          changePixel(pixel, "hotter_plasma");
         }
       }
-      if (pixelTicks-pixel.start >= 30 && !pixel.hold) {changePixel(pixel, "hotter_plasma");}
+      if (pixelTicks-pixel.start >= 30) {changePixel(pixel, "hotter_plasma");}
       doDefaults(pixel);
     },
     temp:15000,
