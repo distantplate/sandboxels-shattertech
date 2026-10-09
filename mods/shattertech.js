@@ -767,7 +767,7 @@ elements.nanites = {
     conduct: 1,
     reactions: {
         "steel": {elem2: "nanites",attr2:{"harden":true},elem1:null},
-        "broken_armor": {elem2: "nano_armor"},
+        "broken_armor": {elem2: "nanites",attr2:{"harden":true},elem1:null},
         "malware": {elem1: "malware"},
         "radiation": {elem1: "gray_goo"}
     }
