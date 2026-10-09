@@ -746,6 +746,7 @@ elements.nano_armor = {
         }
         if (pixel.stage === 1 && (pixelTicks-pixel.start > 70 || pixel.initTrigger)) { //uninitialized
             pixel.stage = 2;
+            pixel.initTrigger = false;
             pixel.color = "#660066";
             for (var a = -1; a < 2; a++) {
                 for (var b = -1; b < 2; b++) {
