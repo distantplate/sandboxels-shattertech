@@ -716,13 +716,17 @@ elements.net_link = {
 elements.nanites = {
     color: "#990099",
     behavior: behaviors.LIQUID,
+    tick: function(pixel) {
+        if (pixel.harden && pixelTicks-pixel.start >= 60) {changePixel(pixel,"nano_armor");}
+        doDefaults(pixel);
+    },
     viscosity: 10000,
     density: 7065,
     category: "special",
     state: "liquid",
     conduct: 1,
     reactions: {
-        "steel": {elem2: "nano_armor"},
+        "steel": {elem2: "nanites",attr1:{"harden":true},attr2:{"harden":true}},
         "broken_armor": {elem2: "nano_armor"},
         "malware": {elem1: "malware"},
         "radiation": {elem1: "gray_goo"}
