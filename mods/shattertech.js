@@ -715,54 +715,35 @@ elements.net_link = {
 
 elements.nanites = {
     color: "#990099",
+    colorOn: "#ff00ff",
     tick: function(pixel) {
         if (pixel.harden) {
-            if (pixelTicks-pixel.start >= 60 && pixel.align) {
-                changePixel(pixel,"nano_armor");
-                pixel.initTrigger = true;
+            if (pixelTicks-pixel.start >= 60) {
+                changePixel(pixel,pixel.harden);
+                if (pixel.harden === "nano_armor") {pixel.initTrigger = true;}
             } else {
-                var detect = [
-                    0,0,0,
-                    0,0,0,
-                    0,0,0
-                ];
-                var store = [];
                 for (var i = 0; i < squareCoords.length; i++) {
                     var coords = squareCoords[i];
                     var x = pixel.x + coords[0];
                     var y = pixel.y + coords[1];
                     if (x == pixel.x && y == pixel.y) {continue;}
-                    var dex = (coords[0]+1)+3*(coords[1]+1);
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
                         if (newPixel.element === "steel") {
                             changePixel(newPixel,"nanites");
-                            newPixel.harden = true;
-                            detect[dex] = 1;
-                        } else if (newPixel.element === "nanites") {
-                            if (newPixel.harden) {detect[dex] = 1;}
-                        } else {detect[dex] = 2;}
-                    }
-                }
-                if (detect[0] == 1) {
-                    if (detect[2] == 1 && !detect[1]) {store.push({x:0,y:-1});}
-                    if (detect[6] == 1 && !detect[3]) {store.push({x:-1,y:0});}
-                }
-                if (detect[8] == 1) {
-                    if (detect[2] == 1 && !detect[5]) {store.push({x:1,y:0});}
-                    if (detect[6] == 1 && !detect[7]) {store.push({x:0,y:1});}
-                }
-                for (let a in store) {
-                    var x = pixel.x+store[a].x;
-                    var y = pixel.y+store[a].y;
-                    if (isEmpty(x,y,true)) {
-                        createPixel("nanites",x,y);
-                        pixelMap[x][y].harden = true;
+                            newPixel.harden = "nano_armor";
+                        } else if (newPixel.element === "insulation") {
+                            changePixel(newPixel,"insulation");
+                            newPixel.harden = "nanomaterial";
+                        }
                     }
                 }
             }
             doDefaults(pixel);
-        } else {behaviors.LIQUID(pixel);}
+        } else {
+            if (pixel.charge && !pixel.harden) {pixel.harden = "nanomaterial";}
+            behaviors.LIQUID(pixel);
+        }
     },
     viscosity: 10000,
     density: 7065,
@@ -770,9 +751,42 @@ elements.nanites = {
     state: "liquid",
     conduct: 1,
     reactions: {
-        "steel": {elem2: "nanites",attr2:{"harden":true},elem1:null},
+        "steel": {elem2: "nanites",attr2:{"harden": "nano_armor"},elem1:null},
+        "insulation": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
         "malware": {elem1: "malware"},
         "radiation": {elem1: "gray_goo"}
+    }
+};
+
+elements.nanomaterial = {
+    color: "#b300b3",
+    colorOn: "#ff00ff",
+    tick: function(pixel) {
+        if (!pixel.detection) {
+            pixel.detection = [
+                0,0,0,
+                0,0,0,
+                0,0,0
+            ];
+            pixel.stage = 1;
+        }
+        if (pixel.stage == 1) {
+            for (i = 0; i < squareCoords.length; i++) {
+                var coord = squareCoords[i];
+                var x = pixel.x + coord[0];
+                var y = pixel.y + coord[1];
+                if (x == pixel.x && y == pixel.y) {continue;}
+                var dex = (coord[0]+1)+3*(coord[1]+1);
+                if (!isEmpty(x,y,true)) {
+                    if (pixelMap[x][y].element === "nanomaterial") {
+                        if (detection[dex] == 0) {detection[dex] = 1;}
+                    } else if (detection[dex] != 0) {detection[dex] = 2;}
+                } else if (detection[dex] != 0) {detection[dex] = 2;}
+            }
+            for (let a in pixel.detection) {
+                if (detection[a] == 2) {pixel.stage = 2; break;}
+            }
+        } else {changePixel(pixel,"nanites");}
     }
 };
 
