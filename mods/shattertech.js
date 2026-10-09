@@ -723,7 +723,7 @@ elements.nanites = {
                     var coords = squareCoords[i];
                     var x = pixel.x + coords[0];
                     var y = pixel.y + coords[1];
-                    if (isEmpty(x,y,true)) {
+                    if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
                         if (newPixel.element === "steel") {
                             changePixel(newPixel,"nanites");
