@@ -717,7 +717,7 @@ elements.nanites = {
     color: "#990099",
     tick: function(pixel) {
         if (pixel.harden) {
-            if (pixelTicks-pixel.start >= 60) {
+            if (pixelTicks-pixel.start >= 60 && pixel.align) {
                 changePixel(pixel,"nano_armor");
                 pixel.initTrigger = true;
             } else {
