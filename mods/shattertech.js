@@ -735,7 +735,7 @@ elements.nanites = {
                     var dex = (coords[0]+1)+3*(coords[1]+1);
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
-                        if (newPixel.element === "steel" || newPixel.element === "broken_armor") {
+                        if (newPixel.element === "steel") {
                             changePixel(newPixel,"nanites");
                             newPixel.harden = true;
                             detect[dex] = 1;
@@ -771,7 +771,6 @@ elements.nanites = {
     conduct: 1,
     reactions: {
         "steel": {elem2: "nanites",attr2:{"harden":true},elem1:null},
-        "broken_armor": {elem2: "nanites",attr2:{"harden":true},elem1:null},
         "malware": {elem1: "malware"},
         "radiation": {elem1: "gray_goo"}
     }
@@ -818,9 +817,6 @@ elements.nano_armor = {
                       pixel.detection[dexi] = 1;
                     } else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
-                      else if (newPixel.element === "nanites" && !newPixel.harden) {
-                        newPixel.harden = true;
-                      }
                     }
                   } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
                     pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
