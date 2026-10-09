@@ -744,7 +744,7 @@ elements.nano_armor = {
           pixel.shatter = 0;
           pixel.shattered = 0;
         }
-        if (pixel.stage === 1 && pixelTicks-pixel.start > 70) { //uninitialized
+        if (pixel.stage === 1 && (pixelTicks-pixel.start > 70 || pixel.initTrigger)) { //uninitialized
             pixel.stage = 2;
             pixel.color = "#660066";
             for (var a = -1; a < 2; a++) {
@@ -769,6 +769,10 @@ elements.nano_armor = {
                       pixel.detection[dexi] = 1;
                     } else {
                       if (pixel.detection[dexi] > 0) {pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);}
+                      else if (newPixel.element === "nanites") {
+                        changePixel(newPixel,"nano_armor");
+                        newPixel.initTrigger = true;
+                      }
                     }
                   } else if (pixel.detection[dexi] > 0 && !outOfBounds(pixel.x+a,pixel.y+b)) {
                     pixel.detection[dexi] = (pixel.primed === true ? 2 : 0);
@@ -830,6 +834,8 @@ elements.nano_armor = {
             if (pixel.burnt = 1){
               if ((Math.random() * 8) < 7) {
                 changePixel(pixel, "broken_armor");
+                pixel.detection = false;
+                pixel.burnt = false;
               } else {
                 changePixel(pixel, "pulse");
               }
