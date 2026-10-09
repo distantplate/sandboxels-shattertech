@@ -753,8 +753,12 @@ elements.nanites = {
                     if (detect[6] == 1 && !detect[7]) {store.push({x:0,y:1});}
                 }
                 for (let a in store) {
-                    createPixel("nanites",pixel.x+store[a].x,pixel.y+store[a].y);
-                    pixelMap[pixel.x+store[a].x][pixel.y+store[a].y].harden = true;
+                    var x = pixel.x+store[a].x;
+                    var y = pixel.y+store[a].y;
+                    if (isEmpty(x,y,true)) {
+                        createPixel("nanites",x,y);
+                        pixelMap[x][y].harden = true;
+                    }
                 }
             }
             doDefaults(pixel);
