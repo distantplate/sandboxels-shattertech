@@ -787,7 +787,11 @@ elements.nanomaterial = {
             for (let a in pixel.detection) {
                 if (pixel.detection[a] == 2) {pixel.stage = 2; break;}
             }
-        } else {changePixel(pixel,"nanites");}
+        } else {
+            changePixel(pixel,"nanites");
+            pixel.detection = false;
+            pixel.harden = false;
+        }
         doDefaults(pixel);
     },
     category: "special",
