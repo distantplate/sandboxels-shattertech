@@ -761,7 +761,6 @@ elements.nanites = {
 elements.nanomaterial = {
     color: "#800080",
     colorOn: "#ff00ff",
-    behavior: behaviors.WALL,
     tick: function(pixel) {
         if (!pixel.detection) {
             pixel.detection = [
@@ -792,7 +791,7 @@ elements.nanomaterial = {
             pixel.detection = false;
             pixel.harden = false;
         }
-        //doDefaults(pixel);
+        doDefaults(pixel);
     },
     category: "special",
     state: "solid",
