@@ -798,6 +798,7 @@ elements.nanomaterial = {
     category: "special",
     state: "solid",
     conduct: 1,
+    ignoreConduct: ["malware"],
     hardness: 0.8,
     insulate: true,
     movable: false,
