@@ -762,7 +762,7 @@ elements.nanomaterial = {
     color: "#800080",
     colorOn: "#ff00ff",
     behavior: behaviors.WALL,
-    tick: function(pixel) {
+    /*tick: function(pixel) {
         if (!pixel.detection) {
             pixel.detection = [
                 0,0,0,
@@ -793,7 +793,7 @@ elements.nanomaterial = {
             pixel.harden = false;
         }
         doDefaults(pixel);
-    },
+    },*/
     category: "special",
     state: "solid",
     conduct: 1,
