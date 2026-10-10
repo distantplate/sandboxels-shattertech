@@ -795,10 +795,11 @@ elements.nanomaterial = {
         doDefaults(pixel);
     },
     category: "special",
+    state: "solid",
     conduct: 1,
     hardness: 0.75,
     insulate: true,
-    movable: false
+    movable: falsem
 };
 
 elements.nano_armor = {
