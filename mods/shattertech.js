@@ -780,12 +780,12 @@ elements.nanomaterial = {
                 var dex = (coord[0]+1)+3*(coord[1]+1);
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "nanomaterial") {
-                        if (detection[dex] == 0) {detection[dex] = 1;}
-                    } else if (detection[dex] != 0) {detection[dex] = 2;}
-                } else if (detection[dex] != 0) {detection[dex] = 2;}
+                        if (pixel.detection[dex] == 0) {pixel.detection[dex] = 1;}
+                    } else if (pixel.detection[dex] != 0) {pixel.detection[dex] = 2;}
+                } else if (pixel.detection[dex] != 0) {pixel.detection[dex] = 2;}
             }
             for (let a in pixel.detection) {
-                if (detection[a] == 2) {pixel.stage = 2; break;}
+                if (pixel.detection[a] == 2) {pixel.stage = 2; break;}
             }
         } else {changePixel(pixel,"nanites");}
         doDefaults(pixel);
