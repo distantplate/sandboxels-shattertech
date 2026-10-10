@@ -788,6 +788,7 @@ elements.nanomaterial = {
             }
         } else {
             changePixel(pixel,"nanites");
+            pixel.color = pixelColorPick(pixel,"#990099");
             pixel.detection = false;
             pixel.harden = false;
         }
