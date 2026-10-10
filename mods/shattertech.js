@@ -791,6 +791,8 @@ elements.nanomaterial = {
             pixel.detection = false;
             pixel.harden = false;
         }
+        if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
+        else {pixel.color = "rgb(128,0,128)";}
         doDefaults(pixel);
     },
     category: "special",
