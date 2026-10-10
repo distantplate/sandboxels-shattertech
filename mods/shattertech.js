@@ -714,7 +714,7 @@ elements.net_link = {
 };
 
 elements.nanites = {
-    color: "#800080",
+    color: "#990099",
     colorOn: "#ff00ff",
     tick: function(pixel) {
         if (pixel.harden) {
@@ -759,7 +759,7 @@ elements.nanites = {
 };
 
 elements.nanomaterial = {
-    color: "#b300b3",
+    color: "#800080",
     colorOn: "#ff00ff",
     behavior: behaviors.WALL,
     tick: function(pixel) {
