@@ -786,14 +786,13 @@ elements.nanomaterial = {
             for (let a in pixel.detection) {
                 if (pixel.detection[a] == 2) {pixel.stage = 2; break;}
             }
+            if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
+            else {pixel.color = "rgb(128,0,128)";}
         } else {
             changePixel(pixel,"nanites");
-            pixel.color = pixelColorPick(pixel,"#990099");
             pixel.detection = false;
             pixel.harden = false;
         }
-        if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
-        else {pixel.color = "rgb(128,0,128)";}
         doDefaults(pixel);
     },
     category: "special",
