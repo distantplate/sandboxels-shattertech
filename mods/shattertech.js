@@ -762,7 +762,7 @@ elements.nanomaterial = {
     color: "#800080",
     colorOn: "#ff00ff",
     behavior: behaviors.WALL,
-    /*tick: function(pixel) {
+    tick: function(pixel) {
         if (!pixel.detection) {
             pixel.detection = [
                 0,0,0,
@@ -787,13 +787,13 @@ elements.nanomaterial = {
             for (let a in pixel.detection) {
                 if (pixel.detection[a] == 2) {pixel.stage = 2; break;}
             }
-        } else {
+        }/* else {
             changePixel(pixel,"nanites");
             pixel.detection = false;
             pixel.harden = false;
-        }
+        }*/
         doDefaults(pixel);
-    },*/
+    },
     category: "special",
     state: "solid",
     conduct: 1,
