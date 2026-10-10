@@ -714,7 +714,7 @@ elements.net_link = {
 };
 
 elements.nanites = {
-    color: "#990099",
+    color: "#800080",
     colorOn: "#ff00ff",
     tick: function(pixel) {
         if (pixel.harden) {
