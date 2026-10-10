@@ -796,7 +796,7 @@ elements.nanomaterial = {
     category: "special",
     state: "solid",
     conduct: 1,
-    hardness: 0.75,
+    hardness: 0.8,
     insulate: true,
     movable: false,
 };
