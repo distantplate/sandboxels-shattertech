@@ -799,7 +799,7 @@ elements.nanomaterial = {
     conduct: 1,
     hardness: 0.75,
     insulate: true,
-    movable: falsem
+    movable: false,
 };
 
 elements.nano_armor = {
