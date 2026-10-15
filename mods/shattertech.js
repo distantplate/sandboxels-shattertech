@@ -730,9 +730,7 @@ elements.nanites = {
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
                         if (!elements[pixel.element].reactions[newPixel.element]) {continue;}
-                        var temp = elements[pixel.element].reactions[newPixel.element];
-                        if (!temp.elem2 || !temp.attr2) {continue;}
-
+                        reactPixels(pixel,newPixel);
                     }
                 }
             }
