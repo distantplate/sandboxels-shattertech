@@ -732,9 +732,12 @@ elements.nanites = {
                         if (newPixel.element === "steel") {
                             changePixel(newPixel,"nanites");
                             newPixel.harden = "nano_armor";
-                        } else if (newPixel.element === "insulation") {
-                            changePixel(newPixel,"nanites");
-                            newPixel.harden = "nanomaterial";
+                        } else {
+                            var a = pixel.element.reactions;
+                            if (a[newPixel.element] ? a[newPixel.element].elem2 === "nanites" : false) {
+                                changePixel(newPixel,"nanites");
+                                newPixel.harden = "nanomaterial";
+                            }
                         }
                     }
                 }
@@ -750,9 +753,11 @@ elements.nanites = {
     category: "special",
     state: "liquid",
     conduct: 1,
+    ignoreConduct: ["malware"],
     reactions: {
         "steel": {elem2: "nanites",attr2:{"harden": "nano_armor"},elem1:null},
-        "insulation": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
+        "porcelain": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
+        "wire": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
         "malware": {elem1: "malware"},
         "radiation": {elem1: "gray_goo"}
     }
