@@ -732,11 +732,9 @@ elements.nanites = {
                         if (newPixel.element === "steel") {
                             changePixel(newPixel,"nanites");
                             newPixel.harden = "nano_armor";
-                        } else {
-                            if (typeof pixel.reactions[newPixel.element].attr2 !== "undefined") {
-                                changePixel(newPixel,"nanites");
-                                newPixel.harden = "nanomaterial";
-                            }
+                        } else if (newPixel.element === "porcelain") {
+                            changePixel(newPixel,"nanites");
+                            newPixel.harden = "nanomaterial";
                         }
                     }
                 }
