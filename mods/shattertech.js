@@ -745,11 +745,8 @@ elements.nanites = {
     category: "special",
     state: "liquid",
     conduct: 1,
-    ignoreConduct: ["malware"],
     reactions: {
         "steel": {elem2: "nanites",attr2:{"harden": "nano_armor"},elem1:null},
-        //"porcelain": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
-        "malware": {elem1: "malware"},
         "radiation": {elem1: "gray_goo"}
     }
 };
@@ -801,7 +798,6 @@ elements.nanomaterial = {
     category: "special",
     state: "solid",
     conduct: 1,
-    ignoreConduct: ["malware"],
     hardness: 0.8,
     movable: false,
 };
