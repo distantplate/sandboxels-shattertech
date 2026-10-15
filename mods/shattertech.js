@@ -729,6 +729,7 @@ elements.nanites = {
                     if (x == pixel.x && y == pixel.y) {continue;}
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
+                        if (!elements[pixel.element].reactions[newPixel.element]) {continue;}
                         reactPixels(pixel,newPixel);
                     }
                 }
