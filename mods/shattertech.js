@@ -717,6 +717,7 @@ elements.nanites = {
     color: "#990099",
     colorOn: "#ff00ff",
     tick: function(pixel) {
+        var assimilate = ["porcelain","wire"]
         if (pixel.harden) {
             if (pixelTicks-pixel.start >= 60) {
                 changePixel(pixel,pixel.harden);
@@ -733,8 +734,8 @@ elements.nanites = {
                             changePixel(newPixel,"nanites");
                             newPixel.harden = "nano_armor";
                         } else {
-                            var a = pixel.element.reactions;
-                            if (a[newPixel.element] ? a[newPixel.element].elem2 === "nanites" : false) {
+                            for (var i = 0; i < assimilate.length; i++) {
+                                if (newPixel.element !== assimilate[i]) {continue;}
                                 changePixel(newPixel,"nanites");
                                 newPixel.harden = "nanomaterial";
                             }
