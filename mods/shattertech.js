@@ -717,7 +717,7 @@ elements.nanites = {
     color: "#990099",
     colorOn: "#ff00ff",
     tick: function(pixel) {
-        var assimilate = ["porcelain","wire"]
+        var assimilate = ["porcelain","wire"];
         if (pixel.harden) {
             if (pixelTicks-pixel.start >= 60) {
                 changePixel(pixel,pixel.harden);
