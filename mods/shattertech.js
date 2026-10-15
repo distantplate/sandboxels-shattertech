@@ -730,7 +730,9 @@ elements.nanites = {
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
                         if (!elements[pixel.element].reactions[newPixel.element]) {continue;}
-                        reactPixels(pixel,newPixel);
+                        var temp = elements[pixel.element].reactions[newPixel.element];
+                        if (!temp.elem2 || !temp.attr2) {continue;}
+
                     }
                 }
             }
@@ -748,12 +750,18 @@ elements.nanites = {
     ignoreConduct: ["malware"],
     reactions: {
         "steel": {elem2: "nanites",attr2:{"harden": "nano_armor"},elem1:null},
-        "porcelain": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
-        "wire": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
+        //"porcelain": {elem2: "nanites",attr2:{"harden": "nanomaterial"},elem1:null},
         "malware": {elem1: "malware"},
         "radiation": {elem1: "gray_goo"}
     }
 };
+var naniteReacts = ["porcelain","porcelain_shard","glass","molten_glass","sand"];
+for (var i = 0; i < naniteReacts.length; i++) {
+    elements.nanites.reactions[naniteReacts[i]] = {
+        elem2: "nanites",attr2:{"harden": "nanomaterial"},
+        func: function (pixel1,pixel2) {if (!pixel1.harden) {deletePixel(pixel1.x,pixel1.y);}}
+    };
+}
 
 elements.nanomaterial = {
     color: "#800080",
