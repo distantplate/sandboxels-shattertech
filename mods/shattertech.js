@@ -729,13 +729,7 @@ elements.nanites = {
                     if (x == pixel.x && y == pixel.y) {continue;}
                     if (!isEmpty(x,y,true)) {
                         var newPixel = pixelMap[x][y];
-                        if (newPixel.element === "steel") {
-                            changePixel(newPixel,"nanites");
-                            newPixel.harden = "nano_armor";
-                        } else if (pixel.reactions[newPixel.element]) {
-                            changePixel(newPixel,"nanites");
-                            newPixel.harden = "nanomaterial";
-                        }
+                        reactPixels(pixel,newPixel);
                     }
                 }
             }
