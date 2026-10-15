@@ -803,7 +803,6 @@ elements.nanomaterial = {
     conduct: 1,
     ignoreConduct: ["malware"],
     hardness: 0.8,
-    insulate: true,
     movable: false,
 };
 
