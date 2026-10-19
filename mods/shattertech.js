@@ -736,7 +736,10 @@ elements.nanites = {
             }
             doDefaults(pixel);
         } else {
-            if (pixel.charge && !pixel.harden) {pixel.harden = "nanomaterial";}
+            if (pixel.charge && !pixel.harden) {
+                pixel.harden = "nanomaterial";
+                pixel.movable = false;
+            }
             behaviors.LIQUID(pixel);
         }
     },
@@ -746,7 +749,7 @@ elements.nanites = {
     state: "liquid",
     conduct: 1,
     reactions: {
-        "steel": {elem2: "nanites",attr2:{"harden": "nano_armor"},
+        "steel": {elem2: "nanites",attr2:{"harden": "nano_armor","movable": false},
         func:function(pixel1,pixel2){if(!pixel1.harden){deletePixel(pixel1.x,pixel1.y);}}},
         "radiation": {elem1: "gray_goo"}
     }
@@ -754,7 +757,7 @@ elements.nanites = {
 var naniteReacts = ["porcelain","porcelain_shard","glass","molten_glass","sand"];
 for (var i = 0; i < naniteReacts.length; i++) {
     elements.nanites.reactions[naniteReacts[i]] = {
-        elem2: "nanites",attr2:{"harden": "nanomaterial"},
+        elem2: "nanites",attr2:{"harden": "nanomaterial","movable": false},
         func: function (pixel1,pixel2) {if (!pixel1.harden) {deletePixel(pixel1.x,pixel1.y);}}
     };
 }
