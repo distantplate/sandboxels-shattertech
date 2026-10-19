@@ -785,10 +785,11 @@ elements.nanomaterial = {
     color: "#800080",
     colorOn: "#ff00ff",
     tick: function(pixel) {
-        if (pixel.disrupt == 1) {
-            if (!pixel.count) {pixel.count = 1;}
-            else if (pixel.count < 3) {pixel.count++;}
-            else if (pixel.count == 3) {
+        if (!pixel.trigger) {pixel.disrupt = 0; pixel.trigger = true;}
+        if (pixel.disrupt) {
+            if (pixel.disrupt < 4) {pixel.disrupt++;}
+            else if (pixel.disrupt == 4) {
+                pixel.disrupt = 0;
                 pixel.harden = false;
                 changePixel(pixel,"nanites");
             }
@@ -800,10 +801,13 @@ elements.nanomaterial = {
                 if (x == pixel.x && y == pixel.y) {continue;}
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "nanomaterial") {
-                        if (pixelMap[x][y].disrupt) {pixel.disrupt = 1; break;}
+                        var p = pixelMap[x][y];
+                        if (p.disrupt ? p.disrupt == 2 : false) {pixel.disrupt = 1; break;}
                     }
                 }
             }
+            if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
+            else {pixel.color = "rgb(128,0,128)";}
         }
         doDefaults(pixel);
     },
