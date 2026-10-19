@@ -739,7 +739,7 @@ elements.nanites = {
             if (pixel.charge && !pixel.harden) {
                 pixel.harden = "nanomaterial";
             } else {
-                //behaviors.LIQUID(pixel);
+                behaviors.LIQUID(pixel);
                 if (pixel.start === pixelTicks) {break;}
                 else if ((Math.random()*100) < 100 / Math.pow(pixel.viscosity, 0.25)) {break;}
                 var spots = [-1,0,1];
@@ -751,7 +751,7 @@ elements.nanites = {
                 if (moved == false) {
                     var dir = Math.random() < 0.5 ? 1 : -1;
                     if (!adv_move(pixel,pixel.x+dir,pixel.y,"harden")) {
-                        adv_move(pixel,pixel.x-dir,pixel.y,"harden");
+                        adv_move(pixel,pixel.x-dir,pixel.y,"harden")
                     }
                 }
             }
@@ -1423,7 +1423,7 @@ elements.explosion.tick = function(pixel){
 
 function adv_move(pixel,x,y,cond) {
     if (pixelMap[x][y]) {
-        var p = pixelMap[x][y]
+        var p = pixelMap[x][y];
         if (p.element == pixel.element && p[cond]) {return false;}
     }
     return tryMove(pixel,x,y);
