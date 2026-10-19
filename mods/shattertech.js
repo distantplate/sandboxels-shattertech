@@ -751,7 +751,6 @@ elements.nanites = {
         "radiation": {elem1: "gray_goo"}
     }
 };
-//temp
 var naniteReacts = ["porcelain","porcelain_shard","glass","molten_glass","sand"];
 for (var i = 0; i < naniteReacts.length; i++) {
     elements.nanites.reactions[naniteReacts[i]] = {
@@ -803,6 +802,7 @@ elements.nanomaterial = {
     hardness: 0.8,
     movable: false,
 };
+elements.acid.ignore.push("nanomaterial");
 
 elements.nano_armor = {
     color: "#660066",
