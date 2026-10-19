@@ -1425,7 +1425,7 @@ elements.explosion.tick = function(pixel){
 //elements.virus.ignore.push("hotter_plasma");
 
 function adv_move(pixel,x,y,cond) {
-    if (pixelMap[x][y]) {
+    if (!isEmpty(x,y,true)) {
         var p = pixelMap[x][y];
         if (p.element == pixel.element && p[cond]) {return false;}
     }
