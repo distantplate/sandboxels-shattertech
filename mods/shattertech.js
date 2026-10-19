@@ -746,7 +746,8 @@ elements.nanites = {
     state: "liquid",
     conduct: 1,
     reactions: {
-        "steel": {elem2: "nanites",attr2:{"harden": "nano_armor"},elem1:null},
+        "steel": {elem2: "nanites",attr2:{"harden": "nano_armor"},
+        func:function(pixel1,pixel2){if(!pixel1.harden){deletePixel(pixel1.x,pixel1.y);}}},
         "radiation": {elem1: "gray_goo"}
     }
 };
