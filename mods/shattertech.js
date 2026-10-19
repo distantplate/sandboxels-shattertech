@@ -738,9 +738,23 @@ elements.nanites = {
         } else {
             if (pixel.charge && !pixel.harden) {
                 pixel.harden = "nanomaterial";
-                pixel.movable = false;
+            } else {
+                //behaviors.LIQUID(pixel);
+                if (pixel.start === pixelTicks) {break;}
+                else if ((Math.random()*100) < 100 / Math.pow(pixel.viscosity, 0.25)) {break;}
+                var spots = [-1,0,1];
+                shuffleArray(spots);
+                var moved = false;
+                for (var i = 0; i < spots.length; i++) {
+                    if (adv_move(pixel,pixel.x+spots[i],pixel.y+1,"harden")) {moved = true; break;}
+                }
+                if (moved == false) {
+                    var dir = Math.random() < 0.5 ? 1 : -1;
+                    if (!adv_move(pixel,pixel.x+dir,pixel.y,"harden")) {
+                        adv_move(pixel,pixel.x-dir,pixel.y,"harden");
+                    }
+                }
             }
-            behaviors.LIQUID(pixel);
         }
     },
     viscosity: 10000,
@@ -1406,6 +1420,14 @@ elements.explosion.tick = function(pixel){
     deletePixel(pixel.x, pixel.y);
 };
 //elements.virus.ignore.push("hotter_plasma");
+
+function adv_move(pixel,x,y,cond) {
+    if (pixelMap[x][y]) {
+        var p = pixelMap[x][y]
+        if (p.element == pixel.element && p[cond]) {return false;}
+    }
+    return tryMove(pixel,x,y);
+};
 
 function c_u_handler(type,counts,x,y) {
     var p = pixelMap[x][y];
