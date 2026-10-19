@@ -764,8 +764,6 @@ elements.nanites = {
     density: 7065,
     category: "special",
     state: "liquid",
-    tempHigh: 500,
-    stateHigh: "nanomaterial",
     conduct: 1,
     reactions: {
         "steel": {elem2: "nanites",attr2:{"harden": "nano_armor","movable": false},
@@ -785,37 +783,43 @@ elements.nanomaterial = {
     color: "#800080",
     colorOn: "#ff00ff",
     tick: function(pixel) {
-        if (!pixel.trigger) {pixel.disrupt = 0; pixel.trigger = true;}
-        if (pixel.disrupt && pixel.temp < 500) {
-            if (pixel.disrupt < 4) {pixel.disrupt++;}
-            else if (pixel.disrupt == 4) {
-                pixel.disrupt = 0;
-                pixel.harden = false;
-                changePixel(pixel,"nanites");
-            }
-        } else {
+        if (!pixel.detection) {
+            pixel.detection = [
+                0,0,0,
+                0,0,0,
+                0,0,0
+            ];
+            pixel.stage = 1;
+        }
+        if (pixel.stage == 1) {
             for (i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x + coord[0];
                 var y = pixel.y + coord[1];
                 if (x == pixel.x && y == pixel.y) {continue;}
+                var dex = (coord[0]+1)+3*(coord[1]+1);
                 if (!isEmpty(x,y,true)) {
                     if (pixelMap[x][y].element === "nanomaterial") {
-                        var p = pixelMap[x][y];
-                        if (p.disrupt ? p.disrupt == 2 : false) {pixel.disrupt = 1; break;}
-                    }
-                }
+                        if (pixel.detection[dex] == 0) {pixel.detection[dex] = 1;}
+                    } else if (pixel.detection[dex] != 0) {pixel.detection[dex] = 2;}
+                } else if (pixel.detection[dex] != 0) {pixel.detection[dex] = 2;}
+            }
+            for (let a in pixel.detection) {
+                if (pixel.detection[a] == 2) {pixel.stage = 2; break;}
             }
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
             else {pixel.color = "rgb(128,0,128)";}
+        } else {
+            changePixel(pixel,"nanites");
+            pixel.detection = false;
+            pixel.harden = false;
         }
         doDefaults(pixel);
     },
     category: "special",
     state: "solid",
     conduct: 1,
-    hardness: 0.5,
-    breakInto: "nanites",
+    hardness: 0.8,
     movable: false,
 };
 elements.acid.ignore.push("nanomaterial");
