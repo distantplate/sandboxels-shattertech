@@ -739,10 +739,9 @@ elements.nanites = {
             if (pixel.charge && !pixel.harden) {
                 pixel.harden = "nanomaterial";
             } else if (pixel.start !== pixelTicks) {
-                //behaviors.LIQUID(pixel);
-                var viscMove = true;
                 var spots;
-                if ((Math.random()*100) < 100 / Math.pow(pixel.viscosity, 0.25)) {viscMove = false;}
+                //Effectively a viscosity of 10000
+                var viscMove = (Math.random()*100) < 10;
                 if (!viscMove) {spots = [0];}
                 else {
                     spots = [-1,0,1];
@@ -752,7 +751,7 @@ elements.nanites = {
                 for (var i = 0; i < spots.length; i++) {
                     if (adv_move(pixel,pixel.x+spots[i],pixel.y+1,"harden")) {moved = true; break;}
                 }
-                if (moved == false) {
+                if (moved == false && viscMove == true) {
                     var dir = Math.random() < 0.5 ? 1 : -1;
                     if (!adv_move(pixel,pixel.x+dir,pixel.y,"harden")) {
                         adv_move(pixel,pixel.x-dir,pixel.y,"harden");
@@ -762,7 +761,6 @@ elements.nanites = {
             }
         }
     },
-    viscosity: 10000,
     density: 7065,
     category: "special",
     state: "liquid",
