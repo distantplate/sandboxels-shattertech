@@ -751,6 +751,7 @@ elements.nanites = {
         "radiation": {elem1: "gray_goo"}
     }
 };
+//temp
 var naniteReacts = ["porcelain","porcelain_shard","glass","molten_glass","sand"];
 for (var i = 0; i < naniteReacts.length; i++) {
     elements.nanites.reactions[naniteReacts[i]] = {
