@@ -739,7 +739,7 @@ elements.nanites = {
             if (pixel.charge && !pixel.harden) {
                 pixel.harden = "nanomaterial";
             } else {
-                behaviors.LIQUID(pixel);
+                //behaviors.LIQUID(pixel);
                 if (pixel.start === pixelTicks) {break;}
                 else if ((Math.random()*100) < 100 / Math.pow(pixel.viscosity, 0.25)) {break;}
                 var spots = [-1,0,1];
