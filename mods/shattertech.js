@@ -786,7 +786,7 @@ elements.nanomaterial = {
     colorOn: "#ff00ff",
     tick: function(pixel) {
         if (!pixel.trigger) {pixel.disrupt = 0; pixel.trigger = true;}
-        if (pixel.disrupt) {
+        if (pixel.disrupt && pixel.temp < 500) {
             if (pixel.disrupt < 4) {pixel.disrupt++;}
             else if (pixel.disrupt == 4) {
                 pixel.disrupt = 0;
