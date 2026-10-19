@@ -738,7 +738,7 @@ elements.nanites = {
         } else {
             if (pixel.charge && !pixel.harden) {
                 pixel.harden = "nanomaterial";
-            } else if (pixel.start === pixelTicks) {
+            } else if (pixel.start !== pixelTicks) {
                 //behaviors.LIQUID(pixel);
                 var viscMove = true;
                 var spots;
@@ -758,6 +758,7 @@ elements.nanites = {
                         adv_move(pixel,pixel.x-dir,pixel.y,"harden");
                     }
                 }
+                doDefaults(pixel);
             }
         }
     },
