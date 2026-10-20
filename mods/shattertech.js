@@ -792,20 +792,16 @@ elements.nanomaterial = {
             pixel.stage = 1;
         }
         if (pixel.stage == 1) {
-            for (i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x + coord[0];
-                var y = pixel.y + coord[1];
-                if (x == pixel.x && y == pixel.y) {continue;}
-                var dex = (coord[0]+1)+3*(coord[1]+1);
-                if (!isEmpty(x,y,true)) {
-                    if (pixelMap[x][y].element === "nanomaterial") {
-                        if (pixel.detection[dex] == 0) {pixel.detection[dex] = 1;}
-                    } else if (pixel.detection[dex] != 0) {pixel.detection[dex] = 2;}
-                } else if (pixel.detection[dex] != 0) {pixel.detection[dex] = 2;}
-            }
-            for (let a in pixel.detection) {
-                if (pixel.detection[a] == 2) {pixel.stage = 2; break;}
+            for (i = 0; i < adjacentCoords.length; i++) {
+                var a = adjacentCoords[i];
+                var x = [pixel.x+a[0],pixel.x+(2*a[0])];
+                var y = [pixel.y+a[1],pixel.y+(2*a[1])];
+                if (pixel.x == x[0] && pixel.y == y[0]) {continue;}
+                if (!isEmpty(x[0],y[0],true)) {continue;}
+                if (isEmpty(x[1],y[1],true)) {continue;}
+                if (pixelMap[x[1]][y[1]].element === "nanomaterial") {
+                    createPixel("nanomaterial",x[0],y[0]);
+                }
             }
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
             else {pixel.color = "rgb(128,0,128)";}
