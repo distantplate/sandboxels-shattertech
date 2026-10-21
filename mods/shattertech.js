@@ -794,18 +794,19 @@ elements.nanomaterial = {
                 y: {[-1]:0,[0]:0,[1]:0}
             };
             for (let a in pixel.store.x) {
+                logMessage("1")
                 var b = pixel.x+a;
                 if (isEmpty(b,pixel.y-2,true) || isEmpty(b,pixel.y+2,true)) {continue;}
-                logMessage("part 1");
+                logMessage("2");
                 if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
                 if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
-                logMessage("part 2");
+                logMessage("3");
                 for (i = -1; i < 2; i++) {
                     if (isEmpty(b,pixel.y+i)) {
                         createPixel("nanomaterial",b,pixel.y+i);
                     }
                 }
-                logMessage("part 3");
+                logMessage("4");
             }
             pixel.store = {x:[],y:[]};
             for (i = 0; i < squareCoords.length; i++) {
@@ -822,8 +823,8 @@ elements.nanomaterial = {
                 }
             }
             if (detect.x[0] == 2) {
-                if (detect.x[-1] == 0) {pixel.store.x.push(-1); logMessage("1");}
-                if (detect.x[1] == 0) {pixel.store.x.push(1); logMessage("2");}
+                if (detect.x[-1] == 0) {pixel.store.x.push(-1);}
+                if (detect.x[1] == 0) {pixel.store.x.push(1);}
             }
 
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
