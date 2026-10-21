@@ -832,7 +832,11 @@ elements.nanomaterial = {
     category: "special",
     state: "solid",
     conduct: 1,
-    hardness: 0.8,
+    hardness: 0.5,
+    breakInto: "nanites",
+    onBreak: function(pixel) {
+        pixel.harden = "nanomaterial";
+    },
     movable: false,
 };
 elements.acid.ignore.push("nanomaterial");
