@@ -1483,16 +1483,13 @@ elements.explosion.tick = function(pixel){
 
 function cornerCheck(x1,y1,num,elem) {
     var check = true;
-    logMessage("1");
     for (var i = 0; i < cornerCoords[num].length; i++) {
         var coord = cornerCoords[num][i];
-        logMessage("2");
         var x = x1+coord[0];
         var y = y1+coord[1];
+        logMessage("here");
         if (outOfBounds(x,y)) {check = false; break;}
-        logMessage("3");
         if (!isEmpty(x,y)) {
-            logMessage("4");
             if (pixelMap[x][y].element === elem) {check = false; break;}
         }
     }
