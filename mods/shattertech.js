@@ -807,11 +807,12 @@ elements.nanomaterial = {
                 }
             }
             if (detect.x[0] == 2) {
-                if (detect.x[-1] == 0) {pixel.store.x.push(-1);}
-                if (detect.x[1] == 0) {pixel.store.x.push(1);}
-            } else if (detect.y[0] == 2) {
-                if (detect.y[-1] == 0) {pixel.store.y.push(-1);}
-                if (detect.y[1] == 0) {pixel.store.y.push(1);}
+                if (detect.x[-1] < 3) {pixel.store.x.push(-1);}
+                if (detect.x[1] < 3) {pixel.store.x.push(1);}
+            }
+            if (detect.y[0] == 2) {
+                if (detect.y[-1] < 3) {pixel.store.y.push(-1);}
+                if (detect.y[1] < 3) {pixel.store.y.push(1);}
             }
             for (let a in pixel.store.x) {
                 var b = pixel.x+pixel.store.x[a];
