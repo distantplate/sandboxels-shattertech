@@ -794,15 +794,18 @@ elements.nanomaterial = {
                 y: {[-1]:0,[0]:0,[1]:0}
             };
             for (let a in pixel.store.x) {
-                var b = pixel.x+a
-                if (isEmpty(b,pixel.y-2,true) && isEmpty(b,pixel.y+2,true)) {continue;}
+                var b = pixel.x+a;
+                if (isEmpty(b,pixel.y-2,true) || isEmpty(b,pixel.y+2,true)) {continue;}
+                logMessage("part 1");
                 if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
                 if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
+                logMessage("part 2");
                 for (i = -1; i < 2; i++) {
                     if (isEmpty(b,pixel.y+i)) {
                         createPixel("nanomaterial",b,pixel.y+i);
                     }
                 }
+                logMessage("part 3");
             }
             pixel.store = {x:{},y:{}};
             for (i = 0; i < squareCoords.length; i++) {
