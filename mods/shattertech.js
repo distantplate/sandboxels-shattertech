@@ -779,7 +779,12 @@ for (var i = 0; i < naniteReacts.length; i++) {
     };
 }
 
-
+var cornerCoords = {
+    0: [[-2,0],[-2,-1],[-2,-2],[-1,-2],[0,-2]],
+    2: [[2,0],[2,-1],[2,-2],[1,-2],[0,-2]],
+    6: [[-2,0],[-2,1],[-2,2],[-1,2],[0,2]],
+    8: [[2,0],[2,1],[2,2],[1,2],[0,2]]
+};
 elements.nanomaterial = {
     color: "#800080",
     colorOn: "#ff00ff",
@@ -793,6 +798,7 @@ elements.nanomaterial = {
                 x: {[-1]:0,[0]:0,[1]:0},
                 y: {[-1]:0,[0]:0,[1]:0}
             };
+            var corner = -1;
             for (i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x + coord[0];
@@ -811,6 +817,9 @@ elements.nanomaterial = {
                             detect.y[coord[1]]++;
                         }
                     }
+                } else if (coord[0] != 0 && coord[1] != 0) {
+                    if (corner == -1) {corner = (coord[0]+1)+3*(coord[1]+1);}
+                    else {corner = -2;}
                 }
             }
             if (detect.x[0] == 2) {
@@ -820,6 +829,9 @@ elements.nanomaterial = {
             if (detect.y[0] == 2) {
                 if (detect.y[-1] < 3) {pixel.store.y.push(-1);}
                 if (detect.y[1] < 3) {pixel.store.y.push(1);}
+            }
+            if (detect.x[0] == 2 && detect.y[0] == 2 && corner >= 0) {
+                cornerCheck(corner,"nanomaterial");
             }
             for (let a in pixel.store.x) {
                 var b = pixel.x+pixel.store.x[a];
@@ -1464,6 +1476,10 @@ elements.explosion.tick = function(pixel){
     deletePixel(pixel.x, pixel.y);
 };
 //elements.virus.ignore.push("hotter_plasma");
+
+function cornerCheck(num,elem) {
+
+};
 
 function adv_move(pixel,x,y,cond) {
     if (!isEmpty(x,y,true)) {
