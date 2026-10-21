@@ -798,7 +798,7 @@ elements.nanomaterial = {
                 x: {[-1]:0,[0]:0,[1]:0},
                 y: {[-1]:0,[0]:0,[1]:0}
             };
-            var corner = -1;
+            var corner = 0;
             for (i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x + coord[0];
@@ -818,8 +818,8 @@ elements.nanomaterial = {
                         }
                     }
                 } else if (coord[0] != 0 && coord[1] != 0) {
-                    if (corner == -1) {corner = (coord[0]+1)+3*(coord[1]+1);}
-                    else {corner = -2;}
+                    if (corner == 0) {corner = [coord[0],coord[1]];}
+                    else {corner = 1;}
                 }
             }
             if (detect.x[0] == 2) {
@@ -830,8 +830,9 @@ elements.nanomaterial = {
                 if (detect.y[-1] < 3) {pixel.store.y.push(-1);}
                 if (detect.y[1] < 3) {pixel.store.y.push(1);}
             }
-            if (detect.x[0] == 2 && detect.y[0] == 2 && corner >= 0) {
-                cornerCheck(corner,"nanomaterial");
+            if (detect.x[0] == 2 && detect.y[0] == 2 && typeof corner != "number") {
+                var dex = (corner[0]+1)+3*(coord[1]+1);
+                cornerCheck(corner[0],corner[1],dex,"nanomaterial");
             }
             for (let a in pixel.store.x) {
                 var b = pixel.x+pixel.store.x[a];
@@ -1477,8 +1478,18 @@ elements.explosion.tick = function(pixel){
 };
 //elements.virus.ignore.push("hotter_plasma");
 
-function cornerCheck(num,elem) {
-
+function cornerCheck(x1,y1,num,elem) {
+    var check = true;
+    for (var i = 0; i < cornerCoords[num].length; i++) {
+        var coord = cornerCoords[num][i];
+        var x = x1+coord[0];
+        var y = y1+coord[1];
+        if (outOfBounds(x,y)) {check = false; break;}
+        if (!isEmpty(x,y)) {
+            if (pixelMap[x][y].element === elem) {check = false; break;}
+        } 
+    }
+    return check;
 };
 
 function adv_move(pixel,x,y,cond) {
