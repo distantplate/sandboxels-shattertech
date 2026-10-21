@@ -793,20 +793,6 @@ elements.nanomaterial = {
                 x: {[-1]:0,[0]:0,[1]:0},
                 y: {[-1]:0,[0]:0,[1]:0}
             };
-            for (let a in pixel.store.x) {
-                var b = pixel.x+pixel.store.x[a];
-                //works till at least here
-                logMessage(b);
-                if (isEmpty(b,pixel.y-2,true) || isEmpty(b,pixel.y+2,true)) {continue;}
-                if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
-                if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
-                for (i = -1; i < 2; i++) {
-                    if (isEmpty(b,pixel.y+i)) {
-                        createPixel("nanomaterial",b,pixel.y+i);
-                    }
-                }
-            }
-            pixel.store = {x:[],y:[]};
             for (i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x + coord[0];
@@ -824,7 +810,20 @@ elements.nanomaterial = {
                 if (detect.x[-1] == 0) {pixel.store.x.push(-1);}
                 if (detect.x[1] == 0) {pixel.store.x.push(1);}
             }
-
+            for (let a in pixel.store.x) {
+                var b = pixel.x+pixel.store.x[a];
+                //works till at least here
+                logMessage(b);
+                if (isEmpty(b,pixel.y-2,true) || isEmpty(b,pixel.y+2,true)) {continue;}
+                if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
+                if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
+                for (i = -1; i < 2; i++) {
+                    if (isEmpty(b,pixel.y+i)) {
+                        createPixel("nanomaterial",b,pixel.y+i);
+                    }
+                }
+            }
+            pixel.store = {x:[],y:[]};
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
             else {pixel.color = "rgb(128,0,128)";}
         } else {
