@@ -822,8 +822,8 @@ elements.nanomaterial = {
                 }
             }
             if (detect.x[0] == 2) {
-                if (detect.x[-1] == 0) {pixel.store.x.push(-1);}
-                if (detect.x[1] == 0) {pixel.store.x.push(1);}
+                if (detect.x[-1] == 0) {pixel.store.x.push(-1); logMessage("1");}
+                if (detect.x[1] == 0) {pixel.store.x.push(1); logMessage("2");}
             }
 
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
