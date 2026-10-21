@@ -804,7 +804,7 @@ elements.nanomaterial = {
                     if (p.element === "nanomaterial") {
                         detect.x[coord[0]]++;
                         detect.y[coord[1]]++;
-                    } else if (p.element === "nanites") {
+                    } else if (p.element === "nanites" && p.start !== pixelTicks) {
                         if (p.harden ? p.harden === "nanomaterial" : true) {
                             changePixel(p,"nanomaterial");
                             detect.x[coord[0]]++;
