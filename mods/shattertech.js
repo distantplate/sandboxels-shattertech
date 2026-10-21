@@ -832,7 +832,9 @@ elements.nanomaterial = {
             }
             if (detect.x[0] == 2 && detect.y[0] == 2 && typeof corner != "number") {
                 var dex = (corner[0]+1)+3*(coord[1]+1);
-                cornerCheck(corner[0],corner[1],dex,"nanomaterial");
+                if (cornerCheck(corner[0],corner[1],dex,"nanomaterial") == true) {
+                    createPixel("nanomaterial",corner[0],corner[1]);
+                }
             }
             for (let a in pixel.store.x) {
                 var b = pixel.x+pixel.store.x[a];
