@@ -796,7 +796,7 @@ elements.nanomaterial = {
             for (let a in pixel.store.x) {
                 //works till at least here
                 var b = pixel.x+a;
-                logMessage("past var b");
+                logMessage(b);
                 if (isEmpty(b,pixel.y-2,true) || isEmpty(b,pixel.y+2,true)) {continue;}
                 if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
                 if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
