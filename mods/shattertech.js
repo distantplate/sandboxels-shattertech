@@ -782,7 +782,7 @@ for (var i = 0; i < naniteReacts.length; i++) {
 var cornerCoords = {
     0: [[-1,2],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1],[2,-1]],
     2: [[-2,-1],[-1,-1],[0,-1],[1,-1],[1,0],[1,1],[1,2]],
-    6: [[-1,-2][-1,-1],[-1,0],[-1,1],[0,1],[1,1][2,1]],
+    6: [[-1,-2],[-1,-1],[-1,0],[-1,1],[0,1],[1,1][2,1]],
     8: [[-2,1],[-1,1],[0,1],[1,1],[1,0],[1,-1],[1,-2]]
 };
 
@@ -1485,15 +1485,14 @@ function cornerCheck(x1,y1,num,elem) {
     var check = true;
     for (var i = 0; i < cornerCoords[num].length; i++) {
         var coord = cornerCoords[num][i];
-        var x = x1+coord[0]; logMessage(x+","+typeof x);
-        var y = y1+coord[1]; logMessage(y+","+typeof y);
-        break;
+        var x = x1+coord[0];
+        var y = y1+coord[1];
         if (outOfBounds(x,y)) {check = false; break;}
         if (!isEmpty(x,y)) {
             if (pixelMap[x][y].element === elem) {check = false; break;}
         }
     }
-    return false;
+    return check;
 };
 
 function adv_move(pixel,x,y,cond) {
