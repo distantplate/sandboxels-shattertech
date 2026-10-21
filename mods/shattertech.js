@@ -783,7 +783,7 @@ elements.nanomaterial = {
     color: "#800080",
     colorOn: "#ff00ff",
     tick: function(pixel) {
-        if (!pixel.detection) {
+        if (!pixel.detect) {
             pixel.detect = [
                 0,0,0,
                 0,0,0,
@@ -824,7 +824,7 @@ elements.nanomaterial = {
             else {pixel.color = "rgb(128,0,128)";}
         } else {
             changePixel(pixel,"nanites");
-            pixel.detection = false;
+            pixel.detect = false;
             pixel.harden = false;
         }
         doDefaults(pixel);
