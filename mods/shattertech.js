@@ -794,12 +794,17 @@ elements.nanomaterial = {
         if (pixel.stage == 1) {
             for (i = 0; i < adjacentCoords.length; i++) {
                 var a = adjacentCoords[i];
-                var x = [pixel.x+a[0],pixel.x+(2*a[0])];
-                var y = [pixel.y+a[1],pixel.y+(2*a[1])];
+                var x = [pixel.x+a[0],pixel.x+(2*a[0]),pixel.x+(3*a[0])];
+                var y = [pixel.y+a[1],pixel.y+(2*a[1]),pixel.y+(3*a[1])];
                 if (pixel.x == x[0] && pixel.y == y[0]) {continue;}
                 if (!isEmpty(x[0],y[0],true)) {continue;}
-                if (isEmpty(x[1],y[1],true)) {continue;}
-                if (pixelMap[x[1]][y[1]].element === "nanomaterial") {
+                if (isEmpty(x[1],y[1],true)) {
+                    if (isEmpty(x[2],y[2],true)) {continue;}
+                    else if (pixelMap[x[2]][y[2]].element === "nanomaterial") {
+                        createPixel("nanomaterial",x[0],y[0]);
+                    }
+                }
+                else if (pixelMap[x[1]][y[1]].element === "nanomaterial") {
                     createPixel("nanomaterial",x[0],y[0]);
                 }
             }
