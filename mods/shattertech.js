@@ -809,17 +809,29 @@ elements.nanomaterial = {
             if (detect.x[0] == 2) {
                 if (detect.x[-1] == 0) {pixel.store.x.push(-1);}
                 if (detect.x[1] == 0) {pixel.store.x.push(1);}
+            } else if (detect.y[0] == 2) {
+                if (detect.y[-1] == 0) {pixel.store.y.push(-1);}
+                if (detect.y[1] == 0) {pixel.store.y.push(1);}
             }
             for (let a in pixel.store.x) {
                 var b = pixel.x+pixel.store.x[a];
-                //works till at least here
-                logMessage(b);
                 if (isEmpty(b,pixel.y-2,true) || isEmpty(b,pixel.y+2,true)) {continue;}
                 if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
                 if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
                 for (i = -1; i < 2; i++) {
                     if (isEmpty(b,pixel.y+i)) {
                         createPixel("nanomaterial",b,pixel.y+i);
+                    }
+                }
+            }
+            for (let a in pixel.store.y) {
+                var b = pixel.y+pixel.store.y[a];
+                if (isEmpty(pixel.x-2,b,true) || isEmpty(pixel.x+2,b,true)) {continue;}
+                if (pixelMap[pixel.x-2][b].element !== "nanomaterial") {continue;}
+                if (pixelMap[pixel.x+2][b].element !== "nanomaterial") {continue;}
+                for (i = -1; i < 2; i++) {
+                    if (isEmpty(pixel.x+i,b)) {
+                        createPixel("nanomaterial",pixel.x+i,b);
                     }
                 }
             }
