@@ -786,7 +786,7 @@ elements.nanomaterial = {
     tick: function(pixel) {
         if (!pixel.stage) {
             pixel.stage = 1;
-            pixel.store = {x:{},y:{}};
+            pixel.store = {x:[],y:[]};
         }
         if (pixel.stage == 1) {
             var detect = {
@@ -807,7 +807,7 @@ elements.nanomaterial = {
                 }
                 logMessage("part 3");
             }
-            pixel.store = {x:{},y:{}};
+            pixel.store = {x:[],y:[]};
             for (i = 0; i < squareCoords.length; i++) {
                 var coord = squareCoords[i];
                 var x = pixel.x + coord[0];
@@ -822,8 +822,8 @@ elements.nanomaterial = {
                 }
             }
             if (detect.x[0] == 2) {
-                if (detect.x[-1] == 0) {pixel.store.x[-1] = true;}
-                if (detect.x[1] == 0) {pixel.store.x[1] = true;}
+                if (detect.x[-1] == 0) {pixel.store.x.push(-1);}
+                if (detect.x[1] == 0) {pixel.store.x.push(1);}
             }
 
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
