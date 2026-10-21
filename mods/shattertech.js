@@ -798,9 +798,11 @@ elements.nanomaterial = {
                 if (isEmpty(b,pixel.y-2,true) && isEmpty(b,pixel.y+2,true)) {continue;}
                 if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
                 if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
-                createPixel("nanomaterial",b,pixel.y-1);
-                createPixel("nanomaterial",b,pixel.y);
-                createPixel("nanomaterial",b,pixel.y+1);
+                for (i = -1; i < 2; i++) {
+                    if (isEmpty(b,pixel.y+i)) {
+                        createPixel("nanomaterial",b,pixel.y+i);
+                    }
+                }
             }
             pixel.store = {x:{},y:{}};
             for (i = 0; i < squareCoords.length; i++) {
