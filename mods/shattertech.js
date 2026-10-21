@@ -800,9 +800,16 @@ elements.nanomaterial = {
                 if (x == pixel.x && y == pixel.y) {continue;}
                 if (outOfBounds(x,y)) {continue;}
                 if (!isEmpty(x,y)) {
-                    if (pixelMap[x][y].element === "nanomaterial") {
+                    var p = pixelMap[x][y];
+                    if (p.element === "nanomaterial") {
                         detect.x[coord[0]]++;
                         detect.y[coord[1]]++;
+                    } else if (p.element === "nanites") {
+                        if (p.harden ? p.harden === "nanomaterial" : true) {
+                            changePixel(p,"nanomaterial");
+                            detect.x[coord[0]]++;
+                            detect.y[coord[1]]++;
+                        }
                     }
                 }
             }
