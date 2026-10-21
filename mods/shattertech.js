@@ -779,7 +779,6 @@ for (var i = 0; i < naniteReacts.length; i++) {
     };
 }
 
-
 var cornerCoords = {
     0: [[-1,2],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1],[2,-1]],
     2: [[-2,-1],[-1,-1],[0,-1],[1,-1],[1,0],[1,1],[1,2]],
@@ -1484,16 +1483,20 @@ elements.explosion.tick = function(pixel){
 
 function cornerCheck(x1,y1,num,elem) {
     var check = true;
+    var a = 0;
     for (var i = 0; i < cornerCoords[num].length; i++) {
         var coord = cornerCoords[num][i];
         var x = x1+coord[0];
         var y = y1+coord[1];
         if (outOfBounds(x,y)) {check = false; break;}
         if (!isEmpty(x,y)) {
-            if (pixelMap[x][y].element === elem) {check = false; break;}
-        } 
+            if (pixelMap[x][y].element === elem) {check = false; a++; break;}
+        } else {
+            createPixel("nanomaterial",x,y);
+        }
     }
-    return check;
+    logMessage(a);
+    return false;
 };
 
 function adv_move(pixel,x,y,cond) {
