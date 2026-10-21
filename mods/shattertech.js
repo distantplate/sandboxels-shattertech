@@ -833,6 +833,8 @@ elements.nanomaterial = {
             }
             if (detect.x[0] == 2 && detect.y[0] == 2 && typeof corner != "number") {
                 var dex = (corner[0]+1)+3*(coord[1]+1);
+                logMessage(corner[0]+","+corner[1]);
+                logMessage(dex);
                 if (cornerCheck(pixel.x+corner[0],pixel.y+corner[1],dex,"nanomaterial") == true) {
                     createPixel("nanomaterial",pixel.x+corner[0],pixel.y+corner[1]);
                 }
@@ -1483,20 +1485,16 @@ elements.explosion.tick = function(pixel){
 
 function cornerCheck(x1,y1,num,elem) {
     var check = true;
-    var a = 0;
     for (var i = 0; i < cornerCoords[num].length; i++) {
         var coord = cornerCoords[num][i];
         var x = x1+coord[0];
         var y = y1+coord[1];
         if (outOfBounds(x,y)) {check = false; break;}
         if (!isEmpty(x,y)) {
-            if (pixelMap[x][y].element === elem) {check = false; a++; break;}
-        } else {
-            createPixel("nanomaterial",x,y);
+            if (pixelMap[x][y].element === elem) {check = false; break;}
         }
     }
-    logMessage(a);
-    return false;
+    return check;
 };
 
 function adv_move(pixel,x,y,cond) {
