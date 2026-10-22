@@ -792,74 +792,64 @@ elements.nanomaterial = {
     tick: function(pixel) {
         if (!pixel.stage) {
             pixel.stage = 1;
-            pixel.store = {x:[],y:[]};
         }
         if (pixel.stage == 1) {
-            var detect = {
-                x: {[-1]:0,[0]:0,[1]:0},
-                y: {[-1]:0,[0]:0,[1]:0}
-            };
+            var count = 0;
             var corner = 0;
-            for (i = 0; i < squareCoords.length; i++) {
-                var coord = squareCoords[i];
-                var x = pixel.x + coord[0];
-                var y = pixel.y + coord[1];
-                if (x == pixel.x && y == pixel.y) {continue;}
-                if (outOfBounds(x,y)) {continue;}
-                if (!isEmpty(x,y)) {
-                    var p = pixelMap[x][y];
-                    if (p.element === "nanomaterial") {
-                        detect.x[coord[0]]++;
-                        detect.y[coord[1]]++;
-                    } else if (p.element === "nanites" && p.start !== pixelTicks) {
-                        if (p.harden ? p.harden === "nanomaterial" : true) {
-                            changePixel(p,"nanomaterial");
-                            detect.x[coord[0]]++;
-                            detect.y[coord[1]]++;
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var coord = adjacentCoords[i];
+                var store = [];
+                for (var j = 1; j < 4; j++) {
+                    var x = pixel.x+(j*coord[0]);
+                    var y = pixel.y+(J*coord[1]);
+                    if (outOfBounds(x,y)) {break;}
+                    if (!isEmpty(x,y)) {
+                        if (pixelMap[x][y].element === "nanomaterial") {
+                            if (j == 1) {count++;}
+                            break;
+                        }
+                    } else {
+                        store.push([x,y]);
+                    }
+                }
+                for (let a in store) {
+                    if (coord[0] == 0) {
+                        for (var i = -1; i < 2; i+= 2) {
+                            if (!isEmpty(store[a][0],store[a][1]+i)) {
+                                if (pixelMap[store[a][0]][store[a][1]+i] === "nanomaterial") {
+                                    createPixel("nanomaterial",store[a][0],store[a][1]);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        for (var i = -1; i < 2; i+= 2) {
+                            if (!isEmpty(store[a][0]+i,store[a][1])) {
+                                if (pixelMap[store[a][0]+i][store[a][1]] === "nanomaterial") {
+                                    createPixel("nanomaterial",store[a][0],store[a][1]);
+                                    break;
+                                }
+                            }
                         }
                     }
-                } else if (coord[0] != 0 && coord[1] != 0) {
-                    if (corner == 0) {corner = [coord[0],coord[1]];}
-                    else {corner = 1;}
                 }
             }
-            if (detect.x[0] == 2) {
-                if (detect.x[-1] < 3) {pixel.store.x.push(-1);}
-                if (detect.x[1] < 3) {pixel.store.x.push(1);}
+            for (var i = 0; i < diagonalCoords.length; i++) {
+                var coord = diagonalCoords[i];
+                var x = pixel.x+coord[0];var y = pixel.y+coord[1];
+                if (!isEmpty(x,y,true)) {
+                    if (pixelMap[x][y].element === "nanomaterial") {count++;}
+                } else if (!outOfBounds(x,y)) {
+                    if (corner == 0) {corner = [coord[0],coord[1]];}
+                    else {corner = 1; break;}
+                }
             }
-            if (detect.y[0] == 2) {
-                if (detect.y[-1] < 3) {pixel.store.y.push(-1);}
-                if (detect.y[1] < 3) {pixel.store.y.push(1);}
-            }
-            if (detect.x[0] == 2 && detect.y[0] == 2 && typeof corner != "number") {
+            if (count == 7 && typeof corner != "number") {
                 var dex = (corner[0]+1)+(3*(corner[1]+1));
                 if (cornerCheck(pixel.x+corner[0],pixel.y+corner[1],dex,"nanomaterial") == true) {
                     createPixel("nanomaterial",pixel.x+corner[0],pixel.y+corner[1]);
                 }
             }
-            for (let a in pixel.store.x) {
-                var b = pixel.x+pixel.store.x[a];
-                if (isEmpty(b,pixel.y-2,true) || isEmpty(b,pixel.y+2,true)) {continue;}
-                if (pixelMap[b][pixel.y-2].element !== "nanomaterial") {continue;}
-                if (pixelMap[b][pixel.y+2].element !== "nanomaterial") {continue;}
-                for (i = -1; i < 2; i++) {
-                    if (isEmpty(b,pixel.y+i)) {
-                        createPixel("nanomaterial",b,pixel.y+i);
-                    }
-                }
-            }
-            for (let a in pixel.store.y) {
-                var b = pixel.y+pixel.store.y[a];
-                if (isEmpty(pixel.x-2,b,true) || isEmpty(pixel.x+2,b,true)) {continue;}
-                if (pixelMap[pixel.x-2][b].element !== "nanomaterial") {continue;}
-                if (pixelMap[pixel.x+2][b].element !== "nanomaterial") {continue;}
-                for (i = -1; i < 2; i++) {
-                    if (isEmpty(pixel.x+i,b)) {
-                        createPixel("nanomaterial",pixel.x+i,b);
-                    }
-                }
-            }
-            pixel.store = {x:[],y:[]};
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
             else {pixel.color = "rgb(128,0,128)";}
         } else {
