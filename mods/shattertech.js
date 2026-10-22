@@ -881,6 +881,7 @@ elements.nanomaterial = {
     breakInto: "nanites",
     /*onBreak: function(pixel) {
         pixel.harden = "nanomaterial";
+		a test
     },*/
     movable: false,
 };
