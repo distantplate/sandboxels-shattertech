@@ -847,7 +847,7 @@ elements.nanomaterial = {
                     }
                 }
             }
-            for (var i = 0; i < diagonalCoords.length; i++) {
+            /*for (var i = 0; i < diagonalCoords.length; i++) {
                 var coord = diagonalCoords[i];
                 var x = pixel.x+coord[0];var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
@@ -864,7 +864,7 @@ elements.nanomaterial = {
                         createPixel("nanomaterial",pixel.x+corner[0],pixel.y+corner[1]);
                     }
                 }
-            }
+            }*/
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
             else {pixel.color = "rgb(128,0,128)";}
         } else {
@@ -1488,7 +1488,7 @@ elements.explosion.tick = function(pixel){
 
 function cornerCheck(x1,y1,num,elem) {
     var check = true;
-    /*for (var i = 0; i < cornerCoords[num].length; i++) {
+    for (var i = 0; i < cornerCoords[num].length; i++) {
         var coord = cornerCoords[num][i];
         var x = x1+coord[0];
         var y = y1+coord[1];
@@ -1496,8 +1496,8 @@ function cornerCheck(x1,y1,num,elem) {
         if (!isEmpty(x,y)) {
             if (pixelMap[x][y].element === elem) {check = false; break;}
         }
-    }*/
-    return false;
+    }
+    return check;
 };
 
 function adv_move(pixel,x,y,cond) {
