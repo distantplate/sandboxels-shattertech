@@ -805,7 +805,6 @@ elements.nanomaterial = {
                     var y = pixel.y+(j*coord[1]);
                     if (outOfBounds(x,y)) {break;}
                     if (!isEmpty(x,y)) {
-                        if (pixelMap[x][y].start === pixelTicks) {continue;}
                         if (pixelMap[x][y].element === "nanomaterial") {
                             if (j == 1) {count++;}
                             check = true;
@@ -821,6 +820,7 @@ elements.nanomaterial = {
                         for (var j = -1; j < 2; j+= 2) {
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
                                 if (pixelMap[store[a][0]][store[a][1]+j].element === "nanomaterial") {
+                                    if (pixelMap[store[a][0]][store[a][1]+j].start === pixelTicks) {continue;}
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
                                     break;
                                 }
@@ -830,6 +830,7 @@ elements.nanomaterial = {
                         for (var j = -1; j < 2; j+= 2) {
                             if (!isEmpty(store[a][0]+j,store[a][1])) {
                                 if (pixelMap[store[a][0]+j][store[a][1]].element === "nanomaterial") {
+                                    if (pixelMap[store[a][0]+j][store[a][1]].start === pixelTicks) {continue;}
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
                                     break;
                                 }
