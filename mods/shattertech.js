@@ -829,7 +829,7 @@ elements.nanomaterial = {
                 for (let a in store) {
                     var x = store[a][0]; var y = store[a][1];
                     for (var j = -1; j < 2; j+= 2) {
-                        if (!isEmpty(x+(j*coord[1]),y+(j*coord[0]))) {
+                        if (!isEmpty(x+(j*coord[1]),y+(j*coord[0]),true)) {
                             if (pixelMap[x+(j*coord[1])][y+(j*coord[0])].element === "nanomaterial") {
                                 if (pixelMap[x+(j*coord[1])][y+(j*coord[0])].start === pixelTicks) {continue;}
                                 store2.push([x,y]);
