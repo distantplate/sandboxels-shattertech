@@ -799,19 +799,22 @@ elements.nanomaterial = {
             for (var i = 0; i < adjacentCoords.length; i++) {
                 var coord = adjacentCoords[i];
                 var store = [];
+                var check = false;
                 for (var j = 1; j < 4; j++) {
                     var x = pixel.x+(j*coord[0]);
                     var y = pixel.y+(j*coord[1]);
                     if (outOfBounds(x,y)) {break;}
                     if (!isEmpty(x,y)) {
-                        /*if (pixelMap[x][y].element === "nanomaterial") {
+                        if (pixelMap[x][y].element === "nanomaterial") {
                             if (j == 1) {count++;}
+                            check = true;
                             break;
-                        }*/
+                        }
                     } else {
                         store.push([x,y]);
                     }
                 }
+                if (check == false) {continue;}
                 for (let a in store) {
                     if (coord[1] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
