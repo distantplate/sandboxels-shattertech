@@ -841,7 +841,10 @@ elements.nanomaterial = {
                 
                 }
                 if (proceed == store.length) {
-                    for (let a in store2) {createPixel("nanomaterial",store2[a][0],store2[a][1]);}
+                    for (let a in store2) {
+                        if (!isEmpty(store2[a][0],store2[a][1])) {continue;}
+                        createPixel("nanomaterial",store2[a][0],store2[a][1]);
+                    }
                 }
             }
             for (var i = 0; i < diagonalCoords.length; i++) {
