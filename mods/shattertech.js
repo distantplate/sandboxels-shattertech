@@ -812,7 +812,7 @@ elements.nanomaterial = {
                         store.push([x,y]);
                     }
                 }
-                for (let a in store) {
+                /*for (let a in store) {
                     if (coord[0] == 0) {
                         for (var i = -1; i < 2; i+= 2) {
                             if (!isEmpty(store[a][0],store[a][1]+i)) {
@@ -832,7 +832,7 @@ elements.nanomaterial = {
                             }
                         }
                     }
-                }
+                }*/
             }
             for (var i = 0; i < diagonalCoords.length; i++) {
                 var coord = diagonalCoords[i];
