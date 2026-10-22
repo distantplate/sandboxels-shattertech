@@ -801,7 +801,7 @@ elements.nanomaterial = {
                 var store = [];
                 for (var j = 1; j < 4; j++) {
                     var x = pixel.x+(j*coord[0]);
-                    var y = pixel.y+(J*coord[1]);
+                    var y = pixel.y+(j*coord[1]);
                     if (outOfBounds(x,y)) {break;}
                     if (!isEmpty(x,y)) {
                         if (pixelMap[x][y].element === "nanomaterial") {
