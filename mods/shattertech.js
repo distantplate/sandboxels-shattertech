@@ -815,33 +815,24 @@ elements.nanomaterial = {
                     }
                 }
                 if (check == false) {continue;}
-                var proceed = true;
+                var proceed = 0;
+                var store2 = [];
                 for (let a in store) {
-                    if (proceed == false) {break;}
-                    proceed = false;
-                    if (coord[1] == 0) {
-                        for (var j = -1; j < 2; j+= 2) {
-                            if (!isEmpty(store[a][0],store[a][1]+j)) {
-                                if (pixelMap[store[a][0]][store[a][1]+j].element === "nanomaterial") {
-                                    if (pixelMap[store[a][0]][store[a][1]+j].start === pixelTicks) {continue;}
-                                    createPixel("nanomaterial",store[a][0],store[a][1]);
-                                    proceed = true;
-                                    break;
-                                }
-                            }
-                        }
-                    } else if (1==2) {
-                        for (var j = -1; j < 2; j+= 2) {
-                            if (!isEmpty(store[a][0]+j,store[a][1])) {
-                                if (pixelMap[store[a][0]+j][store[a][1]].element === "nanomaterial") {
-                                    if (pixelMap[store[a][0]+j][store[a][1]].start === pixelTicks) {continue;}
-                                    createPixel("nanomaterial",store[a][0],store[a][1]);
-                                    proceed = true;
-                                    break;
-                                }
+                    var x = store[a][0]; var y = store[a][1];
+                    for (var j = -1; j < 2; j+= 2) {
+                        if (!isEmpty(x+(j*coord[1]),y+(j*coord[0]))) {
+                            if (pixelMap[x+(j*coord[1])][y+(j*coord[0])].element === "nanomaterial") {
+                                if (pixelMap[x+(j*coord[1])][y+(j*coord[0])].start === pixelTicks) {continue;}
+                                store2.push([x,y]);
+                                proceed++;
+                                break;
                             }
                         }
                     }
+                
+                }
+                if (proceed == store.length) {
+                    for (let a in store2) {createPixel("nanomaterial",store2[a][0],store2[a][1]);}
                 }
             }
             for (var i = 0; i < diagonalCoords.length; i++) {
