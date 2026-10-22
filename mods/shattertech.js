@@ -860,7 +860,9 @@ elements.nanomaterial = {
             if (count == 7 && typeof corner != "number") {
                 var dex = (corner[0]+1)+(3*(corner[1]+1));
                 if (cornerCheck(pixel.x+corner[0],pixel.y+corner[1],dex,"nanomaterial") == true) {
-                    createPixel("nanomaterial",pixel.x+corner[0],pixel.y+corner[1]);
+                    if (isEmpty(pixel.x+corner[0],pixel.y+corner[1])) {
+                        createPixel("nanomaterial",pixel.x+corner[0],pixel.y+corner[1]);
+                    }
                 }
             }
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
