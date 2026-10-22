@@ -815,13 +815,17 @@ elements.nanomaterial = {
                     }
                 }
                 if (check == false) {continue;}
+                var proceed = true;
                 for (let a in store) {
+                    if (proceed == false) {break;}
+                    proceed = false;
                     if (coord[1] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
                                 if (pixelMap[store[a][0]][store[a][1]+j].element === "nanomaterial") {
                                     if (pixelMap[store[a][0]][store[a][1]+j].start === pixelTicks) {continue;}
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
+                                    proceed = true;
                                     break;
                                 }
                             }
@@ -832,6 +836,7 @@ elements.nanomaterial = {
                                 if (pixelMap[store[a][0]+j][store[a][1]].element === "nanomaterial") {
                                     if (pixelMap[store[a][0]+j][store[a][1]].start === pixelTicks) {continue;}
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
+                                    proceed = true;
                                     break;
                                 }
                             }
