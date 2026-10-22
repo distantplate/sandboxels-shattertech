@@ -800,7 +800,7 @@ elements.nanomaterial = {
                 var coord = adjacentCoords[i];
                 var store = [];
                 var check = false;
-                for (var j = 1; j < 4; j++) {
+                for (var j = 1; j < 5; j++) {
                     var x = pixel.x+(j*coord[0]);
                     var y = pixel.y+(j*coord[1]);
                     if (outOfBounds(x,y)) {break;}
@@ -810,7 +810,7 @@ elements.nanomaterial = {
                             check = true;
                             break;
                         }
-                    } else {
+                    } else if (j < 4) {
                         store.push([x,y]);
                     }
                 }
