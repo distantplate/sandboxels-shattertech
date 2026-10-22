@@ -822,7 +822,7 @@ elements.nanomaterial = {
                                 }
                             }
                         }
-                    } else {
+                    } else if (1==2) {
                         for (var j = -1; j < 2; j+= 2) {
                             if (!isEmpty(store[a][0]+j,store[a][1])) {
                                 if (pixelMap[store[a][0]+j][store[a][1]].element === "nanomaterial") {
