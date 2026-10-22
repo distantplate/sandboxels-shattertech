@@ -847,7 +847,7 @@ elements.nanomaterial = {
                     }
                 }
             }
-            /*for (var i = 0; i < diagonalCoords.length; i++) {
+            for (var i = 0; i < diagonalCoords.length; i++) {
                 var coord = diagonalCoords[i];
                 var x = pixel.x+coord[0];var y = pixel.y+coord[1];
                 if (!isEmpty(x,y,true)) {
@@ -864,7 +864,7 @@ elements.nanomaterial = {
                         createPixel("nanomaterial",pixel.x+corner[0],pixel.y+corner[1]);
                     }
                 }
-            }*/
+            }
             if (pixel.charge) {pixel.color = "rgb(255,0,255)";}
             else {pixel.color = "rgb(128,0,128)";}
         } else {
