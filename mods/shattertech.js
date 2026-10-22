@@ -809,6 +809,15 @@ elements.nanomaterial = {
                             if (j == 1) {count++;}
                             check = true;
                             break;
+                        } else if (pixelMap[x][y].element === "nanites") {
+                            var p = pixelMap[x][y]
+                            if (p.start === pixelTicks) {continue;}
+                            if (p.harden ? p.harden === "nanomaterial" : false) {
+                                changePixel(p,"nanomaterial");
+                                if (j == 1) {count++;}
+                                check = true;
+                                break;
+                            }
                         }
                     } else if (j < 4) {
                         store.push([x,y]);
