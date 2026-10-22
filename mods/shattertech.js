@@ -815,7 +815,7 @@ elements.nanomaterial = {
                 for (let a in store) {
                     if (coord[1] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
-                            logMessage("1");
+                            logMessage(store[a][0]+","+store[a][1]);
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
                                 if (pixelMap[store[a][0]][store[a][1]+j] === "nanomaterial") {
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
