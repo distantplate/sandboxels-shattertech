@@ -816,9 +816,7 @@ elements.nanomaterial = {
                     if (coord[1] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
-                                logMessage("part 1");
-                                if (pixelMap[store[a][0]][store[a][1]+j] === "nanomaterial") {
-                                    logMessage("part 2");
+                                if (pixelMap[store[a][0]][store[a][1]+j].element === "nanomaterial") {
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
                                     break;
                                 }
@@ -826,9 +824,8 @@ elements.nanomaterial = {
                         }
                     } else {
                         for (var j = -1; j < 2; j+= 2) {
-                            logMessage("2");
                             if (!isEmpty(store[a][0]+j,store[a][1])) {
-                                if (pixelMap[store[a][0]+j][store[a][1]] === "nanomaterial") {
+                                if (pixelMap[store[a][0]+j][store[a][1]].element === "nanomaterial") {
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
                                     break;
                                 }
