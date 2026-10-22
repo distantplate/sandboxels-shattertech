@@ -806,13 +806,16 @@ elements.nanomaterial = {
                     if (!isEmpty(x,y)) {
                         if (pixelMap[x][y].element === "nanomaterial") {
                             if (j == 1) {count++;}
+                            logMessage("1");
                             break;
                         }
                     } else {
                         store.push([x,y]);
+                        logMessage("2");
                     }
                 }
                 for (let a in store) {
+                    logMessage("3");
                     if (coord[0] == 0) {
                         for (var i = -1; i < 2; i+= 2) {
                             if (!isEmpty(store[a][0],store[a][1]+i)) {
