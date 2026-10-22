@@ -815,6 +815,7 @@ elements.nanomaterial = {
                 for (let a in store) {
                     if (coord[0] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
+                            logMessage("1");
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
                                 if (pixelMap[store[a][0]][store[a][1]+j] === "nanomaterial") {
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
@@ -824,6 +825,7 @@ elements.nanomaterial = {
                         }
                     } else {
                         for (var j = -1; j < 2; j+= 2) {
+                            logMessage("2");
                             if (!isEmpty(store[a][0]+j,store[a][1])) {
                                 if (pixelMap[store[a][0]+j][store[a][1]] === "nanomaterial") {
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
