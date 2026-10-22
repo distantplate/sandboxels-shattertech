@@ -813,7 +813,7 @@ elements.nanomaterial = {
                     }
                 }
                 for (let a in store) {
-                    if (coord[0] == 0) {
+                    if (coord[1] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
                             logMessage("1");
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
