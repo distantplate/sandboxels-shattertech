@@ -816,16 +816,17 @@ elements.nanomaterial = {
                     if (coord[1] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
-                                logMessage("1");
+                                logMessage("part 1");
                                 if (pixelMap[store[a][0]][store[a][1]+j] === "nanomaterial") {
-                                    logMessage("2");
+                                    logMessage("part 2");
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
                                     break;
                                 }
                             }
                         }
-                    } else if (1==2) {
+                    } else {
                         for (var j = -1; j < 2; j+= 2) {
+                            logMessage("2");
                             if (!isEmpty(store[a][0]+j,store[a][1])) {
                                 if (pixelMap[store[a][0]+j][store[a][1]] === "nanomaterial") {
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
