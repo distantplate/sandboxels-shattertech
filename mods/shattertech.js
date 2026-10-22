@@ -815,17 +815,17 @@ elements.nanomaterial = {
                 for (let a in store) {
                     if (coord[1] == 0) {
                         for (var j = -1; j < 2; j+= 2) {
-                            logMessage(store[a][0]+","+store[a][1]);
                             if (!isEmpty(store[a][0],store[a][1]+j)) {
+                                logMessage("1");
                                 if (pixelMap[store[a][0]][store[a][1]+j] === "nanomaterial") {
+                                    logMessage("2");
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
                                     break;
                                 }
                             }
                         }
-                    } else {
+                    } else if (1==2) {
                         for (var j = -1; j < 2; j+= 2) {
-                            logMessage("2");
                             if (!isEmpty(store[a][0]+j,store[a][1])) {
                                 if (pixelMap[store[a][0]+j][store[a][1]] === "nanomaterial") {
                                     createPixel("nanomaterial",store[a][0],store[a][1]);
