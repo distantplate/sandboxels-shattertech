@@ -1429,7 +1429,7 @@ elements.disintegrate = {
 };
 
 elements.stasis_projector = {
-    color: ["#262991","#33cc8f","#262991"],
+    color: ["#26d991","#33cc8f","#262991"],
     behavior: behaviors.WALL,
     tick: function(pixel) {
         if (pixel.charge) {
