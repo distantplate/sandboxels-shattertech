@@ -1446,6 +1446,7 @@ elements.stasis_projector = {
                     p.oldElem = oldElem;
                     p.color = oldColor;
                     p.timer = 10;
+                    p.stable = 3;
                 }
             }
         }
@@ -1462,37 +1463,39 @@ elements.stasis = {
             pixel.oldElem = "proton";
             pixel.color = pixelColorPick(pixel, "#ffa6a6");
             pixel.timer = 10;
+            pixel.stable = 0;
         }
         if (pixel.timer > 0) {
             var t = pixelTicks/2+pixel.x+pixel.y;
             var r = Math.floor(127*Math.sin(t/1.5));
             pixel.alpha = Math.max(0,r/127);
         } else {changePixel(pixel,pixel.oldElem);}
-        if (pixel.charge) {
-            pixel.timer = 10;
-            for (var i = 0; i < adjacentCoords.length; i++) {
-                var coord = adjacentCoords[i];
-                var x = pixel.x + coord[0];
-                var y = pixel.y + coord[1];
-                if (isEmpty(x,y,true)) {continue;}
-                var p = pixelMap[x][y];
-                if (elements[p.element].movable) {
-                    var oldElem = p.element;
-                    var oldColor = pixelColorPick(p);
-                    changePixel(p,"stasis");
-                    p.oldElem = oldElem;
-                    p.color = oldColor;
-                    p.timer = 10;
-                }
+        for (var i = 0; i < adjacentCoords.length; i++) {
+            var coord = adjacentCoords[i];
+            var x = pixel.x + coord[0];
+            var y = pixel.y + coord[1];
+            if (isEmpty(x,y,true)) {continue;}
+            var p = pixelMap[x][y];
+            if (elements[p.element].movable) {
+                var oldElem = p.element;
+                var oldColor = pixelColorPick(p);
+                changePixel(p,"stasis");
+                p.oldElem = oldElem;
+                p.color = oldColor;
+                p.timer = 10;
+            } else if (p.element === "stasis" && p.stable == 2) {
+                p.stable = 3;
             }
-        } else {pixel.timer--;}
+        }
+        if (pixel.stable == 3) {pixel.timer = 10;}
+        else {pixel.timer--;}
+        if (pixel.stable > 0) {pixel.stable--;}
         doDefaults(pixel);
     },
     onPlace: behaviors.DO_TICK,
     category: "special",
     insulate: true,
     hardness: 1,
-    conduct: 1,
     movable: false,
 };
 
