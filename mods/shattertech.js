@@ -1465,28 +1465,30 @@ elements.stasis = {
             pixel.timer = 10;
             pixel.stable = 0;
         }
+        if (pixel.disrupt) {changePixel(pixel,oldElem);}
         if (pixel.timer > 0) {
             var t = pixelTicks/2+pixel.x+pixel.y;
             var r = Math.floor(127*Math.sin(t/1.5));
             pixel.alpha = Math.max(0,r/127);
-        } else {changePixel(pixel,pixel.oldElem);}
-        for (var i = 0; i < adjacentCoords.length; i++) {
-            var coord = adjacentCoords[i];
-            var x = pixel.x + coord[0];
-            var y = pixel.y + coord[1];
-            if (isEmpty(x,y,true)) {continue;}
-            var p = pixelMap[x][y];
-            if (elements[p.element].movable) {
-                var oldElem = p.element;
-                var oldColor = pixelColorPick(p);
-                changePixel(p,"stasis");
-                p.oldElem = oldElem;
-                p.color = oldColor;
-                p.timer = 10;
-            } else if (p.element === "stasis" && p.stable == 2) {
-                p.stable = 3;
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var coord = adjacentCoords[i];
+                var x = pixel.x + coord[0];
+                var y = pixel.y + coord[1];
+                if (isEmpty(x,y,true)) {continue;}
+                var p = pixelMap[x][y];
+                if (elements[p.element].movable) {
+                    var oldElem = p.element;
+                    var oldColor = pixelColorPick(p);
+                    changePixel(p,"stasis");
+                    p.oldElem = oldElem;
+                    p.color = oldColor;
+                    p.timer = 10;
+                } else if (p.element === "stasis") {
+                    if (p.disrupt == true) {pixel.disrupt = true; break;}
+                    if (p.stable == 2 && pixel.stable == 0) {p.stable = 3;}
+                } else if (p.charge) {p.stable = 3;}
             }
-        }
+        } else {changePixel(pixel,pixel.oldElem);}
         if (pixel.stable == 3) {pixel.timer = 10;}
         else {pixel.timer--;}
         if (pixel.stable > 0) {pixel.stable--;}
