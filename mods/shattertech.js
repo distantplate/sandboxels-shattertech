@@ -1440,10 +1440,10 @@ elements.stasis_projector = {
                 if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
                 if (elements[p.element].movable) {
-                    var oldElem = p.element;
+                    var oldElement = p.element;
                     var oldColor = pixelColorPick(p);
                     changePixel(p,"stasis");
-                    p.oldElem = oldElem;
+                    p.oldElem = oldElement;
                     p.color = oldColor;
                     p.timer = 10;
                     p.stable = 3;
@@ -1454,6 +1454,7 @@ elements.stasis_projector = {
     category: "machines",
     conduct: 1,
     state: "solid",
+    movable: false,
 };
 
 elements.stasis = {
@@ -1480,10 +1481,10 @@ elements.stasis = {
                 var p = pixelMap[x][y];
                 if (p.start === pixelTicks) {continue;}
                 if (elements[p.element].movable) {
-                    var oldElem = p.element;
+                    var oldElement = p.element;
                     var oldColor = pixelColorPick(p);
                     changePixel(p,"stasis");
-                    p.oldElem = oldElem;
+                    p.oldElem = oldElement;
                     p.color = oldColor;
                     p.timer = 10;
                     p.stable = 0;
