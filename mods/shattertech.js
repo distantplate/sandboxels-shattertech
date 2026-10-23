@@ -1429,20 +1429,20 @@ elements.disintegrate = {
 };
 
 elements.stasis_projector = {
-    color: ["#26d991","#33cc8f","#262991"],
+    color: ["#26d991","#33cc8f","#26d991"],
     behavior: behaviors.WALL,
     tick: function(pixel) {
         if (pixel.charge) {
             for (var i = 0; i < adjacentCoords.length; i++) {
                 var coord = adjacentCoords[i];
                 var x = pixel.x + coord[0];
-                var y = pixel.x + coord[1];
+                var y = pixel.y + coord[1];
                 if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
                 if (elements[p.element].movable) {
                     var oldColor = p.color;
                     var oldElem = p.element;
-                    changePixel(pixel,"stasis");
+                    changePixel(p,"stasis");
                     p.oldElem = oldElem;
                     p.color = oldColor;
                     p.timer = 5;
@@ -1472,13 +1472,13 @@ elements.stasis = {
             for (var i = 0; i < adjacentCoords.length; i++) {
                 var coord = adjacentCoords[i];
                 var x = pixel.x + coord[0];
-                var y = pixel.x + coord[1];
+                var y = pixel.y + coord[1];
                 if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
                 if (elements[p.element].movable) {
                     var oldColor = p.color;
                     var oldElem = p.element;
-                    changePixel(pixel,"stasis");
+                    changePixel(p,"stasis");
                     p.oldElem = oldElem;
                     p.color = oldColor;
                     p.timer = 5;
