@@ -1440,11 +1440,10 @@ elements.stasis_projector = {
                 if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
                 if (elements[p.element].movable) {
-                    var oldColor = p.color;
                     var oldElem = p.element;
                     changePixel(p,"stasis");
                     p.oldElem = oldElem;
-                    p.color = pixelColorPick(p,oldColor);
+                    p.color = pixelColorPick(oldElem);
                     p.timer = 5;
                 }
             }
@@ -1461,7 +1460,7 @@ elements.stasis = {
         if (!pixel.oldElem) {
             pixel.oldElem = "proton";
             pixel.color = pixelColorPick(pixel, "#ffa6a6");
-            pixel.timer = 5;
+            pixel.timer = 10;
         }
         if (pixel.timer > 0) {
             var t = pixelTicks/2+pixel.x+pixel.y;
@@ -1469,7 +1468,7 @@ elements.stasis = {
             pixel.alpha = Math.max(0,r/127);
         } else {changePixel(pixel,pixel.oldElem);}
         if (pixel.charge) {
-            pixel.timer = 5;
+            pixel.timer = 10;
             for (var i = 0; i < adjacentCoords.length; i++) {
                 var coord = adjacentCoords[i];
                 var x = pixel.x + coord[0];
@@ -1477,11 +1476,10 @@ elements.stasis = {
                 if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
                 if (elements[p.element].movable) {
-                    var oldColor = p.color;
                     var oldElem = p.element;
                     changePixel(p,"stasis");
                     p.oldElem = oldElem;
-                    p.color = pixelColorPick(p,oldColor);
+                    p.color = pixelColorPick(oldElem);
                     p.timer = 5;
                 }
             }
