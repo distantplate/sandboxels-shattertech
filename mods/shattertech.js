@@ -1470,6 +1470,8 @@ elements.stasis = {
             var t = pixelTicks/2+pixel.x+pixel.y;
             var r = Math.floor(127*Math.sin(t/1.5));
             pixel.alpha = Math.max(0,r/127);
+        }
+        if (pixel.stable == 3) {
             for (var i = 0; i < adjacentCoords.length; i++) {
                 var coord = adjacentCoords[i];
                 var x = pixel.x + coord[0];
@@ -1488,7 +1490,7 @@ elements.stasis = {
                 } else if (p.element === "stasis") {
                     if (p.disrupt == true) {pixel.disrupt = true; break;}
                     if (p.stable == 2 && pixel.stable == 0) {p.stable = 3;}
-                } else if (p.charge) {p.stable = 3;}
+                } else if (p.charge && pixel.stable == 0) {p.stable = 3;}
             }
         } else {changePixel(pixel,pixel.oldElem);}
         if (pixel.stable == 3) {pixel.timer = 10;}
