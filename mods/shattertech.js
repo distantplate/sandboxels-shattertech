@@ -1489,8 +1489,8 @@ elements.stasis = {
                 p.stable = 0;
             } else if (p.element === "stasis") {
                 if (p.disrupt == true) {pixel.disrupt = true; break;}
-                if (p.stable == 2 && pixel.stable == 0) {p.stable = 3;}
-            } else if (p.charge && pixel.stable == 0) {p.stable = 3;}
+                if (p.stable == 2 && pixel.stable == 0) {pixel.stable = 3;}
+            } else if (p.charge && pixel.stable == 0) {pixel.stable = 3;}
         }
         if (pixel.stable == 3) {pixel.timer = 10;}
         else {pixel.timer--;}
