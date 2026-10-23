@@ -818,9 +818,9 @@ elements.nanomaterial = {
                                 check = true;
                                 break;
                             }
-                        }
+                        } else if (j < 4) {store.push([x,y,false]);}
                     } else if (j < 4) {
-                        store.push([x,y]);
+                        store.push([x,y,true]);
                     }
                 }
                 if (check == false) {continue;}
@@ -832,7 +832,7 @@ elements.nanomaterial = {
                         if (!isEmpty(x+(j*coord[1]),y+(j*coord[0]),true)) {
                             if (pixelMap[x+(j*coord[1])][y+(j*coord[0])].element === "nanomaterial") {
                                 if (pixelMap[x+(j*coord[1])][y+(j*coord[0])].start === pixelTicks) {continue;}
-                                store2.push([x,y]);
+                                if (store[a][2] != false) {store2.push([x,y]);}
                                 proceed++;
                                 break;
                             }
