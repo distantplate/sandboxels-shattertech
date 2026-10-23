@@ -1444,7 +1444,7 @@ elements.stasis_projector = {
                     var oldElem = p.element;
                     changePixel(p,"stasis");
                     p.oldElem = oldElem;
-                    p.color = oldColor;
+                    p.color = pixelColorPick(p,oldColor);
                     p.timer = 5;
                 }
             }
@@ -1460,6 +1460,7 @@ elements.stasis = {
     tick: function(pixel) {
         if (!pixel.oldElem) {
             pixel.oldElem = "proton";
+            pixel.color = pixelColorPick(pixel, "#ffa6a6");
             pixel.timer = 5;
         }
         if (pixel.timer > 0) {
@@ -1480,11 +1481,12 @@ elements.stasis = {
                     var oldElem = p.element;
                     changePixel(p,"stasis");
                     p.oldElem = oldElem;
-                    p.color = oldColor;
+                    p.color = pixelColorPick(p,oldColor);
                     p.timer = 5;
                 }
             }
         } else {pixel.timer--;}
+        doDefaults(pixel);
     },
     onPlace: behaviors.DO_TICK,
     category: "special",
