@@ -1428,6 +1428,72 @@ elements.disintegrate = {
     conduct: 1
 };
 
+elements.stasis_projector = {
+    color: ["#262991","#33cc8f","#262991"],
+    behavior: behaviors.WALL,
+    tick: function(pixel) {
+        if (pixel.charge) {
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var coord = adjacentCoords[i];
+                var x = pixel.x + coord[0];
+                var y = pixel.x + coord[1];
+                if (isEmpty(x,y,true)) {continue;}
+                var p = pixelMap[x][y];
+                if (elements[p.element].movable) {
+                    var oldColor = p.color;
+                    var oldElem = p.element;
+                    changePixel(pixel,"stasis");
+                    p.oldElem = oldElem;
+                    p.color = oldColor;
+                    p.timer = 5;
+                }
+            }
+        }
+    },
+    category: "machines",
+    conduct: 1,
+    state: "solid",
+};
+
+elements.stasis = {
+    color: ["#ffa6a6","#000000","#ffa6a6","#000000","#ffa6a6"],
+    tick: function(pixel) {
+        if (!pixel.oldElem) {
+            pixel.oldElem = "proton";
+            pixel.timer = 5;
+        }
+        if (pixel.timer > 0) {
+            var t = pixelTicks/2+pixel.x+pixel.y;
+            var r = Math.floor(127*Math.sin(t/1.5));
+            pixel.alpha = Math.max(0,r/127);
+        } else {changePixel(pixel,pixel.oldElem);}
+        if (pixel.charge) {
+            pixel.timer = 5;
+            for (var i = 0; i < adjacentCoords.length; i++) {
+                var coord = adjacentCoords[i];
+                var x = pixel.x + coord[0];
+                var y = pixel.x + coord[1];
+                if (isEmpty(x,y,true)) {continue;}
+                var p = pixelMap[x][y];
+                if (elements[p.element].movable) {
+                    var oldColor = p.color;
+                    var oldElem = p.element;
+                    changePixel(pixel,"stasis");
+                    p.oldElem = oldElem;
+                    p.color = oldColor;
+                    p.timer = 5;
+                }
+            }
+        } else {pixel.timer--;}
+    },
+    onPlace: behaviors.DO_TICK,
+    category: "special",
+    insulate: true,
+    hardness: 1,
+    conduct: 1,
+    movable: false,
+};
+
 elements.shattertech_info = {
   color: ["#6f00ff","#996bd9","#6f00ff"],
   behavior: behaviors.WALL,
