@@ -1441,10 +1441,11 @@ elements.stasis_projector = {
                 var p = pixelMap[x][y];
                 if (elements[p.element].movable) {
                     var oldElem = p.element;
+                    var oldColor = pixelColorPick(p);
                     changePixel(p,"stasis");
                     p.oldElem = oldElem;
-                    p.color = pixelColorPick(oldElem);
-                    p.timer = 5;
+                    p.color = oldColor;
+                    p.timer = 10;
                 }
             }
         }
@@ -1477,10 +1478,11 @@ elements.stasis = {
                 var p = pixelMap[x][y];
                 if (elements[p.element].movable) {
                     var oldElem = p.element;
+                    var oldColor = pixelColorPick(p);
                     changePixel(p,"stasis");
                     p.oldElem = oldElem;
-                    p.color = pixelColorPick(oldElem);
-                    p.timer = 5;
+                    p.color = oldColor;
+                    p.timer = 10;
                 }
             }
         } else {pixel.timer--;}
