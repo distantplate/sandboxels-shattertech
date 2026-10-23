@@ -1465,7 +1465,7 @@ elements.stasis = {
             pixel.timer = 10;
             pixel.stable = 0;
         }
-        if (pixel.disrupt) {changePixel(pixel,oldElem);}
+        if (pixel.disrupt) {changePixel(pixel,pixel.oldElem);}
         if (pixel.timer > 0) {
             var t = pixelTicks/2+pixel.x+pixel.y;
             var r = Math.floor(127*Math.sin(t/1.5));
@@ -1476,6 +1476,7 @@ elements.stasis = {
                 var y = pixel.y + coord[1];
                 if (isEmpty(x,y,true)) {continue;}
                 var p = pixelMap[x][y];
+                if (p.start === pixelTicks) {continue;}
                 if (elements[p.element].movable) {
                     var oldElem = p.element;
                     var oldColor = pixelColorPick(p);
@@ -1483,6 +1484,7 @@ elements.stasis = {
                     p.oldElem = oldElem;
                     p.color = oldColor;
                     p.timer = 10;
+                    p.stable = 0;
                 } else if (p.element === "stasis") {
                     if (p.disrupt == true) {pixel.disrupt = true; break;}
                     if (p.stable == 2 && pixel.stable == 0) {p.stable = 3;}
