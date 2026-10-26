@@ -1666,7 +1666,7 @@ function shieldcheck(x,y,radius,doDamage) {
       if (isEmpty(x1,y1)) {continue;}
       else if (p.element !== "shield_gen") {continue;}
       else if (typeof p.xStage == "undefined" || typeof p.yStage == "undefined") {continue;}
-      if (Math.abs(x-x1) > p.xStage+p.gap.radius) {continue;}
+      if (Math.abs(x-x1) > p.xStage+p.gap+radius) {continue;}
       if (Math.abs(y-y1) > p.yStage+p.gap+radius) {continue;}
       if(Math.pow((x-x1)/p.xStage,2)+Math.pow((y-y1)/p.yStage,2) <= 1) {
       //if (findFociDistance(x,fLI[0],fLI[2],y,fLI[1],fLI[3]) <= fLI[4]) {
