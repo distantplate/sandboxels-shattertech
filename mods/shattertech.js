@@ -1119,6 +1119,7 @@ elements.shield_gen = {
             pixel.timer = 60;
         }
         if (pixel.health < mh && pixel.timer > 0) {pixel.health = mh;}
+        if (pixel.health > mh) {pixel.health = mh;}
         if (pixel.boosted == true && pixel.link != false && pixel.health < mh) {
             var regVal = mh * 0.05;
             if (pixel.health > mh * 0.95) {regVal = mh - pixel.health;}
